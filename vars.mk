@@ -1,7 +1,7 @@
-SRC_DIR := srcs
-OBJ_DIR := build
-NAME := swingy.jar
-MAIN_CLASS := fr.swingy.Main
+SRC_DIR = srcs
+OBJ_DIR = build
+NAME = swingy.jar
+MAIN_CLASS = fr.swingy.Main
 
 JAVAC = javac
 JAR = jar
