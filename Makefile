@@ -3,22 +3,22 @@ include vars.mk
 
 all: $(NAME)
 
-$(NAME): $(CLASSES)
-	@echo "${GREEN}[BUILD]${RESET} Packaging JAR $(NAME)"
-	@jar cfe $(NAME) fr.swingy.Main -C $(OBJ_DIR) .
-	@echo "${BLUE}[DONE]${RESET} $(NAME) created"
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)/%.class: $(SRC_DIR)/%.java
-	@mkdir -p $(dir $@)
-	@echo "${BROWN}[JAVAC]${RESET} Compiling $< → $@"
-	@$(JAVAC) $(JFLAGS) $<
+$(NAME): $(OBJ_DIR)
+	@echo "${BLUE}[JAVAC]${RESET} Compiling all Java sources..."
+	@$(JAVAC) $(JFLAGS) $(SRCS)
+	@echo "${GREEN}[JAR]${RESET} Packaging $(NAME)..."
+	@$(JAR) cfe $(NAME) $(MAIN_CLASS) -C $(OBJ_DIR) .
+	@echo "${GREEN}[DONE]${RESET} $(NAME) created"
 
 clean:
-	@echo "${RED}[CLEAN]${RESET} Removing class files"
+	@echo "${RED}[CLEAN]${RESET} Removing class files..."
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@echo "${RED}[FCLEAN]${RESET} Removing JAR $(NAME)"
+	@echo "${RED}[FCLEAN]${RESET} Removing JAR $(NAME)..."
 	@rm -f $(NAME)
 
 re: fclean all
