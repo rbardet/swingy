@@ -1,9 +1,9 @@
-package fr.swingy.hero;
+package en.swingy.hero;
 
-import fr.swingy.entity.Entity;
-import fr.swingy.equipement.armor.Armor;
-import fr.swingy.equipement.helm.Helm;
-import fr.swingy.equipement.weapon.Weapon;
+import en.swingy.entity.Entity;
+import en.swingy.equipement.armor.Armor;
+import en.swingy.equipement.helm.Helm;
+import en.swingy.equipement.weapon.Weapon;
 
 
 public class Hero extends Entity {

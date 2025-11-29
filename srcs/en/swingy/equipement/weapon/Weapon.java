@@ -1,4 +1,4 @@
-package fr.swingy.equipement.weapon;
+package en.swingy.equipement.weapon;
 
 public class Weapon {
 	protected final String name;

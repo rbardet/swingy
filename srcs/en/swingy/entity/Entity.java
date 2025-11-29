@@ -1,4 +1,4 @@
-package fr.swingy.entity;
+package en.swingy.entity;
 
 public class Entity {
 	protected String name;

@@ -1,4 +1,4 @@
-package fr.swingy.equipement.helm;
+package en.swingy.equipement.helm;
 
 public class Helm {
 	protected final String name;
