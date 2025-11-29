@@ -1,11 +1,21 @@
 package en.swingy.game;
 
+import en.swingy.hero.Hero;
+
 public class Game {
 	private static final String[] options = {
 		"Create a new character",
 		"Load a character",
 		"Exit the game"
 	};
+	
+	private static final String[] heroClass = {
+		"Archer",
+		"Tank",
+		"Warrior"
+	};
+
+	private static final String ASK_NAME = "Enter your hero name";
 
 	private Game() {}
 
@@ -18,18 +28,31 @@ public class Game {
 		return ;
 	}
 
-	public static void askOption() {
-		for(int i = 0; i < options.length; i++) {
-			System.out.println(i + 1 + " : " + options[i]);
+	public static int askOption(String[] opt) {
+		clearTerminal();
+		for(int i = 0; i < opt.length; i++) {
+			System.out.println(i + 1 + " : " + opt[i]);
 		}
+
+		try {
+			int choice = System.in.read();
+			return choice;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return -1;
 	}
 
-	public static void createNewChar() {
-
+	public static Hero createNewChar() {
+		System.out.println(ASK_NAME);
+		String name = System.in.toString();
+		int i = askOption(heroClass);
+		Hero player = new Hero(name, heroClass[i]);
+		return player;
 	}
 	
 	public static void loadChar() {
-		
 	}
 
 	public static void exitGame() {
@@ -37,33 +60,24 @@ public class Game {
 	}
 
 	public static void startGame(boolean gui) {
-		clearTerminal();
 		if (gui) {
 			openGUI();
 		}
 
 		// fetchSave() need to use db to fetch last games
 		// displaySave() show last games
-		askOption();
-		while (true) {
-			try {
-				int opt = System.in.read();
-				switch (opt) {
-					case '1':
-						createNewChar();
-						break;
-					case '2':
-						loadChar();
-						break;
-					case '3':
-						exitGame();
-						break;
-					default:
-						break;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		int opt = askOption(options);
+		Hero player;
+		switch (opt) {
+			case '1':
+				player = createNewChar();
+				System.out.println(player);
+				break;
+			case '2':
+				loadChar();
+				break;
+			default:
+				exitGame();
 		}
 	}
 }

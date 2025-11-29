@@ -4,13 +4,13 @@ public class Entity {
 	protected String name;
 	protected int attack;
 	protected int defense;
-	protected int hit_points;
+	protected int HP;
 
-	public Entity(String p_name, int p_attack, int p_defense, int p_hit_points) {
+	public Entity(String p_name, int p_attack, int p_defense, int p_HP) {
 		this.name = p_name;
 		this.attack = p_attack;
 		this.defense = p_defense;
-		this.hit_points = p_hit_points;
+		this.HP = p_HP;
 	}
 
 	public String getName() {
@@ -25,8 +25,8 @@ public class Entity {
 		return this.defense;
 	}
 
-	public int getHitPoints() {
-		return this.hit_points;
+	public int getHP() {
+		return this.HP;
 	}
 
 	public void setName(String p_name) {
@@ -41,7 +41,7 @@ public class Entity {
 		this.defense = p_defense;
 	}
 
-	public void setHitPoints(int p_hit_points) {
-		this.hit_points = p_hit_points;
+	public void setHP(int p_HP) {
+		this.HP = p_HP;
 	}
 }
