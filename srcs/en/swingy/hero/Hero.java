@@ -28,6 +28,27 @@ public class Hero extends Entity {
 		System.out.println(this.e_class.getHP());
 	}
 
+	public int getLevel() {
+		return this.level;
+	}
+
+	public int getXP() {
+		return this.xp;
+	}
+
+	public int getAttack() {
+		return this.e_class.getAttack();
+	}
+
+	public int getDefense() {
+		return this.e_class.getDefense();
+	}
+
+	public int getHP() {
+		return this.e_class.getHP();
+	}
+
+
 	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
 	}
