@@ -30,6 +30,7 @@ public class Game {
 	private static final String ASK_NAME = "Enter your hero name : ";
 	private static final String ASK_CLASS = "Enter your hero class : ";
 	private static final Scanner STD_IN = new Scanner(System.in);
+	private static final int INFO_WIDTH = 32;
 
 	private Game() {}
 
@@ -65,7 +66,7 @@ public class Game {
 	public static Hero createNewChar() {
 		clearTerminal();
 		System.out.print(ASK_NAME);
-		String name = "";
+		String name;
 		do {
 			name = STD_IN.nextLine();
 		} while (name.isEmpty());
@@ -75,11 +76,28 @@ public class Game {
 		return player;
 	}
 	
-	public static void loadChar() {
+	public static void loadChar() {}
+	
+	private static String formatLine(String content, int width) {
+		return String.format("┃ %-"+width+"s ┃", content);
 	}
 
-	public static void exitGame() {
-		System.exit(0);
+	public static void printInfo(Hero player) {
+		System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
+		System.out.println(formatLine("Username: " + player.getName(), INFO_WIDTH));
+		System.out.println(formatLine("Level: " + player.getLevel(), INFO_WIDTH));
+		System.out.println(formatLine("XP: " + player.getXP(), INFO_WIDTH));
+		System.out.println(formatLine("Attack: " + player.getAttack(), INFO_WIDTH));
+		System.out.println(formatLine("Defense: " + player.getDefense(), INFO_WIDTH));
+		System.out.println(formatLine("HP: " + player.getHP(), INFO_WIDTH));
+		System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
+	}
+
+	public static void exitGame() { System.exit(0); }
+
+	public static void runGame(Hero player) {
+		clearTerminal();
+		printInfo(player);
 	}
 
 	public static void startGame(boolean gui) {
@@ -91,12 +109,10 @@ public class Game {
 		// displaySave() show last games
 		int opt = askOption(prompt_start);
 
-		Hero player;
+		Hero player = null;
 		switch (opt) {
 			case 1:
 				player = createNewChar();
-				System.out.println(player.getName());
-				player.printStat();
 				break;
 			case 2:
 				loadChar();
@@ -104,5 +120,6 @@ public class Game {
 			default:
 				exitGame();
 		}
+		runGame(player);
 	}
 }
