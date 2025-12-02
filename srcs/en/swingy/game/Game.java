@@ -95,23 +95,17 @@ public class Game {
 	public static void exitGame() { System.exit(0); }
 
 	public static void runGame(Hero player) {
-		int size = Map.getMapSize(player.getLevel());
-		Map.generateMap(size, size / 2, size / 2);
-		Controller controller = new Controller(size / 2, size / 2);
+		Map m = new Map();
+		m.setMapSize(player.getLevel());
+		m.generateMap();
+		m.initController();
 		do {
 			clearTerminal();
 			printInfo(player);
 			System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-			
-			for(int i = 0; i < size; i++) {
-				for(int j = 0; j < size ; j++) {
-					System.out.print(Map.map[i][j]);
-				}
-				System.out.println();
-			}
-
-			controller.Movement();
-		} while (Map.Clear(controller.getPlayerX(), controller.getPlayerY()));
+			m.printMap();
+			m.playerMove();
+		} while (m.Clear());
 
 	}
 
@@ -135,6 +129,9 @@ public class Game {
 			default:
 				exitGame();
 		}
-		runGame(player);
+		
+		while (true) {
+			runGame(player);			
+		}
 	}
 }
