@@ -84,6 +84,12 @@ public class Map {
 	}
 
 	public boolean Clear() {
-		return true;
+		if (this.controller.getPlayerX() <= 0
+		|| this.controller.getPlayerX() >= size - 1
+		|| this.controller.getPlayerY() <= 0
+		|| this.controller.getPlayerY() >= size - 1) {
+			return true;
+		}
+		return false;
 	}
 }

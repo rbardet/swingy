@@ -105,7 +105,7 @@ public class Game {
 			System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 			m.printMap();
 			m.playerMove();
-		} while (m.Clear());
+		} while (!m.Clear());
 
 	}
 
@@ -129,7 +129,7 @@ public class Game {
 			default:
 				exitGame();
 		}
-		
+
 		while (true) {
 			runGame(player);			
 		}
