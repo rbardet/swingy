@@ -1,9 +1,6 @@
 package en.swingy.game;
 
-import en.swingy.entity.entityclass.Archer;
 import en.swingy.entity.entityclass.EntityClass;
-import en.swingy.entity.entityclass.Tank;
-import en.swingy.entity.entityclass.Warrior;
 import en.swingy.hero.Hero;
 import java.util.Scanner;
 
@@ -18,12 +15,6 @@ public class Game {
 		"Archer",
 		"Tank",
 		"Warrior"
-	};
-
-	private static final EntityClass[] heroClass = {
-		new Archer(),
-		new Tank(),
-		new Warrior(),
 	};
 
 	public static final Scanner STD_IN = new Scanner(System.in);
@@ -71,7 +62,7 @@ public class Game {
 		} while (name.isEmpty());
 		System.out.print(ASK_CLASS);
 		int i = askOption(prompt_class);
-		Hero player = new Hero(name, heroClass[i - 1]);
+		Hero player = new Hero(name, EntityClass.E_CLASS[i - 1]);
 		return player;
 	}
 	
@@ -86,10 +77,14 @@ public class Game {
 		System.out.println(formatLine("Username: " + player.getName(), INFO_WIDTH));
 		System.out.println(formatLine("Level: " + player.getLevel(), INFO_WIDTH));
 		System.out.println(formatLine("XP: " + player.getXP(), INFO_WIDTH));
-		System.out.println(formatLine("Attack: " + player.getAttack(), INFO_WIDTH));
-		System.out.println(formatLine("Defense: " + player.getDefense(), INFO_WIDTH));
-		System.out.println(formatLine("HP: " + player.getHP(), INFO_WIDTH));
+		System.out.println(formatLine("Attack: " + player.e_class.getAttack(), INFO_WIDTH));
+		System.out.println(formatLine("Defense: " + player.e_class.getDefense(), INFO_WIDTH));
+		System.out.println(formatLine("HP: " + player.e_class.getHP(), INFO_WIDTH));
+		System.out.println(formatLine("Weapon: " + player.getWeapon(), INFO_WIDTH));
+		System.out.println(formatLine("Armor: " + player.getArmor(), INFO_WIDTH));
+		System.out.println(formatLine("Helm: " + player.getHelm(), INFO_WIDTH));
 		System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
+		System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 	}
 
 	public static void exitGame() { System.exit(0); }
@@ -102,9 +97,8 @@ public class Game {
 		do {
 			clearTerminal();
 			printInfo(player);
-			System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 			m.printMap();
-			m.playerMove();
+			m.playerAction(player);
 		} while (!m.Clear());
 
 	}

@@ -1,18 +1,11 @@
 package en.swingy.game;
 
 public class Controller {
-	public enum DIR {
-		N,
-		W,
-		E,
-		S
-	}
-
-	String validMovement = "N|W|E|S";
+	String validMovement = "n|w|e|s";
 
 	private int player_x;
 	private int player_y;
-	public final String prompt_movement = "Enter your next movement [N/W/E/S] : ";
+	public final String prompt_movement = "Enter your next movement [n/w/e/s] : ";
 
 	public Controller(int p_player_x, int p_player_y) {
 		this.player_x = p_player_x;
@@ -52,11 +45,10 @@ public class Controller {
 
 		m[this.player_y][this.player_x] = Map.EMPTY_CELL;
 		switch (mov) {
-			case "N" -> moveNorth(m);
-			case "W" -> moveWest(m);
-			case "E" -> moveEast(m);
-			case "S" -> moveSouth(m);
+			case "n" -> moveNorth(m);
+			case "w" -> moveWest(m);
+			case "e" -> moveEast(m);
+			case "s" -> moveSouth(m);
 		}
-		m[this.player_y][this.player_x] = Map.PLAYER_CELL;
 	}
 }

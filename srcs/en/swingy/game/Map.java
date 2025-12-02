@@ -2,6 +2,8 @@ package en.swingy.game;
 
 import java.util.Random;
 
+import en.swingy.hero.Hero;
+
 public class Map {
 	public static final String EMPTY_CELL = "0";
 	public static final String PLAYER_CELL = "P";
@@ -45,16 +47,6 @@ public class Map {
 		map[this.size / 2][this.size / 2] = PLAYER_CELL;
 	}
 
-	public void movePlayer(int player_x, int player_y, String dir) {
-		this.map[player_y][player_x] = EMPTY_CELL;
-		switch (dir) {
-			case "N" -> this.map[player_y -1][player_x] = PLAYER_CELL;
-			case "W" -> this.map[player_y][player_x - 1] = PLAYER_CELL;
-			case "E" -> this.map[player_y][player_x + 1] = PLAYER_CELL;
-			case "S" -> this.map[player_y + 1][player_x] = PLAYER_CELL;
-		}
-	}
-
 	public String getCellColor(String cell) {
 		switch (cell) {
 			case EMPTY_CELL: return GREEN;
@@ -79,8 +71,14 @@ public class Map {
 		this.controller = new Controller(this.size / 2, this.size / 2);
 	}
 	
-	public void playerMove() {
+	public void playerAction(Hero player) {
 		this.controller.Movement(this.map);
+		
+		if (this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] == ENNEMY_CELL) {
+			Fight.Simulate(player);
+		}
+
+		this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] = Map.PLAYER_CELL;
 	}
 
 	public boolean Clear() {
