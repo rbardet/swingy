@@ -37,7 +37,7 @@ public class Fight {
 				opt = Game.STD_IN.nextLine();
 			} while(!opt.matches("y|n"));
 
-			if (opt == "y") {
+			if (opt.equals("y")) {
 				player.equip(drop);
 			}
 		}
