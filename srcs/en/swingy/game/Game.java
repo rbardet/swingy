@@ -1,6 +1,5 @@
 package en.swingy.game;
 
-import en.swingy.entity.Entity;
 import en.swingy.entity.entityclass.Archer;
 import en.swingy.entity.entityclass.EntityClass;
 import en.swingy.entity.entityclass.Tank;
@@ -27,9 +26,9 @@ public class Game {
 		new Warrior(),
 	};
 
+	public static final Scanner STD_IN = new Scanner(System.in);
 	private static final String ASK_NAME = "Enter your hero name : ";
 	private static final String ASK_CLASS = "Enter your hero class : ";
-	private static final Scanner STD_IN = new Scanner(System.in);
 	private static final int INFO_WIDTH = 32;
 
 	private Game() {}
@@ -96,8 +95,24 @@ public class Game {
 	public static void exitGame() { System.exit(0); }
 
 	public static void runGame(Hero player) {
-		clearTerminal();
-		printInfo(player);
+		int size = Map.getMapSize(player.getLevel());
+		Map.generateMap(size, size / 2, size / 2);
+		Controller controller = new Controller(size / 2, size / 2);
+		do {
+			clearTerminal();
+			printInfo(player);
+			System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+			
+			for(int i = 0; i < size; i++) {
+				for(int j = 0; j < size ; j++) {
+					System.out.print(Map.map[i][j]);
+				}
+				System.out.println();
+			}
+
+			controller.Movement();
+		} while (Map.Clear(controller.getPlayerX(), controller.getPlayerY()));
+
 	}
 
 	public static void startGame(boolean gui) {
