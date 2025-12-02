@@ -10,7 +10,8 @@ public class Helm extends Equipement {
 		this.hit_points = p_hit_points;
 	}
 
-	public int getHitPoints() {
+	@Override
+	public int getHP() {
 		return this.hit_points;
 	}
 }

@@ -9,8 +9,8 @@ import en.swingy.equipement.helm.HelmEnum;
 import en.swingy.equipement.weapon.Weapon;
 import en.swingy.equipement.weapon.WeaponEnum;
 
-public class Equipement {
-	private final String name;
+public abstract class Equipement {
+	private String name;
 
 	public Equipement(String p_name) {
 		this.name = p_name;
@@ -20,16 +20,31 @@ public class Equipement {
 		return this.name;
 	}
 
-	public static Equipement generateItem() {
+	public void setName(String p_name) {
+		this.name = p_name;
+	}
+
+	public static int generateStat(int level) {
+		Random r = new Random();
+		return r.nextInt(level) + 1;
+	}
+
+	public static Equipement generateItem(int level) {
 		Random r = new Random();
 		int value = r.nextInt(3) + 1;
 		switch (value) {
-			case 1: return new Weapon(WeaponEnum.getRandom(), value);
-			case 2: return new Helm(HelmEnum.getRandom(), value);
-			case 3: return new Armor(ArmorEnum.getRandom(), value);
+			case 1: return new Weapon(WeaponEnum.getRandom(), generateStat(level));
+			case 2: return new Helm(HelmEnum.getRandom(), generateStat(level));
+			case 3: return new Armor(ArmorEnum.getRandom(), generateStat(level));
 			default: return null;
 		}
 	}
+	
+	public int getAttack() { return 0; }
+
+	public int getDefense() { return 0; }
+
+	public int getHP() { return 0; }
 
 	public static String getType(Equipement item) {
 		if (item instanceof Weapon) {

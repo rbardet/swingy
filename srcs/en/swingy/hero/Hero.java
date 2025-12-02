@@ -1,7 +1,5 @@
 package en.swingy.hero;
 
-import java.util.Random;
-
 import en.swingy.entity.Entity;
 import en.swingy.entity.entityclass.EntityClass;
 import en.swingy.equipement.Equipement;
@@ -12,9 +10,9 @@ import en.swingy.equipement.weapon.Weapon;
 public class Hero extends Entity {
 	private int level = 1;
 	private int xp = 0;
-	private Equipement weapon;
-	private Equipement armor;
-	private Equipement helm;
+	public Equipement weapon;
+	public Equipement armor;
+	public Equipement helm;
 
 	private final String EQUIPED = "You have equiped ";
 
@@ -25,7 +23,7 @@ public class Hero extends Entity {
 		this.helm = new Helm("None", 0);
 	}
 
-	public void levelUp() {
+	private void levelUp() {
 		this.level += 1;
 	}
 
@@ -42,29 +40,6 @@ public class Hero extends Entity {
 	public int getXP() {
 		return this.xp;
 	}
-	
-	public void dropItem(Equipement item) {
-		System.out.println("You have lost " + item.getName());
-		item = null;
-	}
-
-	public void dropRandomItem() {
-		Random r = new Random();
-		int value = r.nextInt(3) + 1;
-		switch (value) {
-			case 1:
-				dropItem(this.weapon);
-				break ;
-			case 2:
-				dropItem(this.armor);
-				break ;
-			case 3:
-				dropItem(this.helm);
-				break ;
-			default:
-				break;
-		}
-	}
 
 	public String getWeapon() {
 		return this.weapon.getName();
@@ -76,6 +51,23 @@ public class Hero extends Entity {
 
 	public String getHelm() {
 		return this.helm.getName();
+	}
+
+	public void addXp(int amount) {
+		this.xp += amount;
+	}
+
+	public int xpNeeded(int level) {
+		return level * 1000 + (level - 1) * (level - 1) * 450;
+	}
+
+	public void checkLevelUp() {
+		if (this.xp >= xpNeeded(this.level)) {
+			this.levelUp();
+			this.e_class.setAttack(this.e_class.getAttack() + 1);
+			this.e_class.setDefense(this.e_class.getDefense() + 1);
+			this.e_class.setHP(this.e_class.getHP() + 1);
+		}
 	}
 
 	public void setWeapon(Equipement weapon) {

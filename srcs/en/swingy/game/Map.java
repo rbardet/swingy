@@ -72,10 +72,14 @@ public class Map {
 	}
 	
 	public void playerAction(Hero player) {
-		this.controller.Movement(this.map);
+		String mov = this.controller.Movement(this.map);
 		
 		if (this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] == ENNEMY_CELL) {
-			Fight.Simulate(player);
+			if (Fight.flee()) {
+				this.controller.goBack(mov, map);
+			} else {
+				Fight.Simulate(player);
+			}
 		}
 
 		this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] = Map.PLAYER_CELL;

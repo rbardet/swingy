@@ -10,6 +10,7 @@ public class Armor extends Equipement {
 		this.defense = p_defense;
 	}
 
+	@Override
 	public int getDefense() {
 		return this.defense;
 	}

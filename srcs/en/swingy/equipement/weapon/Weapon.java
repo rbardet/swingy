@@ -10,6 +10,7 @@ public class Weapon extends Equipement {
 		this.attack = p_attack;
 	}
 
+	@Override
 	public int getAttack() {
 		return this.attack;
 	}

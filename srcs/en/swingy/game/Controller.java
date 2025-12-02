@@ -36,7 +36,7 @@ public class Controller {
 		return this.player_y;
 	}
 
-	public void Movement(String[][] m) {
+	public String Movement(String[][] m) {
 		String mov;
 		do {
 			System.out.print(prompt_movement);
@@ -50,5 +50,17 @@ public class Controller {
 			case "e" -> moveEast(m);
 			case "s" -> moveSouth(m);
 		}
+
+		return mov;
+	}
+
+	public void goBack(String dir, String[][] m) {
+		switch (dir) {
+			case "n" -> moveSouth(m);
+			case "w" -> moveEast(m);
+			case "e" -> moveWest(m);
+			case "s" -> moveNorth(m);
+		}
+
 	}
 }

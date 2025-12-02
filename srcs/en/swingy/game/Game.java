@@ -12,15 +12,19 @@ public class Game {
 	};
 
 	private static final String[] prompt_class = {
-		"Archer",
-		"Tank",
-		"Warrior"
+		"Barbarian",
+		"Crusader",
+		"Demon Hunter",
+		"Monk",
+		"Necromancer",
+		"Witch Doctor",
+		"Wizard"
 	};
 
 	public static final Scanner STD_IN = new Scanner(System.in);
 	private static final String ASK_NAME = "Enter your hero name : ";
 	private static final String ASK_CLASS = "Enter your hero class : ";
-	private static final int INFO_WIDTH = 32;
+	private static final int INFO_WIDTH = 40;
 
 	private Game() {}
 
@@ -61,7 +65,7 @@ public class Game {
 			name = STD_IN.nextLine();
 		} while (name.isEmpty());
 		System.out.print(ASK_CLASS);
-		int i = askOption(prompt_class);
+		int i = EntityClass.askClass(prompt_class);
 		Hero player = new Hero(name, EntityClass.E_CLASS[i - 1]);
 		return player;
 	}
@@ -69,22 +73,29 @@ public class Game {
 	public static void loadChar() {}
 	
 	private static String formatLine(String content, int width) {
-		return String.format("┃ %-"+width+"s ┃", content);
+		return String.format("┃ %-" + width + "s ┃", content);
 	}
 
 	public static void printInfo(Hero player) {
+
+		String[] lines = {
+			"Username: " + player.getName(),
+			"Class: " + EntityClass.getType(player.e_class),
+			"Level: " + player.getLevel(),
+			"XP: " + player.getXP(),
+			"Attack: " + player.e_class.getAttack()+ " + " + player.weapon.getAttack(),
+			"Defense: " + player.e_class.getDefense() + " + " + player.helm.getDefense(),
+			"HP: " + player.e_class.getHP() + " + " + player.helm.getHP(),
+			"Weapon: " + player.getWeapon(),
+			"Armor: " + player.getArmor(),
+			"Helm: " + player.getHelm()
+		};
+
 		System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
-		System.out.println(formatLine("Username: " + player.getName(), INFO_WIDTH));
-		System.out.println(formatLine("Level: " + player.getLevel(), INFO_WIDTH));
-		System.out.println(formatLine("XP: " + player.getXP(), INFO_WIDTH));
-		System.out.println(formatLine("Attack: " + player.e_class.getAttack(), INFO_WIDTH));
-		System.out.println(formatLine("Defense: " + player.e_class.getDefense(), INFO_WIDTH));
-		System.out.println(formatLine("HP: " + player.e_class.getHP(), INFO_WIDTH));
-		System.out.println(formatLine("Weapon: " + player.getWeapon(), INFO_WIDTH));
-		System.out.println(formatLine("Armor: " + player.getArmor(), INFO_WIDTH));
-		System.out.println(formatLine("Helm: " + player.getHelm(), INFO_WIDTH));
+		for (String line : lines)
+			System.out.println(formatLine(line, INFO_WIDTH));
 		System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
-		System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+		System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 	}
 
 	public static void exitGame() { System.exit(0); }
@@ -125,7 +136,7 @@ public class Game {
 		}
 
 		while (true) {
-			runGame(player);			
+			runGame(player);
 		}
 	}
 }
