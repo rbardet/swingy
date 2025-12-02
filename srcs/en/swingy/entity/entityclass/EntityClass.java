@@ -1,9 +1,17 @@
 package en.swingy.entity.entityclass;
 
+import java.util.Random;
+
 public class EntityClass {
 	protected int attack;
 	protected int defense;
 	protected int HP;
+
+	public static final EntityClass[] E_CLASS = {
+		new Archer(),
+		new Tank(),
+		new Warrior(),
+	};
 
 	public EntityClass(int p_attack, int p_defense, int p_HP) {
 		this.attack = p_attack;
@@ -33,5 +41,11 @@ public class EntityClass {
 
 	public void setHP(int p_HP) {
 		this.HP = p_HP;
+	}
+
+	public static EntityClass randomClass() {
+		Random r = new Random();
+		int index = r.nextInt(E_CLASS.length);
+		return E_CLASS[index];
 	}
 }

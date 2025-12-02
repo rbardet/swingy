@@ -4,7 +4,7 @@ import en.swingy.entity.entityclass.EntityClass;
 
 public class Entity {
 	protected String name;
-	protected EntityClass e_class;
+	public EntityClass e_class;
 
 	public Entity(String p_name, EntityClass p_e_class) {
 		this.name = p_name;
@@ -17,5 +17,17 @@ public class Entity {
 
 	public void setName(String p_name) {
 		this.name = p_name;
+	}
+
+	public void takeDamage(int amount) {
+		this.e_class.setHP(this.e_class.getHP() - amount);
+	}
+
+	public boolean isAlive() {
+		if (e_class.getHP() <= 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
