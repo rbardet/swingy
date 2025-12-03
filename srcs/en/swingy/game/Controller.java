@@ -40,7 +40,7 @@ public class Controller {
 		String mov;
 		do {
 			System.out.print(prompt_movement);
-			mov = Game.STD_IN.nextLine();
+			mov = GamePrint.STD_IN.nextLine();
 		} while (!mov.matches(validMovement));
 
 		m[this.player_y][this.player_x] = Map.EMPTY_CELL;

@@ -24,9 +24,9 @@ public abstract class Equipement {
 		this.name = p_name;
 	}
 
-	public static int generateStat(int level) {
-		Random r = new Random();
-		return r.nextInt(level) + 1;
+	public static float generateStat(int level) {
+		float value = (float) (Math.random() * level);
+		return Math.round(value * 10f) / 10f;
 	}
 
 	public static Equipement generateItem(int level) {

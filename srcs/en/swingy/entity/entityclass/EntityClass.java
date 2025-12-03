@@ -2,8 +2,6 @@ package en.swingy.entity.entityclass;
 
 import java.util.Random;
 
-import en.swingy.game.Game;
-
 public abstract class EntityClass {
 	protected float attack;
 	protected float defense;
@@ -71,26 +69,4 @@ public abstract class EntityClass {
 	}
 	
 	public abstract void statsLevelUp();
-
-	public static int askClass(String[] opt) {
-		try {
-			String choice;
-			do {
-				Game.clearTerminal();
-				System.out.println("Id  Name     Stats(att/def/hp)");
-				for(int i = 0; i < opt.length; i++) {
-					System.out.println(i + 1 + " : " + opt[i]);
-				}
-				choice = Game.STD_IN.nextLine();
-			} while (!choice.matches("[1-7]"));
-
-			int ret = Integer.parseInt(choice);
-			return ret;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		Game.exitGame();
-		return -1;
-	}
 }

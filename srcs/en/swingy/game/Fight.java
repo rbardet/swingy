@@ -30,7 +30,7 @@ public class Fight {
 			do {
 				System.out.println(NEW_DROP + drop.getName() + " <"  + Equipement.getType(drop) + ">");
 				System.out.println(EQUIP);
-				opt = Game.STD_IN.nextLine();
+				opt = GamePrint.STD_IN.nextLine();
 			} while(!opt.matches("y|n"));
 
 			if (opt.equals("y")) {
@@ -39,19 +39,33 @@ public class Fight {
 		}
 
 		System.out.print("Press enter to continue...");
-		Game.STD_IN.nextLine();
+		GamePrint.STD_IN.nextLine();
+	}
+
+	public static float computeDamage(float atk, float def) {
+		float variation = (float)(1 + (Math.random() * 0.3 - 0.15));
+		float raw = atk * variation;
+
+		float reduction = 100f / (100f + def);
+		float dmg = raw * reduction;
+
+		return Math.max(dmg, 1);
 	}
 
 	public static void Simulate(Hero player) {
 		float player_hp = player.e_class.getHP() + player.helm.getHP();
 		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
+		float player_dmg;
+		float bot_dmg;
 		System.out.println(START_FIGHT + bot.getName());
 		do {
-			bot.takeDamage(player.e_class.getAttack() + player.weapon.getAttack() - bot.e_class.getDefense());
+			player_dmg = computeDamage(player.e_class.getAttack() + player.weapon.getAttack(), bot.e_class.getDefense());
+			bot.takeDamage(player_dmg);
 			if (!bot.isAlive()) {
 				break ;
 			}
-			player_hp -= bot.e_class.getAttack() - player.e_class.getDefense() + player.armor.getDefense();
+			bot_dmg = computeDamage(bot.e_class.getAttack(), player.e_class.getDefense() + player.armor.getDefense());
+			player_hp -= bot_dmg;
 		} while(player_hp > 0);
 
 		AfterFightSim(player, player_hp);
@@ -61,7 +75,7 @@ public class Fight {
 		String opt;
 		do {
 			System.out.println(FLEE);
-			opt = Game.STD_IN.nextLine();
+			opt = GamePrint.STD_IN.nextLine();
 		} while (!opt.matches("y|n"));
 
 		if (opt.matches("y")) {
