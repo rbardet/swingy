@@ -14,7 +14,7 @@ public class Game {
 	private static final String ASK_CLASS = "Enter your hero class : ";
 	public static Boolean GUI;
 
-	private Game() {}
+	public Game() {}
 
 	public void openGUI() {
 		return ;

@@ -3,7 +3,7 @@ package en.swingy;
 import en.swingy.game.Game;
 
 public class Main {
-	private static Game game;
+	private static Game game = new Game();
 
 	public static void usage(String args[]) {
 		if (args.length != 1) {
