@@ -16,11 +16,11 @@ public class Game {
 
 	private Game() {}
 
-	public static void openGUI() {
+	public void openGUI() {
 		return ;
 	}
 
-	public static String askPlayerName() {
+	public String askPlayerName() {
 		GamePrint.clearTerminal();
 		System.out.print(ASK_NAME);
 		String name;
@@ -29,25 +29,25 @@ public class Game {
 		} while (name.isEmpty());
 		return name;
 	}
-	public static int askPlayerClass() {
+	public int askPlayerClass() {
 		GamePrint.clearTerminal();
 		System.out.println(ASK_CLASS);
 		int idx = GamePrint.askOption(EntityClass.prompt_class);
 		return idx;
 	}
 
-	public static Hero createNewChar() {
+	public Hero createNewChar() {
 		String name = askPlayerName();
 		int idx = askPlayerClass();
 		Hero player = new Hero(name, EntityClass.E_CLASS[idx - 1]);
 		return player;
 	}
 	
-	public static void loadChar() {}
+	public void loadChar() {}
 
 	public static void exitGame() { System.exit(0); }
 
-	public static void runGame(Hero player) {
+	public void runGame(Hero player) {
 		Map m = new Map();
 		m.setMapSize(player.getLevel());
 		m.generateMap();
@@ -62,7 +62,7 @@ public class Game {
 		} while (!m.Clear());
 	}
 
-	public static void startGame(boolean gui) {
+	public void startGame(boolean gui) {
 		GUI = gui;
 
 		// fetchSave() need to use db to fetch last games

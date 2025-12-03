@@ -18,7 +18,7 @@ public class Entity {
 	public void setName(String p_name) {
 		this.name = p_name;
 	}
-
+	
 	public void takeDamage(float amount) {
 		this.e_class.setHP(this.e_class.getHP() - amount);
 	}

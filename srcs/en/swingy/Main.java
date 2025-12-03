@@ -3,6 +3,8 @@ package en.swingy;
 import en.swingy.game.Game;
 
 public class Main {
+	private static Game game;
+
 	public static void usage(String args[]) {
 		if (args.length != 1) {
 			System.out.println("Usage: java -jar swingy.jar [console/gui]");
@@ -14,9 +16,9 @@ public class Main {
 		usage(args);
 
 		if (args[0].equals("gui")) {
-			Game.startGame(true);
+			game.startGame(true);
 		} else if (args[0].equals("console")) {
-			Game.startGame(false);
+			game.startGame(false);
 		} else {
 			usage(args);
 		}

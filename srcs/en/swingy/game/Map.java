@@ -9,10 +9,10 @@ public class Map {
 	public static final String PLAYER_CELL = "P";
 	public static final String ENNEMY_CELL = "E";
 
-	public static final String COLOR_RESET = "\u001B[0m";
-	public static final String RED = "\u001B[31m";
-	public static final String GREEN = "\u001B[32m";
-	public static final String BLUE = "\u001B[34m";
+	private final String COLOR_RESET = "\u001B[0m";
+	private final String RED = "\u001B[31m";
+	private final String GREEN = "\u001B[32m";
+	private final String BLUE = "\u001B[34m";
 
 	private String map[][];
 	private int size;
@@ -70,7 +70,7 @@ public class Map {
 	public void initController() {
 		this.controller = new Controller(this.size / 2, this.size / 2);
 	}
-	
+
 	public void playerAction(Hero player) {
 		String mov = this.controller.Movement(this.map);
 		

@@ -58,6 +58,7 @@ public class Fight {
 		float player_dmg;
 		float bot_dmg;
 		System.out.println(START_FIGHT + bot.getName());
+
 		do {
 			player_dmg = computeDamage(player.e_class.getAttack() + player.weapon.getAttack(), bot.e_class.getDefense());
 			bot.takeDamage(player_dmg);
@@ -73,6 +74,7 @@ public class Fight {
 
 	public static boolean flee() {
 		String opt;
+
 		do {
 			System.out.println(FLEE);
 			opt = GamePrint.STD_IN.nextLine();
