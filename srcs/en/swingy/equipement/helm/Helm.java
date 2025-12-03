@@ -3,7 +3,7 @@ package en.swingy.equipement.helm;
 import en.swingy.equipement.Equipement;
 
 public class Helm extends Equipement {
-	protected final int hit_points;
+	protected final float hit_points;
 
 	public Helm(String p_name, int p_hit_points) {
 		super(p_name);
@@ -11,7 +11,7 @@ public class Helm extends Equipement {
 	}
 
 	@Override
-	public int getHP() {
+	public float getHP() {
 		return this.hit_points;
 	}
 }

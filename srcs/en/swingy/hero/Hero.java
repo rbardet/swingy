@@ -25,12 +25,7 @@ public class Hero extends Entity {
 
 	private void levelUp() {
 		this.level += 1;
-	}
-
-	public void printStat() {
-		System.out.println(this.e_class.getAttack());
-		System.out.println(this.e_class.getDefense());
-		System.out.println(this.e_class.getHP());
+		this.e_class.statsLevelUp();
 	}
 
 	public int getLevel() {

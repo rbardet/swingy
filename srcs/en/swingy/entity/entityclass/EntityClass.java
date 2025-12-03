@@ -4,10 +4,10 @@ import java.util.Random;
 
 import en.swingy.game.Game;
 
-public class EntityClass {
-	protected int attack;
-	protected int defense;
-	protected int HP;
+public abstract class EntityClass {
+	protected float attack;
+	protected float defense;
+	protected float HP;
 
 	public static final EntityClass[] E_CLASS = {
 		new Barbarian(),
@@ -19,33 +19,44 @@ public class EntityClass {
 		new Wizard(),
 	};
 
-	public EntityClass(int p_attack, int p_defense, int p_HP) {
+	public static final String[] prompt_class = {
+		"Barbarian 5/5/10",
+		"Crusader 5/8/7",
+		"Demon Hunter 9/4/7",
+		"Monk 7/6/7",
+		"Necromancer 8/4/8",
+		"Witch Doctor 10/3/7",
+		"Wizard 8/3/9"
+	};
+
+
+	public EntityClass(float p_attack, float p_defense, float p_HP) {
 		this.attack = p_attack;
 		this.defense = p_defense;
 		this.HP = p_HP;
 	}
 
-	public int getAttack() {
+	public float getAttack() {
 		return this.attack;
 	}
 
-	public int getDefense() {
+	public float getDefense() {
 		return this.defense;
 	}
 
-	public int getHP() {
+	public float getHP() {
 		return this.HP;
 	}
 
-	public void setAttack(int p_attack) {
+	public void setAttack(float p_attack) {
 		this.attack = p_attack;
 	}
 
-	public void setDefense(int p_defense) {
+	public void setDefense(float p_defense) {
 		this.defense = p_defense;
 	}
 
-	public void setHP(int p_HP) {
+	public void setHP(float p_HP) {
 		this.HP = p_HP;
 	}
 
@@ -58,17 +69,21 @@ public class EntityClass {
 	public static String getType(EntityClass e) {
 		return e.getClass().getSimpleName();
 	}
+	
+	public abstract void statsLevelUp();
 
 	public static int askClass(String[] opt) {
 		try {
 			String choice;
 			do {
 				Game.clearTerminal();
+				System.out.println("Id  Name     Stats(att/def/hp)");
 				for(int i = 0; i < opt.length; i++) {
 					System.out.println(i + 1 + " : " + opt[i]);
 				}
 				choice = Game.STD_IN.nextLine();
 			} while (!choice.matches("[1-7]"));
+
 			int ret = Integer.parseInt(choice);
 			return ret;
 		} catch (Exception e) {

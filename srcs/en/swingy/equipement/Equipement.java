@@ -40,11 +40,11 @@ public abstract class Equipement {
 		}
 	}
 	
-	public int getAttack() { return 0; }
+	public float getAttack() { return 0; }
 
-	public int getDefense() { return 0; }
+	public float getDefense() { return 0; }
 
-	public int getHP() { return 0; }
+	public float getHP() { return 0; }
 
 	public static String getType(Equipement item) {
 		if (item instanceof Weapon) {

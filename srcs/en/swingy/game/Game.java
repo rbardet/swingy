@@ -11,20 +11,11 @@ public class Game {
 		"Exit the game"
 	};
 
-	private static final String[] prompt_class = {
-		"Barbarian",
-		"Crusader",
-		"Demon Hunter",
-		"Monk",
-		"Necromancer",
-		"Witch Doctor",
-		"Wizard"
-	};
-
 	public static final Scanner STD_IN = new Scanner(System.in);
 	private static final String ASK_NAME = "Enter your hero name : ";
 	private static final String ASK_CLASS = "Enter your hero class : ";
 	private static final int INFO_WIDTH = 40;
+	public static Boolean GUI;
 
 	private Game() {}
 
@@ -48,6 +39,7 @@ public class Game {
 				choice = STD_IN.nextLine();
 			} while (!choice.matches("[1-3]"));
 			int ret = Integer.parseInt(choice);
+
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,13 +57,13 @@ public class Game {
 			name = STD_IN.nextLine();
 		} while (name.isEmpty());
 		System.out.print(ASK_CLASS);
-		int i = EntityClass.askClass(prompt_class);
+		int i = EntityClass.askClass(EntityClass.prompt_class);
 		Hero player = new Hero(name, EntityClass.E_CLASS[i - 1]);
 		return player;
 	}
 	
 	public static void loadChar() {}
-	
+
 	private static String formatLine(String content, int width) {
 		return String.format("┃ %-" + width + "s ┃", content);
 	}
@@ -106,18 +98,17 @@ public class Game {
 		m.generateMap();
 		m.initController();
 		do {
-			clearTerminal();
-			printInfo(player);
-			m.printMap();
+			if (!GUI) {
+				clearTerminal();
+				printInfo(player);
+				m.printMap();
+			}
 			m.playerAction(player);
 		} while (!m.Clear());
-
 	}
 
 	public static void startGame(boolean gui) {
-		if (gui) {
-			openGUI();
-		}
+		GUI = gui;
 
 		// fetchSave() need to use db to fetch last games
 		// displaySave() show last games

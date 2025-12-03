@@ -18,19 +18,8 @@ public class Fight {
 	public static final String FLEE_FAILED = "You have failed to flee";
 	public static final String FLEE_SUCCESS = "You have flee";
 
-	public static void Simulate(Hero player) {
-		int hp = player.e_class.getHP() + player.helm.getHP();
-		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
-		System.out.println(START_FIGHT + bot.getName());
-		do {
-			bot.takeDamage(player.e_class.getAttack() + player.weapon.getAttack() - bot.e_class.getDefense());
-			if (!bot.isAlive()) {
-				break ;
-			}
-			hp -= bot.e_class.getAttack() - player.e_class.getDefense() + player.armor.getDefense();
-		} while(hp != 0);
-
-		if (!player.isAlive()) {
+	public static void AfterFightSim(Hero player, float player_hp) {
+		if (player_hp <= 0) {
 			System.out.println(YOU_LOST);
 		} else {
 			System.out.println(YOU_WON);
@@ -51,6 +40,21 @@ public class Fight {
 
 		System.out.print("Press enter to continue...");
 		Game.STD_IN.nextLine();
+	}
+
+	public static void Simulate(Hero player) {
+		float player_hp = player.e_class.getHP() + player.helm.getHP();
+		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
+		System.out.println(START_FIGHT + bot.getName());
+		do {
+			bot.takeDamage(player.e_class.getAttack() + player.weapon.getAttack() - bot.e_class.getDefense());
+			if (!bot.isAlive()) {
+				break ;
+			}
+			player_hp -= bot.e_class.getAttack() - player.e_class.getDefense() + player.armor.getDefense();
+		} while(player_hp > 0);
+
+		AfterFightSim(player, player_hp);
 	}
 
 	public static boolean flee() {

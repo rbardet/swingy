@@ -19,7 +19,7 @@ public class Entity {
 		this.name = p_name;
 	}
 
-	public void takeDamage(int amount) {
+	public void takeDamage(float amount) {
 		this.e_class.setHP(this.e_class.getHP() - amount);
 	}
 
