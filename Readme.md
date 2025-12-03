@@ -13,8 +13,8 @@ _Swingy_ est un jeu RPG minimaliste développé en Java dans le cadre du cursus 
 - **Système d’expérience & montée de niveau** : Gain d’expérience et artefacts selon le résultat du combat.
 - **Sauvegarde et chargement** : Les héros et leur progression sont conservés dans une base de données SQL *(bonus)*.
 - **Deux modes de jeu** :
-  - Mode console : `$ java -jar swingy.jar console` ou `make console`
-  - Mode GUI : `$ java -jar swingy.jar gui` ou `make gui`
+  - Mode console : `java -jar swingy.jar console` ou `make console`
+  - Mode GUI : `java -jar swingy.jar gui` ou `make gui`
 - **Validation des inputs** : Validation robuste grâce à Hibernate Validator (javax.validation).
 
 ### Bonus
