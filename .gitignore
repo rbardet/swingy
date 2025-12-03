@@ -2,3 +2,5 @@
 build/
 target/
 .vscode
+game.db
+dependency-reduced-pom.xml
