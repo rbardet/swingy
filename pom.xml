@@ -44,7 +44,7 @@
 
     <build>
         <!-- Indiquer le dossier source personnalisé -->
-        <sourceDirectory>srcs/en</sourceDirectory>
+        <sourceDirectory>srcs</sourceDirectory>
 
         <plugins>
             <!-- Compiler -->
