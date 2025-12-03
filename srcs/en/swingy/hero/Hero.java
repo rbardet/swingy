@@ -10,9 +10,9 @@ import en.swingy.equipement.weapon.Weapon;
 public class Hero extends Entity {
 	private int level = 1;
 	private int xp = 0;
-	public Equipement weapon;
-	public Equipement armor;
-	public Equipement helm;
+	private Equipement weapon;
+	private Equipement armor;
+	private Equipement helm;
 
 	private final String EQUIPED = "You have equiped ";
 
@@ -36,16 +36,16 @@ public class Hero extends Entity {
 		return this.xp;
 	}
 
-	public String getWeapon() {
-		return this.weapon.getName();
+	public Equipement getWeapon() {
+		return this.weapon;
 	}
 
-	public String getArmor() {
-		return this.armor.getName();
+	public Equipement getArmor() {
+		return this.armor;
 	}
 
-	public String getHelm() {
-		return this.helm.getName();
+	public Equipement getHelm() {
+		return this.helm;
 	}
 
 	public void addXp(int amount) {

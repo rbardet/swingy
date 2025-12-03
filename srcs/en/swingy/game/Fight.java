@@ -53,19 +53,19 @@ public class Fight {
 	}
 
 	public static void Simulate(Hero player) {
-		float player_hp = player.e_class.getHP() + player.helm.getHP();
+		float player_hp = player.getEClass().getHP() + player.getHelm().getHP();
 		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
 		float player_dmg;
 		float bot_dmg;
 		System.out.println(START_FIGHT + bot.getName());
 
 		do {
-			player_dmg = computeDamage(player.e_class.getAttack() + player.weapon.getAttack(), bot.e_class.getDefense());
+			player_dmg = computeDamage(player.getEClass().getAttack() + player.getWeapon().getAttack(), bot.getEClass().getDefense());
 			bot.takeDamage(player_dmg);
 			if (!bot.isAlive()) {
 				break ;
 			}
-			bot_dmg = computeDamage(bot.e_class.getAttack(), player.e_class.getDefense() + player.armor.getDefense());
+			bot_dmg = computeDamage(bot.getEClass().getAttack(), player.getEClass().getDefense() + player.getArmor().getDefense());
 			player_hp -= bot_dmg;
 		} while(player_hp > 0);
 

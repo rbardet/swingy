@@ -30,20 +30,20 @@ public class GamePrint {
 	private static String formatLine(String content, int width) {
 		return String.format("┃ %-" + width + "s ┃", content);
 	}
-
+ 
 	public static void playerInfo(Hero player) {
 
 		String[] lines = {
 			"Username: " + player.getName(),
-			"Class: " + EntityClass.getType(player.e_class),
+			"Class: " + EntityClass.getType(player.getEClass()),
 			"Level: " + player.getLevel(),
 			"XP: " + player.getXP(),
-			"Attack: " + player.e_class.getAttack()+ " + " + player.weapon.getAttack(),
-			"Defense: " + player.e_class.getDefense() + " + " + player.helm.getDefense(),
-			"HP: " + player.e_class.getHP() + " + " + player.helm.getHP(),
-			"Weapon: " + player.getWeapon(),
-			"Armor: " + player.getArmor(),
-			"Helm: " + player.getHelm()
+			"Attack: " + player.getEClass().getAttack()+ " + " + player.getWeapon().getAttack(),
+			"Defense: " + player.getEClass().getDefense() + " + " + player.getArmor().getDefense(),
+			"HP: " + player.getEClass().getHP() + " + " + player.getHelm().getHP(),
+			"Weapon: " + player.getWeapon().getName(),
+			"Armor: " + player.getArmor().getName(),
+			"Helm: " + player.getHelm().getName()
 		};
 
 		System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");

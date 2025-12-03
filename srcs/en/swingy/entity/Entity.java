@@ -4,11 +4,15 @@ import en.swingy.entity.entityclass.EntityClass;
 
 public class Entity {
 	protected String name;
-	public EntityClass e_class;
+	protected EntityClass e_class;
 
 	public Entity(String p_name, EntityClass p_e_class) {
 		this.name = p_name;
 		this.e_class = p_e_class;
+	}
+
+	public EntityClass getEClass() {
+		return this.e_class;
 	}
 
 	public String getName() {
