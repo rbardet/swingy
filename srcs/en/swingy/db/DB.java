@@ -105,11 +105,6 @@ public class DB {
 	 */
 	public static void initDb() throws SQLException {
 		if (conn == null) {
-			try {
-				Class.forName("org.sqlite.JDBC");
-			} catch (ClassNotFoundException e) {
-				throw new SQLException("SQLite JDBC driver not found", e);
-			}
 			conn = DriverManager.getConnection(SQL_URL);
 			getConnection().prepareStatement(RQ_CREATE_TABLE).execute();
 		}
