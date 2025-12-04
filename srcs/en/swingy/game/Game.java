@@ -133,13 +133,11 @@ public class Game {
 	}
 
 	public int selectSave(String msg) throws SQLException {
-
 		String regex = "[1-" + this.dbSize + "q]";
 		String choice;
 		do {
 			GamePrint.clearTerminal();
 			GamePrint.displaySave();
-			System.out.println(this.dbSize);
 			System.out.println(RETURN_MENU_PROMPT);
 			System.out.print(msg);
 			choice = GamePrint.STD_IN.nextLine();
