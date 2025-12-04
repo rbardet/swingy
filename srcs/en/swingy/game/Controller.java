@@ -64,8 +64,8 @@ public class Controller {
 	public void goBack(String dir, String[][] m) {
 		switch (dir) {
 			case "w" -> moveSouth(m);
-			case "a" -> moveWest(m);
-			case "d" -> moveEast(m);
+			case "a" -> moveEast(m);
+			case "d" -> moveWest(m);
 			case "s" -> moveNorth(m);
 		}
 
