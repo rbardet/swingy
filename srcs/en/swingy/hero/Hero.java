@@ -11,7 +11,7 @@ import en.swingy.equipement.helm.Helm;
 import en.swingy.equipement.weapon.Weapon;
 
 public class Hero extends Entity {
-	private int id = -1;
+	private long id = -1;
 	private int level = 1;
 	private int xp = 0;
 	private Equipement weapon;
@@ -53,7 +53,7 @@ public class Hero extends Entity {
 	}
 
 	public int getId() {
-		return this.id;
+		return ((int)this.id);
 	}
 
 	public void addXp(int amount) {

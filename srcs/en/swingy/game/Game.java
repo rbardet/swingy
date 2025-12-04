@@ -47,8 +47,8 @@ public class Game {
 		String name = askPlayerName();
 		int idx = askPlayerClass();
 		Hero player = new Hero(name, EntityClass.E_CLASS[idx - 1]);
-		int id = DB.createAccount(name, EntityClass.E_CLASS[idx - 1]);
-		player.setId(id);
+		long id = DB.createAccount(name, EntityClass.E_CLASS[idx - 1]);
+		player.setId(((int)id));
 		return player;
 	}
 	
@@ -77,7 +77,7 @@ public class Game {
 		}
 		String regex = "[1-" + size + "]";
 		String choice;
-		
+
 		rs = DB.fetchSaves();
 		GamePrint.clearTerminal();
 		GamePrint.displaySave(rs);
@@ -87,12 +87,9 @@ public class Game {
 		} while(!choice.matches(regex));
 
 		rs = DB.fetchSaves();
-		int i = 1;
 		int idx = Integer.parseInt(choice);
-		while (i != idx) {
-			System.out.println("TEST");
+		while (rs.getInt(DB.ID_VAR) != idx) {
 			rs.next();
-			i++;
 		}
 
 		return setHeroStats(rs);
