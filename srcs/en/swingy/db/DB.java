@@ -102,9 +102,9 @@ public class DB {
 		}
 	}
 
-	public static int createAccount(String name, EntityClass c) throws SQLException {
+	public static long createAccount(String name, EntityClass c) throws SQLException {
 		initDb();
-		PreparedStatement s = getConnection().prepareStatement(INSERT_USER);
+		PreparedStatement s = getConnection().prepareStatement(INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS);
 		s.setString(1, name);
 		s.setString(2, c.getClass().getSimpleName());
 		s.setInt(3, 1);
@@ -120,8 +120,15 @@ public class DB {
 		s.setString(12, "None");
 		s.setFloat(13, 0);
 
-		int i = s.executeUpdate();
-		return i;
+		s.executeUpdate();
+
+		long key = -1L;
+		ResultSet rs = s.getGeneratedKeys();
+		if (rs.next()) {
+			key = rs.getLong(1);
+		}
+
+		return key;
 	}
 
 	public static void updateAfterFight(Hero player) throws SQLException {
