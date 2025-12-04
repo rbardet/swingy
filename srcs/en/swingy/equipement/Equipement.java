@@ -39,7 +39,7 @@ public abstract class Equipement {
 			default: return null;
 		}
 	}
-	
+
 	public float getAttack() { return 0; }
 
 	public float getDefense() { return 0; }
