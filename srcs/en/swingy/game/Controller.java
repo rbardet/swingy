@@ -1,7 +1,9 @@
 package en.swingy.game;
 
+import java.sql.SQLException;
+
 public class Controller {
-	String validMovement = "w|a|s|d";
+	String validMovement = "w|a|s|d|q";
 
 	private int player_x;
 	private int player_y;
@@ -40,7 +42,7 @@ public class Controller {
 		return this.player_y;
 	}
 
-	public String Movement(String[][] m) {
+	public String Movement(Game g,String[][] m) throws SQLException {
 		String mov;
 		do {
 			System.out.print(MOV_PROMPT);
@@ -53,6 +55,7 @@ public class Controller {
 			case "a" -> moveWest(m);
 			case "d" -> moveEast(m);
 			case "s" -> moveSouth(m);
+			case "q" -> g.startGame();
 		}
 
 		return mov;

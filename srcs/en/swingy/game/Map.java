@@ -67,8 +67,8 @@ public class Map {
 		this.controller = new Controller(this.size / 2, this.size / 2);
 	}
 
-	public void playerAction(Hero player) throws SQLException {
-		String mov = this.controller.Movement(this.map);
+	public void playerAction(Game g, Hero player) throws SQLException {
+		String mov = this.controller.Movement(g, this.map);
 		
 		if (this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] == ENNEMY_CELL) {
 			if (Fight.flee()) {

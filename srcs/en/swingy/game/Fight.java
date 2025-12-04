@@ -88,7 +88,9 @@ public class Fight {
 	}
 
 	public static void Simulate(Hero player) throws SQLException {
+		float baseHp = player.getEClass().getHP();
 		float player_hp = player.getEClass().getHP() + player.getHelm().getHP();
+
 		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
 		float player_dmg;
 		float bot_dmg;
@@ -105,6 +107,7 @@ public class Fight {
 		} while(player_hp > 0);
 
 		AfterFightSim(player, player_hp);
+		player.getEClass().setHP(baseHp);
 	}
 
 	public static boolean flee() {

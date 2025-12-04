@@ -57,7 +57,7 @@ public class Game {
 	""" + GamePrint.COLOR_RESET;
 
 	public static Boolean GUI;
-	public static int dbSize = 0;
+	private int dbSize = 0;
 
 	public Game() {}
 
@@ -83,7 +83,7 @@ public class Game {
 	}
 
 	public Hero createNewChar() throws SQLException {
-		if (dbSize >= 3) {
+		if (this.dbSize >= 3) {
 			String s;
 			do {
 				System.out.println(DB_SIZE_PROMPT);
@@ -129,16 +129,17 @@ public class Game {
 			size++;
 		}
 
-		dbSize = size;
+		this.dbSize = size;
 	}
 
 	public int selectSave(String msg) throws SQLException {
 
-		String regex = "[1-" + dbSize + "q]";
+		String regex = "[1-" + this.dbSize + "q]";
 		String choice;
 		do {
 			GamePrint.clearTerminal();
 			GamePrint.displaySave();
+			System.out.println(this.dbSize);
 			System.out.println(RETURN_MENU_PROMPT);
 			System.out.print(msg);
 			choice = GamePrint.STD_IN.nextLine();
@@ -152,7 +153,7 @@ public class Game {
 	}
 
 	public Hero loadChar() throws SQLException {
-		if (dbSize <= 0) {
+		if (this.dbSize <= 0) {
 			System.out.println(NO_SAVE_PROMPT);
 			String s;
 			do {
@@ -176,7 +177,7 @@ public class Game {
 	}
 
 	public void deleteSave() throws SQLException {
-		if (dbSize <= 0) {
+		if (this.dbSize <= 0) {
 			System.out.println(NO_SAVE_PROMPT);
 			return ;
 		}
@@ -197,9 +198,10 @@ public class Game {
 			if (!GUI) {
 				GamePrint.clearTerminal();
 				GamePrint.playerInfo(player);
+				System.out.println(RETURN_MENU_PROMPT);
 				m.printMap();
 			}
-			m.playerAction(player);
+			m.playerAction(this, player);
 		} while (!m.Clear());
 	}
 

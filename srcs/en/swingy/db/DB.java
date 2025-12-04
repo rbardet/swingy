@@ -86,7 +86,7 @@ public class DB {
 		" WHERE " + ID_VAR + "=" + "?;";
 
 	private static final String RQ_ENTRY_SIZE =
-	"SELECT COUNT (*) FROM " + MAIN_TABLE;
+	"SELECT id FROM " + MAIN_TABLE + " ORDER BY id ";
 
 	private static final String RQ_FETCH_USERS = "SELECT * FROM " + MAIN_TABLE;
 
@@ -115,12 +115,16 @@ public class DB {
 			RQ_ENTRY_SIZE
 		);
 		ResultSet rs = s.executeQuery();
-		int newId = 1;
 
-		if (rs.next()) {
-			newId = rs.getInt(1) + 1;
+		int exId = 1;
+		while (rs.next()) {
+			int currId = rs.getInt(ID_VAR);
+			if (currId != exId) {
+				return exId;
+			}
+			exId++;
 		}
-		return newId;
+		return exId;
 	}
 
 	public static long createAccount(String name, EntityClass c) throws SQLException {
