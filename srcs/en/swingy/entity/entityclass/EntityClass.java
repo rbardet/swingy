@@ -14,7 +14,7 @@ public abstract class EntityClass {
 		new Monk(),
 		new Necromancer(),
 		new WitchDoctor(),
-		new Wizard(),
+		new Wizard()
 	};
 
 	public static final String[] prompt_class = {
@@ -67,6 +67,19 @@ public abstract class EntityClass {
 	public static String getType(EntityClass e) {
 		return e.getClass().getSimpleName();
 	}
-	
+
+	public static EntityClass getClassByName(String name) {
+		switch (name) {
+			case "Barbarian": return new Barbarian();
+			case "Crusader": return new Crusader();
+			case "DemonHunter": return new DemonHunter();
+			case "Monk": return new Monk();
+			case "Necromancer": return new Necromancer();
+			case "WitchDoctor": return new WitchDoctor();
+			case "Wizard": return new Wizard();
+			default: return null;
+		}
+	}
+
 	public abstract void statsLevelUp();
 }
