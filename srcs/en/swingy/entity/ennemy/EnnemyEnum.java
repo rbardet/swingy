@@ -20,10 +20,20 @@ public enum EnnemyEnum {
 		this.label = label;
 	}
 
+	/**
+	 * Returns the label (name) of the enemy.
+	 *
+	 * @return enemy label as a string
+	 */
 	public String getLabel() {
 		return label;
 	}
 
+	/**
+	 * Returns the label of a randomly selected enemy from the enum.
+	 *
+	 * @return a random enemy label as a string
+	 */
 	public static String getRandom() {
 		EnnemyEnum[] values = EnnemyEnum.values();
 		int index = new Random().nextInt(values.length);

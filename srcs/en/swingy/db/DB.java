@@ -27,8 +27,8 @@ public class DB {
 	public static final String HL_HP_VAR = "h_hp";
 	private static final String SQL_URL = "jdbc:sqlite:game.db";
 
-	private static final String RQ_CREATE_TABLE =
-		"CREATE TABLE IF NOT EXISTS " + MAIN_TABLE + " (" +
+	// SQL queries
+	private static final String RQ_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + MAIN_TABLE + " (" +
 		ID_VAR + " INTEGER PRIMARY KEY, " +
 		NAME_VAR + " TEXT, " +
 		CLASS_VAR + " TEXT," +
@@ -44,8 +44,7 @@ public class DB {
 		HL_NAME_VAR + " TEXT, " +
 		HL_HP_VAR + " FLOAT)";
 
-	private static final String RQ_INSERT_USER =
-		"INSERT INTO " + MAIN_TABLE + " (" +
+	private static final String RQ_INSERT_USER = "INSERT INTO " + MAIN_TABLE + " (" +
 		ID_VAR + ", " +
 		NAME_VAR + ", " +
 		CLASS_VAR + ", " +
@@ -62,31 +61,26 @@ public class DB {
 		HL_HP_VAR +
 		") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-	private static final String RQ_UPDATE_FIGHT =
-		"UPDATE " + MAIN_TABLE +
-		" SET " + XP_VAR + "=" + "?," +
-		WP_NAME_VAR + "=" + "?," +
-		WP_ATT_VAR + "=" + "?," +
-		AM_NAME_VAR + "=" + "?," +
-		AM_DEF_VAR + "=" + "?," +
-		HL_NAME_VAR + "=" + "?," +
-		HL_HP_VAR + "=" + "? " +
-		"WHERE " + ID_VAR + "=" + "?;";
+	private static final String RQ_UPDATE_FIGHT = "UPDATE " + MAIN_TABLE +
+		" SET " + XP_VAR + "=?," +
+		WP_NAME_VAR + "=?," +
+		WP_ATT_VAR + "=?," +
+		AM_NAME_VAR + "=?," +
+		AM_DEF_VAR + "=?," +
+		HL_NAME_VAR + "=?," +
+		HL_HP_VAR + "=? " +
+		"WHERE " + ID_VAR + "=?;";
 
-	private static final String RQ_UPDATE_LEVEL_UP =
-		"UPDATE " + MAIN_TABLE +
-		" SET " + LV_VAR + "=" + "?," +
-		ATT_VAR + "=" + "?," +
-		DEF_VAR + "=" + "?," +
-		HP_VAR + "=" + "? " +
-		"WHERE " + ID_VAR + "=" + "?;";
+	private static final String RQ_UPDATE_LEVEL_UP = "UPDATE " + MAIN_TABLE +
+		" SET " + LV_VAR + "=?," +
+		ATT_VAR + "=?," +
+		DEF_VAR + "=?," +
+		HP_VAR + "=? " +
+		"WHERE " + ID_VAR + "=?;";
 
-	private static final String RQ_DELETE_REQUEST =
-		"DELETE FROM " + MAIN_TABLE +
-		" WHERE " + ID_VAR + "=" + "?;";
+	private static final String RQ_DELETE_REQUEST = "DELETE FROM " + MAIN_TABLE + " WHERE " + ID_VAR + "=?;";
 
-	private static final String RQ_ENTRY_SIZE =
-	"SELECT id FROM " + MAIN_TABLE + " ORDER BY id ";
+	private static final String RQ_ENTRY_SIZE = "SELECT id FROM " + MAIN_TABLE + " ORDER BY id";
 
 	private static final String RQ_FETCH_USERS = "SELECT * FROM " + MAIN_TABLE;
 
@@ -94,10 +88,21 @@ public class DB {
 
 	public DB() {}
 
+	/**
+	 * Returns the current database connection.
+	 *
+	 * @return Active database connection
+	 * @throws SQLException If the connection is not initialized
+	 */
 	public static Connection getConnection() throws SQLException {
 		return conn;
 	}
 
+	/**
+	 * Initializes the SQLite database and creates the Hero table if it does not exist.
+	 *
+	 * @throws SQLException If database connection or table creation fails
+	 */
 	public static void initDb() throws SQLException {
 		if (conn == null) {
 			try {
@@ -110,10 +115,14 @@ public class DB {
 		}
 	}
 
+	/**
+	 * Returns the next available user ID in the Hero table.
+	 *
+	 * @return Next available ID
+	 * @throws SQLException If database query fails
+	 */
 	public static int getUserId() throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(
-			RQ_ENTRY_SIZE
-		);
+		PreparedStatement s = getConnection().prepareStatement(RQ_ENTRY_SIZE);
 		ResultSet rs = s.executeQuery();
 
 		int exId = 1;
@@ -127,12 +136,17 @@ public class DB {
 		return exId;
 	}
 
+	/**
+	 * Creates a new hero account in the database.
+	 *
+	 * @param name Hero's name
+	 * @param c Hero's entity class (stats)
+	 * @return Generated key (ID) of the new hero
+	 * @throws SQLException If insertion fails
+	 */
 	public static long createAccount(String name, EntityClass c) throws SQLException {
 		initDb();
-		PreparedStatement s = getConnection().prepareStatement(
-			RQ_INSERT_USER,
-			PreparedStatement.RETURN_GENERATED_KEYS
-		);
+		PreparedStatement s = getConnection().prepareStatement(RQ_INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS);
 		s.setInt(1, getUserId());
 		s.setString(2, name);
 		s.setString(3, c.getClass().getSimpleName());
@@ -141,7 +155,6 @@ public class DB {
 		s.setFloat(6, c.getAttack());
 		s.setFloat(7, c.getDefense());
 		s.setFloat(8, c.getHP());
-
 		s.setString(9, "None");
 		s.setFloat(10, 0);
 		s.setString(11, "None");
@@ -160,10 +173,14 @@ public class DB {
 		return key;
 	}
 
+	/**
+	 * Updates a hero's data after a fight (XP, weapon, armor, helm).
+	 *
+	 * @param player Hero object to update
+	 * @throws SQLException If update fails
+	 */
 	public static void updateAfterFight(Hero player) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(
-			RQ_UPDATE_FIGHT
-		);
+		PreparedStatement s = getConnection().prepareStatement(RQ_UPDATE_FIGHT);
 		s.setInt(1, player.getXP());
 		s.setString(2, player.getWeapon().getName());
 		s.setFloat(3, player.getWeapon().getAttack());
@@ -176,10 +193,14 @@ public class DB {
 		s.executeUpdate();
 	}
 
+	/**
+	 * Updates a hero's level and base stats after leveling up.
+	 *
+	 * @param player Hero object to update
+	 * @throws SQLException If update fails
+	 */
 	public static void updateAfterLevel(Hero player) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(
-			RQ_UPDATE_LEVEL_UP
-		);
+		PreparedStatement s = getConnection().prepareStatement(RQ_UPDATE_LEVEL_UP);
 		s.setInt(1, player.getLevel());
 		s.setFloat(2, player.getEClass().getAttack());
 		s.setFloat(3, player.getEClass().getDefense());
@@ -189,22 +210,27 @@ public class DB {
 		s.executeUpdate();
 	}
 
+	/**
+	 * Deletes a hero from the database.
+	 *
+	 * @param idx ID of the hero to delete
+	 * @throws SQLException If deletion fails
+	 */
 	public static void deleteHero(int idx) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(
-			RQ_DELETE_REQUEST
-		);
+		PreparedStatement s = getConnection().prepareStatement(RQ_DELETE_REQUEST);
 		s.setInt(1, idx);
-
 		s.executeUpdate();
 	}
 
+	/**
+	 * Fetches all saved heroes from the database.
+	 *
+	 * @return ResultSet containing all heroes
+	 * @throws SQLException If query fails
+	 */
 	public static ResultSet fetchSaves() throws SQLException {
 		initDb();
-		PreparedStatement s = getConnection().prepareStatement(
-			RQ_FETCH_USERS
-		);
-		ResultSet rs = s.executeQuery();
-		
-		return rs;
+		PreparedStatement s = getConnection().prepareStatement(RQ_FETCH_USERS);
+		return s.executeQuery();
 	}
 }

@@ -9,10 +9,18 @@ public class Barbarian extends EntityClass {
 	private static final float DEF_COEFF = 1.07f;
 	private static final float HP_COEFF  = 1.15f;
 
+	/**
+	 * Constructor for the Barbarian class.
+	 * Initializes base attack, defense, and HP values.
+	 */
 	public Barbarian() {
 		super(BASE_ATTACK, BASE_DEFENSE, BASE_HP);
 	}
 
+	/**
+	 * Applies level-up scaling to the Barbarian's stats.
+	 * Each stat is multiplied by its respective coefficient.
+	 */
 	public void statsLevelUp() {
 		this.setAttack(this.getAttack() * ATT_COEFF);
 		this.setDefense(this.getDefense() * DEF_COEFF);

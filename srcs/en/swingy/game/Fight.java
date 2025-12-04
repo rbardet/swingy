@@ -51,6 +51,13 @@ public class Fight {
 	You have flee
 	""" + GamePrint.COLOR_RESET;
 
+	/**
+	 * Handles the post-fight logic including XP gain, level up, item drop, and equipping.
+	 *
+	 * @param player The hero who fought
+	 * @param player_hp Remaining HP of the player after the fight
+	 * @throws SQLException If database update fails
+	 */
 	public static void AfterFightSim(Hero player, float player_hp) throws SQLException {
 		if (player_hp <= 0) {
 			System.out.println(LOSE_PROMPT);
@@ -77,16 +84,28 @@ public class Fight {
 		GamePrint.STD_IN.nextLine();
 	}
 
+	/**
+	 * Computes the damage dealt based on attack and defense with a random variation.
+	 *
+	 * @param atk Attacker's attack value
+	 * @param def Defender's defense value
+	 * @return Calculated damage (minimum 1)
+	 */
 	public static float computeDamage(float atk, float def) {
 		float variation = (float)(1 + (Math.random() * 0.3 - 0.15));
 		float raw = atk * variation;
-
 		float reduction = 100f / (100f + def);
 		float dmg = raw * reduction;
-
 		return Math.max(dmg, 1);
 	}
 
+	/**
+	 * Simulates a fight between the hero and a random enemy until one dies.
+	 * Updates hero stats and calls post-fight logic.
+	 *
+	 * @param player The hero participating in the fight
+	 * @throws SQLException If database update fails
+	 */
 	public static void Simulate(Hero player) throws SQLException {
 		float baseHp = player.getEClass().getHP();
 		float player_hp = player.getEClass().getHP() + player.getHelm().getHP();
@@ -110,9 +129,13 @@ public class Fight {
 		player.getEClass().setHP(baseHp);
 	}
 
+	/**
+	 * Handles the flee mechanic allowing the player to attempt to escape a fight.
+	 *
+	 * @return true if flee is successful, false otherwise
+	 */
 	public static boolean flee() {
 		String opt;
-
 		do {
 			System.out.println(FLEE_PROMPT);
 			opt = GamePrint.STD_IN.nextLine();
@@ -130,4 +153,3 @@ public class Fight {
 		return false;
 	}
 }
-

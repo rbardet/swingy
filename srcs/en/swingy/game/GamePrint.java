@@ -18,11 +18,17 @@ public class GamePrint {
 	public static final String BLUE = "\u001B[34m";
 	public static final String BOLD = "\u001B[1m";
 
+	/**
+	 * Clears the terminal screen using ANSI escape codes.
+	 */
 	public static void clearTerminal() {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
 	}
 
+	/**
+	 * Prints the game title in ASCII art with bold formatting.
+	 */
 	public static void printTitle() {
 		String title = BOLD +
 			"██████╗ ██╗ █████╗ ██████╗ ██╗      ██████╗     ██████╗ \n" +
@@ -32,16 +38,26 @@ public class GamePrint {
 			"██████╔╝██║██║  ██║██████╔╝███████╗╚██████╔╝    ██████╔╝\n" +
 			"╚═════╝ ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝     ╚═════╝ \n" +
 			COLOR_RESET + "\t\t(Terminal edition)";
-
 		System.out.println(title);
 	}
 
+	/**
+	 * Formats a line of text for display in a bordered box.
+	 *
+	 * @param content The text to format
+	 * @param width Width of the formatted line
+	 * @return Formatted line string with borders
+	 */
 	private static String formatLine(String content, int width) {
 		return String.format("┃ %-" + width + "s ┃", content);
 	}
- 
-	public static void playerInfo(Hero player) {
 
+	/**
+	 * Prints detailed information about a hero including stats and equipment.
+	 *
+	 * @param player The hero whose information is displayed
+	 */
+	public static void playerInfo(Hero player) {
 		String[] lines = {
 			"Id: " + player.getId(),
 			"Username: " + player.getName(),
@@ -55,7 +71,6 @@ public class GamePrint {
 			"Armor: " + player.getArmor().getName(),
 			"Helm: " + player.getHelm().getName()
 		};
-
 		System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
 		for (String line : lines)
 			System.out.println(formatLine(line, INFO_WIDTH));
@@ -63,6 +78,11 @@ public class GamePrint {
 		System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 	}
 
+	/**
+	 * Fetches and displays all saved heroes from the database in a formatted box.
+	 *
+	 * @throws SQLException If database query fails
+	 */
 	public static void displaySave() throws SQLException {
 		ResultSet rs = DB.fetchSaves();
 		while (rs.next()) {
@@ -79,7 +99,6 @@ public class GamePrint {
 				"Armor: " + rs.getString(DB.AM_NAME_VAR),
 				"Helm: " + rs.getString(DB.HL_NAME_VAR)
 			};
-			
 			System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
 			for (String line : lines) {
 				System.out.println(formatLine(line, INFO_WIDTH));
@@ -87,10 +106,15 @@ public class GamePrint {
 			System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
 			System.out.println();
 		}
-
 		rs.close();
 	}
 
+	/**
+	 * Asks the user to select an option from a list and validates input.
+	 *
+	 * @param opt Array of options to display
+	 * @return Selected option as integer
+	 */
 	public static int askOption(String[] opt) {
 		String regex = "[1-" + opt.length + "]";
 		try {
@@ -102,14 +126,11 @@ public class GamePrint {
 				choice = STD_IN.nextLine();
 			} while (!choice.matches(regex));
 			int ret = Integer.parseInt(choice);
-
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		Game.exitGame();
 		return -1;
 	}
-
 }

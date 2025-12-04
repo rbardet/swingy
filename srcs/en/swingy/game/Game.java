@@ -61,10 +61,20 @@ public class Game {
 
 	public Game() {}
 
+	/**
+	 * Placeholder function for opening the GUI.
+	 * Currently does nothing.
+	 */
 	public void openGUI() {
 		return ;
 	}
 
+	/**
+	 * Prompts the player to enter a hero name.
+	 * Repeats until a valid name is entered (non-empty, max 16 characters).
+	 * 
+	 * @return the name entered by the player
+	 */
 	public String askPlayerName() {
 		String name;
 		do {
@@ -75,6 +85,12 @@ public class Game {
 		return name;
 	}
 
+	/**
+	 * Prompts the player to choose a hero class.
+	 * Displays available classes and reads the selection.
+	 * 
+	 * @return the index of the selected class in EntityClass.E_CLASS
+	 */
 	public int askPlayerClass() {
 		GamePrint.clearTerminal();
 		System.out.println(ASK_CLASS_PROMPT);
@@ -82,6 +98,13 @@ public class Game {
 		return idx;
 	}
 
+	/**
+	 * Creates a new hero character.
+	 * Checks database save limit and prompts to delete old save if limit is reached.
+	 * 
+	 * @return the created Hero object, or null if creation is cancelled
+	 * @throws SQLException if a database operation fails
+	 */
 	public Hero createNewChar() throws SQLException {
 		if (this.dbSize >= 3) {
 			String s;
@@ -105,6 +128,13 @@ public class Game {
 		return player;
 	}
 	
+	/**
+	 * Sets hero stats from a database ResultSet.
+	 * 
+	 * @param rs the ResultSet containing hero data
+	 * @return a Hero object populated with data from the ResultSet
+	 * @throws SQLException if accessing ResultSet fields fails
+	 */
 	public Hero setHeroStats(ResultSet rs) throws SQLException {
 		Hero player = new Hero(rs.getString(DB.NAME_VAR), EntityClass.getClassByName(rs.getString(DB.CLASS_VAR)));
 		player.setId(rs.getInt(DB.ID_VAR));
@@ -122,6 +152,12 @@ public class Game {
 		return player;
 	}
 
+	/**
+	 * Counts the current number of saved heroes in the database
+	 * and updates the dbSize field.
+	 * 
+	 * @throws SQLException if fetching saves from the database fails
+	 */
 	public void setDbSize() throws SQLException {
 		ResultSet rs = DB.fetchSaves();
 		int size = 0;
@@ -132,6 +168,14 @@ public class Game {
 		this.dbSize = size;
 	}
 
+	/**
+	 * Prompts the player to select a save from the database.
+	 * Can also return to the main menu if 'q' is entered.
+	 * 
+	 * @param msg the message to display when asking for selection
+	 * @return the integer ID of the selected save
+	 * @throws SQLException if database operations fail during return to main menu
+	 */
 	public int selectSave(String msg) throws SQLException {
 		String regex = "[1-" + this.dbSize + "q]";
 		String choice;
@@ -150,6 +194,13 @@ public class Game {
 		return Integer.parseInt(choice);
 	}
 
+	/**
+	 * Loads a hero from the database.
+	 * Prompts to create a new character if no saves exist.
+	 * 
+	 * @return the loaded Hero object, or a new Hero if created
+	 * @throws SQLException if database operations fail
+	 */
 	public Hero loadChar() throws SQLException {
 		if (this.dbSize <= 0) {
 			System.out.println(NO_SAVE_PROMPT);
@@ -174,6 +225,12 @@ public class Game {
 		return setHeroStats(rs);
 	}
 
+	/**
+	 * Deletes a hero save from the database.
+	 * Prompts the player to select which save to delete.
+	 * 
+	 * @throws SQLException if database operations fail
+	 */
 	public void deleteSave() throws SQLException {
 		if (this.dbSize <= 0) {
 			System.out.println(NO_SAVE_PROMPT);
@@ -185,8 +242,18 @@ public class Game {
 		return ;
 	}
 
+	/**
+	 * Exits the game immediately.
+	 */
 	public static void exitGame() { System.exit(0); }
 
+	/**
+	 * Runs the main game loop for a given hero.
+	 * Initializes the map and handles player actions until completion.
+	 * 
+	 * @param player the Hero object to play with
+	 * @throws SQLException if database operations fail during the game
+	 */
 	public void runGame(Hero player) throws SQLException {
 		Map m = new Map();
 		m.setMapSize(player.getLevel());
@@ -203,6 +270,13 @@ public class Game {
 		} while (!m.Clear());
 	}
 
+	/**
+	 * Starts the game menu loop.
+	 * Allows creating, loading, deleting characters, or exiting the game.
+	 * After a hero is selected, runs the main game loop indefinitely.
+	 * 
+	 * @throws SQLException if database operations fail
+	 */
 	public void startGame() throws SQLException {
 		setDbSize();
 		Hero player = null;
@@ -231,6 +305,11 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Sets the GUI mode of the game.
+	 * 
+	 * @param mode true to enable GUI, false for terminal mode
+	 */
 	public void setGui(boolean mode) {
 		GUI = mode;
 	}

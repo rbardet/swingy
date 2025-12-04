@@ -9,10 +9,17 @@ public class WitchDoctor extends EntityClass {
 	private static final float DEF_COEFF = 1.03f;
 	private static final float HP_COEFF  = 1.07f;
 
+	/**
+	 * Constructs a WitchDoctor with base attack, defense, and HP values.
+	 */
 	public WitchDoctor() {
 		super(BASE_ATTACK, BASE_DEFENSE, BASE_HP);
 	}
 
+	/**
+	 * Increases the WitchDoctor's stats upon leveling up.
+	 * Multiplies attack, defense, and HP by their respective coefficients.
+	 */
 	public void statsLevelUp() {
 		this.setAttack(this.getAttack() * ATT_COEFF);
 		this.setDefense(this.getDefense() * DEF_COEFF);
