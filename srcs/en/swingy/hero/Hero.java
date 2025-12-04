@@ -1,5 +1,8 @@
 package en.swingy.hero;
 
+import java.sql.SQLException;
+
+import en.swingy.db.DB;
 import en.swingy.entity.Entity;
 import en.swingy.entity.entityclass.EntityClass;
 import en.swingy.equipement.Equipement;
@@ -8,6 +11,7 @@ import en.swingy.equipement.helm.Helm;
 import en.swingy.equipement.weapon.Weapon;
 
 public class Hero extends Entity {
+	private int id = -1;
 	private int level = 1;
 	private int xp = 0;
 	private Equipement weapon;
@@ -48,6 +52,10 @@ public class Hero extends Entity {
 		return this.helm;
 	}
 
+	public int getId() {
+		return this.id;
+	}
+
 	public void addXp(int amount) {
 		this.xp += amount;
 	}
@@ -56,13 +64,22 @@ public class Hero extends Entity {
 		return level * 1000 + (level - 1) * (level - 1) * 450;
 	}
 
-	public void checkLevelUp() {
+	public void checkLevelUp() throws SQLException {
 		if (this.xp >= xpNeeded(this.level)) {
 			this.levelUp();
 			this.e_class.setAttack(this.e_class.getAttack() + 1);
 			this.e_class.setDefense(this.e_class.getDefense() + 1);
 			this.e_class.setHP(this.e_class.getHP() + 1);
+			DB.updateAfterLevel(this);
 		}
+	}
+
+	public void setXp(int xp) {
+		this.xp = xp;
+	}
+
+	public void setLv(int level) {
+		this.level = level;
 	}
 
 	public void setWeapon(Equipement weapon) {
@@ -75,6 +92,10 @@ public class Hero extends Entity {
 
 	public void setHelm(Equipement helm) {
 		this.helm = helm;
+	}
+
+	public void setId(int p_id) {
+		this.id = p_id;
 	}
 
 	public void equip(Equipement item) {
