@@ -63,21 +63,21 @@ public class GamePrint {
 		System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 	}
 
-	public static void displaySave(ResultSet rs) throws SQLException {
-		ResultSet save = rs;
-		while (save.next()) {
+	public static void displaySave() throws SQLException {
+		ResultSet rs = DB.fetchSaves();
+		while (rs.next()) {
 			String[] lines = {
-				"Id: " + save.getString(DB.ID_VAR),
-				"Username: " + save.getString(DB.NAME_VAR),
-				"Class: " + save.getString(DB.CLASS_VAR),
-				"Level: " + save.getInt(DB.LV_VAR),
-				"XP: " + save.getInt(DB.XP_VAR),
-				"Attack: " + save.getInt(DB.ATT_VAR) + " + " + save.getInt(DB.WP_ATT_VAR),
-				"Defense: " + save.getInt(DB.DEF_VAR) + " + " + save.getInt(DB.AM_DEF_VAR),
-				"HP: " + save.getInt(DB.HP_VAR) + " + " + save.getInt(DB.HL_HP_VAR),
-				"Weapon: " + save.getString(DB.WP_NAME_VAR),
-				"Armor: " + save.getString(DB.AM_NAME_VAR),
-				"Helm: " + save.getString(DB.HL_NAME_VAR)
+				"Id: " + rs.getString(DB.ID_VAR),
+				"Username: " + rs.getString(DB.NAME_VAR),
+				"Class: " + rs.getString(DB.CLASS_VAR),
+				"Level: " + rs.getInt(DB.LV_VAR),
+				"XP: " + rs.getInt(DB.XP_VAR),
+				"Attack: " + rs.getInt(DB.ATT_VAR) + " + " + rs.getInt(DB.WP_ATT_VAR),
+				"Defense: " + rs.getInt(DB.DEF_VAR) + " + " + rs.getInt(DB.AM_DEF_VAR),
+				"HP: " + rs.getInt(DB.HP_VAR) + " + " + rs.getInt(DB.HL_HP_VAR),
+				"Weapon: " + rs.getString(DB.WP_NAME_VAR),
+				"Armor: " + rs.getString(DB.AM_NAME_VAR),
+				"Helm: " + rs.getString(DB.HL_NAME_VAR)
 			};
 			
 			System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
@@ -88,7 +88,7 @@ public class GamePrint {
 			System.out.println();
 		}
 
-		save.close();
+		rs.close();
 	}
 
 	public static int askOption(String[] opt) {

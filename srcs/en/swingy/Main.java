@@ -15,14 +15,14 @@ public class Main {
 	}
 
 	public static void main(String args[]) throws SQLException {
-		usage(args);
-
 		if (args[0].equals("gui")) {
-			game.startGame(true);
+			game.setGui(true);
 		} else if (args[0].equals("console")) {
-			game.startGame(false);
+			game.setGui(false);
 		} else {
 			usage(args);
 		}
+
+		game.startGame();
 	}
 }

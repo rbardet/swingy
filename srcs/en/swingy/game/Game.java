@@ -51,6 +51,11 @@ public class Game {
 	Would you like to create one [y/n]?
 	""" + GamePrint.COLOR_RESET;
 
+	private static final String RETURN_MENU_PROMPT = GamePrint.BOLD +
+	"""
+	Press q to return to the main menu
+	""" + GamePrint.COLOR_RESET;
+
 	public static Boolean GUI;
 	public static int dbSize = 0;
 
@@ -127,6 +132,25 @@ public class Game {
 		dbSize = size;
 	}
 
+	public int selectSave(String msg) throws SQLException {
+
+		String regex = "[1-" + dbSize + "q]";
+		String choice;
+		do {
+			GamePrint.clearTerminal();
+			GamePrint.displaySave();
+			System.out.println(RETURN_MENU_PROMPT);
+			System.out.print(msg);
+			choice = GamePrint.STD_IN.nextLine();
+		} while(!choice.matches(regex));
+
+		if (choice.equals("q")) {
+			startGame();
+		}
+
+		return Integer.parseInt(choice);
+	}
+
 	public Hero loadChar() throws SQLException {
 		if (dbSize <= 0) {
 			System.out.println(NO_SAVE_PROMPT);
@@ -142,19 +166,8 @@ public class Game {
 			}
 		}
 
-		String regex = "[1-" + dbSize + "]";
-		String choice;
-
 		ResultSet rs = DB.fetchSaves();
-		do {
-			GamePrint.clearTerminal();
-			GamePrint.displaySave(rs);
-			System.out.print(LOAD_CHAR_PROMPT);
-			choice = GamePrint.STD_IN.nextLine();
-		} while(!choice.matches(regex));
-
-		rs = DB.fetchSaves();
-		int idx = Integer.parseInt(choice);
+		int idx = selectSave(LOAD_CHAR_PROMPT);
 		while (rs.getInt(DB.ID_VAR) != idx) {
 			rs.next();
 		}
@@ -168,18 +181,7 @@ public class Game {
 			return ;
 		}
 
-		String regex = "[1-" + dbSize + "]";
-		String choice;
-
-		ResultSet rs = DB.fetchSaves();
-		GamePrint.clearTerminal();
-		GamePrint.displaySave(rs);
-		do {
-			System.out.print(DEL_CHAR_PROMPT);
-			choice = GamePrint.STD_IN.nextLine();
-		} while(!choice.matches(regex));
-
-		int idx = Integer.parseInt(choice);
+		int idx = selectSave(DEL_CHAR_PROMPT);
 		DB.deleteHero(idx);
 		return ;
 	}
@@ -201,9 +203,7 @@ public class Game {
 		} while (!m.Clear());
 	}
 
-	public void startGame(boolean gui) throws SQLException {
-		GUI = gui;
-
+	public void startGame() throws SQLException {
 		setDbSize();
 		Hero player = null;
 
@@ -229,5 +229,9 @@ public class Game {
 		while (true) {
 			runGame(player);
 		}
+	}
+
+	public void setGui(boolean mode) {
+		GUI = mode;
 	}
 }
