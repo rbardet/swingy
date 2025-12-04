@@ -58,14 +58,20 @@ public class GamePrint {
 	}
 
 	public static void displaySave(ResultSet rs) throws SQLException {
-		System.out.println("Player save :");
 		ResultSet save = rs;
 		while (save.next()) {
 			String[] lines = {
 				"Id: " + save.getInt(DB.ID_VAR),
 				"Username: " + save.getString(DB.NAME_VAR),
 				"Class: " + save.getString(DB.CLASS_VAR),
-				"Level: " + save.getInt(DB.LV_VAR)
+				"Level: " + save.getInt(DB.LV_VAR),
+				"XP: " + save.getInt(DB.XP_VAR),
+				"Attack: " + save.getInt(DB.ATT_VAR) + " + " + save.getInt(DB.WP_ATT_VAR),
+				"Defense: " + save.getInt(DB.DEF_VAR) + " + " + save.getInt(DB.AM_DEF_VAR),
+				"HP: " + save.getInt(DB.HP_VAR) + " + " + save.getInt(DB.HL_HP_VAR),
+				"Weapon: " + save.getString(DB.WP_NAME_VAR),
+				"Armor: " + save.getString(DB.AM_NAME_VAR),
+				"Helm: " + save.getString(DB.HL_NAME_VAR)
 			};
 
 			System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");

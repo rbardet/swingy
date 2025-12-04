@@ -20,7 +20,12 @@ public class Game {
 
 	private static final String ASK_NAME = "Enter your hero name : ";
 	private static final String ASK_CLASS = "Enter your hero class : ";
+	private static final String DB_SIZE_PROMPT = """
+	You have reached the maximun amount of save,\n
+	do you want to delete a save [y/n]?
+	""";
 	public static Boolean GUI;
+	public static int dbSize = 0;
 
 	public Game() {}
 
@@ -45,6 +50,20 @@ public class Game {
 	}
 
 	public Hero createNewChar() throws SQLException {
+		if (dbSize >= 3) {
+			String s;
+			do {
+				System.out.println(DB_SIZE_PROMPT);
+				s = GamePrint.STD_IN.nextLine();
+			} while (!s.matches("y|n"));
+
+			if (s.equals("y")) {
+				deleteSave();
+			} else {
+				return null;
+			}
+		}
+
 		String name = askPlayerName();
 		int idx = askPlayerClass();
 		Hero player = new Hero(name, EntityClass.E_CLASS[idx - 1]);
@@ -70,16 +89,21 @@ public class Game {
 		return player;
 	}
 
-	public Hero loadChar() throws SQLException {
+	public void setDbSize() throws SQLException {
 		ResultSet rs = DB.fetchSaves();
 		int size = 0;
 		while (rs.next()) {
 			size++;
 		}
-		String regex = "[1-" + size + "]";
+
+		dbSize = size;
+	}
+
+	public Hero loadChar() throws SQLException {
+		String regex = "[1-" + dbSize + "]";
 		String choice;
 
-		rs = DB.fetchSaves();
+		ResultSet rs = DB.fetchSaves();
 		GamePrint.clearTerminal();
 		GamePrint.displaySave(rs);
 		do {
@@ -97,15 +121,10 @@ public class Game {
 	}
 
 	public void deleteSave() throws SQLException {
-		ResultSet rs = DB.fetchSaves();
-		int size = 0;
-		while (rs.next()) {
-			size++;
-		}
-		String regex = "[1-" + size + "]";
+		String regex = "[1-" + dbSize + "]";
 		String choice;
 
-		rs = DB.fetchSaves();
+		ResultSet rs = DB.fetchSaves();
 		GamePrint.clearTerminal();
 		GamePrint.displaySave(rs);
 		do {
@@ -138,24 +157,27 @@ public class Game {
 	public void startGame(boolean gui) throws SQLException {
 		GUI = gui;
 
-		GamePrint.clearTerminal();
-		GamePrint.printTitle();
-
-		int opt = GamePrint.askOption(prompt_start);
-
+		setDbSize();
 		Hero player = null;
-		switch (opt) {
-			case 1:
-				player = createNewChar();
-				break;
-			case 2:
-				player = loadChar();
-				break;
-			case 3:
-				deleteSave();
-			default:
-				exitGame();
-		}
+
+		do {
+			GamePrint.clearTerminal();
+			GamePrint.printTitle();
+			int opt = GamePrint.askOption(prompt_start);
+
+			switch (opt) {
+				case 1:
+					player = createNewChar();
+					break;
+				case 2:
+					player = loadChar();
+					break;
+				case 3:
+					deleteSave();
+				default:
+					exitGame();
+			}
+		} while (player == null);
 
 		while (true) {
 			runGame(player);
