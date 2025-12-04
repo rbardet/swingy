@@ -45,6 +45,12 @@ public class Game {
 	Enter the save id to delete: 
 	""" + GamePrint.COLOR_RESET;
 
+	private static final String NO_SAVE_PROMPT = GamePrint.BOLD +
+	"""
+	There is currently no save\n
+	Would you like to create one [y/n]?
+	""" + GamePrint.COLOR_RESET;
+
 	public static Boolean GUI;
 	public static int dbSize = 0;
 
@@ -122,6 +128,20 @@ public class Game {
 	}
 
 	public Hero loadChar() throws SQLException {
+		if (dbSize <= 0) {
+			System.out.println(NO_SAVE_PROMPT);
+			String s;
+			do {
+				s = GamePrint.STD_IN.nextLine();
+			} while (!s.matches("y|n"));
+
+			if (s.equals("y")) {
+				return createNewChar();
+			} else {
+				return null;
+			}
+		}
+
 		String regex = "[1-" + dbSize + "]";
 		String choice;
 
@@ -143,6 +163,11 @@ public class Game {
 	}
 
 	public void deleteSave() throws SQLException {
+		if (dbSize <= 0) {
+			System.out.println(NO_SAVE_PROMPT);
+			return ;
+		}
+
 		String regex = "[1-" + dbSize + "]";
 		String choice;
 

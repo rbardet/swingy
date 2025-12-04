@@ -1,14 +1,14 @@
 package en.swingy.game;
 
 public class Controller {
-	String validMovement = "n|w|e|s";
+	String validMovement = "w|a|s|d";
 
 	private int player_x;
 	private int player_y;
 
 	public final String MOV_PROMPT = GamePrint.BOLD +
 	"""
-	Enter your next movement [n/w/e/s] : 
+	Enter your next movement [w/a/s/d] : 
 	""" + GamePrint.COLOR_RESET;
 
 	public Controller(int p_player_x, int p_player_y) {
@@ -49,9 +49,9 @@ public class Controller {
 
 		m[this.player_y][this.player_x] = Map.EMPTY_CELL;
 		switch (mov) {
-			case "n" -> moveNorth(m);
-			case "w" -> moveWest(m);
-			case "e" -> moveEast(m);
+			case "w" -> moveNorth(m);
+			case "a" -> moveWest(m);
+			case "d" -> moveEast(m);
 			case "s" -> moveSouth(m);
 		}
 
@@ -60,9 +60,9 @@ public class Controller {
 
 	public void goBack(String dir, String[][] m) {
 		switch (dir) {
-			case "n" -> moveSouth(m);
-			case "w" -> moveEast(m);
-			case "e" -> moveWest(m);
+			case "w" -> moveSouth(m);
+			case "a" -> moveWest(m);
+			case "d" -> moveEast(m);
 			case "s" -> moveNorth(m);
 		}
 

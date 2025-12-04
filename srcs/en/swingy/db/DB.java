@@ -27,7 +27,7 @@ public class DB {
 	public static final String HL_HP_VAR = "h_hp";
 	private static final String SQL_URL = "jdbc:sqlite:game.db";
 
-	private static final String CREATE_TABLE =
+	private static final String RQ_CREATE_TABLE =
 		"CREATE TABLE IF NOT EXISTS " + MAIN_TABLE + " (" +
 		ID_VAR + " INTEGER PRIMARY KEY, " +
 		NAME_VAR + " TEXT, " +
@@ -44,8 +44,9 @@ public class DB {
 		HL_NAME_VAR + " TEXT, " +
 		HL_HP_VAR + " FLOAT)";
 
-	private static final String INSERT_USER =
+	private static final String RQ_INSERT_USER =
 		"INSERT INTO " + MAIN_TABLE + " (" +
+		ID_VAR + ", " +
 		NAME_VAR + ", " +
 		CLASS_VAR + ", " +
 		LV_VAR + ", " +
@@ -59,9 +60,9 @@ public class DB {
 		AM_DEF_VAR + ", " +
 		HL_NAME_VAR + ", " +
 		HL_HP_VAR +
-		") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-	private static final String UPDATE_FIGHT =
+	private static final String RQ_UPDATE_FIGHT =
 		"UPDATE " + MAIN_TABLE +
 		" SET " + XP_VAR + "=" + "?," +
 		WP_NAME_VAR + "=" + "?," +
@@ -72,7 +73,7 @@ public class DB {
 		HL_HP_VAR + "=" + "? " +
 		"WHERE " + ID_VAR + "=" + "?;";
 
-	private static final String UPDATE_LEVEL_UP =
+	private static final String RQ_UPDATE_LEVEL_UP =
 		"UPDATE " + MAIN_TABLE +
 		" SET " + LV_VAR + "=" + "?," +
 		ATT_VAR + "=" + "?," +
@@ -80,11 +81,14 @@ public class DB {
 		HP_VAR + "=" + "? " +
 		"WHERE " + ID_VAR + "=" + "?;";
 
-	private static final String DELETE_REQUEST =
+	private static final String RQ_DELETE_REQUEST =
 		"DELETE FROM " + MAIN_TABLE +
 		" WHERE " + ID_VAR + "=" + "?;";
 
-	private static final String FETCH_USERS = "SELECT * FROM " + MAIN_TABLE;
+	private static final String RQ_ENTRY_SIZE =
+	"SELECT COUNT (*) FROM " + MAIN_TABLE;
+
+	private static final String RQ_FETCH_USERS = "SELECT * FROM " + MAIN_TABLE;
 
 	public static Connection conn = null;
 
@@ -102,27 +106,44 @@ public class DB {
 				throw new SQLException("SQLite JDBC driver not found", e);
 			}
 			conn = DriverManager.getConnection(SQL_URL);
-			getConnection().prepareStatement(CREATE_TABLE).execute();
+			getConnection().prepareStatement(RQ_CREATE_TABLE).execute();
 		}
+	}
+
+	public static int getUserId() throws SQLException {
+		PreparedStatement s = getConnection().prepareStatement(
+			RQ_ENTRY_SIZE
+		);
+		ResultSet rs = s.executeQuery();
+		int newId = 1;
+
+		if (rs.next()) {
+			newId = rs.getInt(1) + 1;
+		}
+		return newId;
 	}
 
 	public static long createAccount(String name, EntityClass c) throws SQLException {
 		initDb();
-		PreparedStatement s = getConnection().prepareStatement(INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS);
-		s.setString(1, name);
-		s.setString(2, c.getClass().getSimpleName());
-		s.setInt(3, 1);
-		s.setInt(4, 0);
-		s.setFloat(5, c.getAttack());
-		s.setFloat(6, c.getDefense());
-		s.setFloat(7, c.getHP());
+		PreparedStatement s = getConnection().prepareStatement(
+			RQ_INSERT_USER,
+			PreparedStatement.RETURN_GENERATED_KEYS
+		);
+		s.setInt(1, getUserId());
+		s.setString(2, name);
+		s.setString(3, c.getClass().getSimpleName());
+		s.setInt(4, 1);
+		s.setInt(5, 0);
+		s.setFloat(6, c.getAttack());
+		s.setFloat(7, c.getDefense());
+		s.setFloat(8, c.getHP());
 
-		s.setString(8, "None");
-		s.setFloat(9, 0);
-		s.setString(10, "None");
-		s.setFloat(11, 0);
-		s.setString(12, "None");
-		s.setFloat(13, 0);
+		s.setString(9, "None");
+		s.setFloat(10, 0);
+		s.setString(11, "None");
+		s.setFloat(12, 0);
+		s.setString(13, "None");
+		s.setFloat(14, 0);
 
 		s.executeUpdate();
 
@@ -136,7 +157,9 @@ public class DB {
 	}
 
 	public static void updateAfterFight(Hero player) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(UPDATE_FIGHT);
+		PreparedStatement s = getConnection().prepareStatement(
+			RQ_UPDATE_FIGHT
+		);
 		s.setInt(1, player.getXP());
 		s.setString(2, player.getWeapon().getName());
 		s.setFloat(3, player.getWeapon().getAttack());
@@ -150,7 +173,9 @@ public class DB {
 	}
 
 	public static void updateAfterLevel(Hero player) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(UPDATE_LEVEL_UP);
+		PreparedStatement s = getConnection().prepareStatement(
+			RQ_UPDATE_LEVEL_UP
+		);
 		s.setInt(1, player.getLevel());
 		s.setFloat(2, player.getEClass().getAttack());
 		s.setFloat(3, player.getEClass().getDefense());
@@ -161,7 +186,9 @@ public class DB {
 	}
 
 	public static void deleteHero(int idx) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(DELETE_REQUEST);
+		PreparedStatement s = getConnection().prepareStatement(
+			RQ_DELETE_REQUEST
+		);
 		s.setInt(1, idx);
 
 		s.executeUpdate();
@@ -169,7 +196,9 @@ public class DB {
 
 	public static ResultSet fetchSaves() throws SQLException {
 		initDb();
-		PreparedStatement s = getConnection().prepareStatement(FETCH_USERS);
+		PreparedStatement s = getConnection().prepareStatement(
+			RQ_FETCH_USERS
+		);
 		ResultSet rs = s.executeQuery();
 		
 		return rs;
