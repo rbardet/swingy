@@ -11,27 +11,58 @@ import en.swingy.equipement.Equipement;
 import en.swingy.hero.Hero;
 
 public class Fight {
-	public static final String START_FIGHT = "A fight started agaisnt ";
-	public static final String YOU_LOST = "You have lost the fight";
-	public static final String YOU_WON = "You have won the fight";
-	public static final String NEW_DROP = "You have dropped : ";
-	public static final String EQUIP = "Would you like to equipe it ? [y/n]";
-	public static final String FLEE = "A fight will start would you like to flee ? [y/n]";
-	public static final String FLEE_FAILED = "You have failed to flee";
-	public static final String FLEE_SUCCESS = "You have flee";
+	public static final String FIGHT_PROMPT = GamePrint.BOLD +
+	"""
+	A fight started agaisnt
+	""" + GamePrint.COLOR_RESET;
+
+	public static final String LOSE_PROMPT = GamePrint.BOLD +
+	"""
+	You have lost the fight
+	""" + GamePrint.COLOR_RESET;
+
+	public static final String WIN_PROMPT = GamePrint.BOLD +
+	"""
+	You have won the fight
+	""" + GamePrint.COLOR_RESET;
+
+	public static final String DROP_PROMPT = GamePrint.BOLD +
+	"""
+	You have dropped :
+	""" + GamePrint.COLOR_RESET;
+
+	public static final String EQUIP_PROMPT = GamePrint.BOLD +
+	"""
+	Would you like to equipe it ? [y/n]
+	""" + GamePrint.COLOR_RESET;
+
+	public static final String FLEE_PROMPT = GamePrint.BOLD +
+	"""
+	A fight will start would you like to flee ? [y/n]
+	""" + GamePrint.COLOR_RESET;
+
+	public static final String FLEE_FAILED_PROMPT = GamePrint.BOLD +
+	"""
+	You have failed to flee
+	""" + GamePrint.COLOR_RESET;
+
+	public static final String FLEE_SUCCESS_PROMPT = GamePrint.BOLD +
+	"""
+	You have flee
+	""" + GamePrint.COLOR_RESET;
 
 	public static void AfterFightSim(Hero player, float player_hp) throws SQLException {
 		if (player_hp <= 0) {
-			System.out.println(YOU_LOST);
+			System.out.println(LOSE_PROMPT);
 		} else {
-			System.out.println(YOU_WON);
+			System.out.println(WIN_PROMPT);
 			player.addXp(250);
 			player.checkLevelUp();
 			Equipement drop = Equipement.generateItem(player.getLevel());
 			String opt;
 			do {
-				System.out.println(NEW_DROP + drop.getName() + " <"  + Equipement.getType(drop) + ">");
-				System.out.println(EQUIP);
+				System.out.println(DROP_PROMPT + drop.getName() + " <"  + Equipement.getType(drop) + ">");
+				System.out.println(EQUIP_PROMPT);
 				opt = GamePrint.STD_IN.nextLine();
 			} while(!opt.matches("y|n"));
 
@@ -61,7 +92,7 @@ public class Fight {
 		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
 		float player_dmg;
 		float bot_dmg;
-		System.out.println(START_FIGHT + bot.getName());
+		System.out.println(FIGHT_PROMPT + bot.getName());
 
 		do {
 			player_dmg = computeDamage(player.getEClass().getAttack() + player.getWeapon().getAttack(), bot.getEClass().getDefense());
@@ -80,7 +111,7 @@ public class Fight {
 		String opt;
 
 		do {
-			System.out.println(FLEE);
+			System.out.println(FLEE_PROMPT);
 			opt = GamePrint.STD_IN.nextLine();
 		} while (!opt.matches("y|n"));
 
@@ -88,10 +119,10 @@ public class Fight {
 			Random r = new Random();
 			int value = r.nextInt(2) + 1;
 			if (value == 1) {
-				System.out.println(FLEE_SUCCESS);
+				System.out.println(FLEE_SUCCESS_PROMPT);
 				return true;
 			}
-			System.out.println(FLEE_FAILED);
+			System.out.println(FLEE_FAILED_PROMPT);
 		}
 		return false;
 	}

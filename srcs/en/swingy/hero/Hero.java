@@ -9,6 +9,7 @@ import en.swingy.equipement.Equipement;
 import en.swingy.equipement.armor.Armor;
 import en.swingy.equipement.helm.Helm;
 import en.swingy.equipement.weapon.Weapon;
+import en.swingy.game.GamePrint;
 
 public class Hero extends Entity {
 	private long id = -1;
@@ -18,7 +19,10 @@ public class Hero extends Entity {
 	private Equipement armor;
 	private Equipement helm;
 
-	private final String EQUIPED = "You have equiped ";
+	private final String EQUIPED_PROMPT = GamePrint.BOLD +
+	"""
+	You have equiped
+	""" + GamePrint.COLOR_RESET;
 
 	public Hero(String p_name, EntityClass p_e_class) {
 		super(p_name, p_e_class);
@@ -106,6 +110,6 @@ public class Hero extends Entity {
 		} else {
 			setHelm(item);
 		}
-		System.out.println(EQUIPED + item.getName());
+		System.out.println(EQUIPED_PROMPT + item.getName());
 	}
 }

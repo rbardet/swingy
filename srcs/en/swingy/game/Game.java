@@ -18,19 +18,31 @@ public class Game {
 		"Exit the game"
 	};
 
-	private static final String ASK_NAME = GamePrint.BOLD +
+	private static final String ASK_NAME_PROMPT = GamePrint.BOLD +
 	"""
 	The user name limit is 16 Charcter
 	Enter your hero name : 
 	""" + GamePrint.COLOR_RESET;
 
-	private static final String ASK_CLASS = GamePrint.BOLD +
-	"Enter your hero class : " + GamePrint.COLOR_RESET;
+	private static final String ASK_CLASS_PROMPT = GamePrint.BOLD +
+	"""
+	Enter your hero class : 
+	""" + GamePrint.COLOR_RESET;
 
 	private static final String DB_SIZE_PROMPT =  GamePrint.BOLD +
 	"""
 	You have reached the maximun amount of save,\n
 	do you want to delete a save [y/n]?
+	""" + GamePrint.COLOR_RESET;
+
+	private static final String LOAD_CHAR_PROMPT = GamePrint.BOLD +
+	"""
+	Enter the save id to load: 
+	""" + GamePrint.COLOR_RESET;
+	
+	private static final String DEL_CHAR_PROMPT = GamePrint.BOLD +
+	"""
+	Enter the save id to delete: 
 	""" + GamePrint.COLOR_RESET;
 
 	public static Boolean GUI;
@@ -46,7 +58,7 @@ public class Game {
 		String name;
 		do {
 			GamePrint.clearTerminal();
-			System.out.print(ASK_NAME);
+			System.out.print(ASK_NAME_PROMPT);
 			name = GamePrint.STD_IN.nextLine();
 		} while (name.isEmpty() || name.length() > 16);
 		return name;
@@ -54,7 +66,7 @@ public class Game {
 
 	public int askPlayerClass() {
 		GamePrint.clearTerminal();
-		System.out.println(ASK_CLASS);
+		System.out.println(ASK_CLASS_PROMPT);
 		int idx = GamePrint.askOption(EntityClass.prompt_class);
 		return idx;
 	}
@@ -114,10 +126,10 @@ public class Game {
 		String choice;
 
 		ResultSet rs = DB.fetchSaves();
-		GamePrint.clearTerminal();
-		GamePrint.displaySave(rs);
 		do {
-			System.out.print("Enter the save id to load: ");
+			GamePrint.clearTerminal();
+			GamePrint.displaySave(rs);
+			System.out.print(LOAD_CHAR_PROMPT);
 			choice = GamePrint.STD_IN.nextLine();
 		} while(!choice.matches(regex));
 
@@ -138,7 +150,7 @@ public class Game {
 		GamePrint.clearTerminal();
 		GamePrint.displaySave(rs);
 		do {
-			System.out.print("Enter the save id to delete: ");
+			System.out.print(DEL_CHAR_PROMPT);
 			choice = GamePrint.STD_IN.nextLine();
 		} while(!choice.matches(regex));
 

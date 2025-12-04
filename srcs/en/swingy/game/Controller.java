@@ -5,7 +5,11 @@ public class Controller {
 
 	private int player_x;
 	private int player_y;
-	public final String prompt_movement = "Enter your next movement [n/w/e/s] : ";
+
+	public final String MOV_PROMPT = GamePrint.BOLD +
+	"""
+	Enter your next movement [n/w/e/s] : 
+	""" + GamePrint.COLOR_RESET;
 
 	public Controller(int p_player_x, int p_player_y) {
 		this.player_x = p_player_x;
@@ -39,7 +43,7 @@ public class Controller {
 	public String Movement(String[][] m) {
 		String mov;
 		do {
-			System.out.print(prompt_movement);
+			System.out.print(MOV_PROMPT);
 			mov = GamePrint.STD_IN.nextLine();
 		} while (!mov.matches(validMovement));
 

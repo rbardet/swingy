@@ -24,14 +24,14 @@ public class GamePrint {
 	}
 
 	public static void printTitle() {
-		String title =
+		String title = BOLD +
 			"██████╗ ██╗ █████╗ ██████╗ ██╗      ██████╗     ██████╗ \n" +
 			"██╔══██╗██║██╔══██╗██╔══██╗██║     ██╔═══██╗    ╚════██╗\n" +
 			"██║  ██║██║███████║██████╔╝██║     ██║   ██║     █████╔╝\n" +
 			"██║  ██║██║██╔══██║██╔══██╗██║     ██║   ██║     ╚═══██╗\n" +
 			"██████╔╝██║██║  ██║██████╔╝███████╗╚██████╔╝    ██████╔╝\n" +
 			"╚═════╝ ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝     ╚═════╝ \n" +
-			"\t\t(Terminal edition)";
+			COLOR_RESET + "\t\t(Terminal edition)";
 
 		System.out.println(title);
 	}
@@ -65,9 +65,10 @@ public class GamePrint {
 
 	public static void displaySave(ResultSet rs) throws SQLException {
 		ResultSet save = rs;
+		int id = 1;
 		while (save.next()) {
 			String[] lines = {
-				"Id: " + save.getInt(DB.ID_VAR),
+				"Id: " + id,
 				"Username: " + save.getString(DB.NAME_VAR),
 				"Class: " + save.getString(DB.CLASS_VAR),
 				"Level: " + save.getInt(DB.LV_VAR),
@@ -79,7 +80,8 @@ public class GamePrint {
 				"Armor: " + save.getString(DB.AM_NAME_VAR),
 				"Helm: " + save.getString(DB.HL_NAME_VAR)
 			};
-
+			
+			id++;
 			System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
 			for (String line : lines) {
 				System.out.println(formatLine(line, INFO_WIDTH));
