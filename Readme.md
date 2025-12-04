@@ -2,56 +2,54 @@
 
 ## Description
 
-_Swingy_ est un jeu RPG minimaliste développé en Java dans le cadre du cursus 42. Le jeu fonctionne en mode console et en GUI, selon une architecture Model-View-Controller (MVC). La sauvegarde des héros et de leur progression s’effectue dans une base de données SQL. 
+_Swingy_ is a minimalist RPG game developed in Java as part of the 42 curriculum. The game runs in both console and GUI modes, following a Model-View-Controller (MVC) architecture. Hero progress and game data are stored in a SQL database.
 
-## Fonctionnalités
+## Features
 
-- **Création et sélection de héros** : Plusieurs classes de héros avec des statistiques évolutives (inspirées de Diablo 3).
-- **Artefacts** : Armes, armures et casques modifiant les statistiques du héros.
-- **Carte dynamique** : Taille dépendant du niveau du héros.
-- **Exploration & Combat** : Déplacement sur une carte, combats simulés avec des ennemis à noms Diablo 3.
-- **Système d’expérience & montée de niveau** : Gain d’expérience et artefacts selon le résultat du combat.
-- **Sauvegarde et chargement** : Les héros et leur progression sont conservés dans une base de données SQL *(bonus)*.
-- **Deux modes de jeu** :
-  - Mode console : `java -jar swingy.jar console` ou `make console`
-  - Mode GUI : `java -jar swingy.jar gui` ou `make gui`
-- **Validation des inputs** : Validation robuste grâce à Hibernate Validator (javax.validation).
+- **Hero Creation & Selection**: Multiple hero classes with scalable stats inspired by Diablo 3.
+- **Artifacts**: Weapons, armor, and helmets that modify hero stats.
+- **Dynamic Map**: Map size scales with hero level.
+- **Exploration & Combat**: Move across the map, engage in simulated battles against enemies (with Diablo 3-inspired names).
+- **Experience System & Leveling**: Gain experience and loot based on combat outcomes.
+- **Save & Load Progress**: Heroes and their progress are stored in a SQL database *(bonus)*.
+- **Two Game Modes**:
+  - Console Mode: `java -jar swingy.jar console` or `make console`
+  - GUI Mode: `java -jar swingy.jar gui` or `make gui`
 
 ### Bonus
 
-- **Sauvegarde en base SQL** : Les données des héros ne sont plus stockées dans un fichier texte mais dans une base SQL relationnelle pour davantage de fiabilité et de flexibilité.
+- **SQL Database Save**: Hero data is reliably stored in a relational SQL database rather than a text file, for increased reliability and flexibility.
 
-## Structure et Règles du Projet
+## Project Structure & Rules
 
-- **Maven** : Gestion du build et dépendances (hors javax.validation et JDBC).
-- **Java LTS** : Dernière version LTS acceptée.
-- **Packages personnalisés** : Respect de la convention Java.
-- **Aucune dépendance externe** *hors javax.validation et bonus SQL*.
+- **Maven**: Build and dependency management (except for `javax.validation` and JDBC).
+- **Java LTS**: Latest LTS version only.
+- **Custom Packages**: Compliant with Java conventions.
+- **No external dependencies** *except for `javax.validation` and bonus SQL*.
 
-## Utilisation des commandes Makefile
+## Makefile Commands
 
 ```text
-make all      # Compile et crée l'exécutable jar
-make clean    # Nettoie le projet
-make console  # Lance le jeu en mode console
-make gui      # Lance le jeu en mode graphique (GUI)
-make help     # Affiche l’aide des commandes
-make re       # Nettoie puis compile le projet
+make all      # Compile and build the jar executable
+make clean    # Clean the project
+make console  # Run the game in console mode
+make gui      # Run the game in GUI mode
+make help     # Display help for available commands
+make re       # Clean then compile the project
 ```
 
-## Compilation & Lancement
+## Compilation & Launch
 
 ```bash
 make all
-make console        # Ou : java -jar swingy.jar console
-make gui            # Ou : java -jar swingy.jar gui
+make console        # Or: java -jar swingy.jar console
+make gui            # Or: java -jar swingy.jar gui
 ```
 
-## Dépendances
+## Dependencies
 
-- [Hibernate Validator](https://hibernate.org/validator/) (javax.validation)
-- JDBC pour la connexion à une base SQL (bonus)
+- JDBC for SQL database connection (bonus)
 
-## Auteur
+## Author
 
 - **rbardet**
