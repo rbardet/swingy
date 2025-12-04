@@ -295,6 +295,7 @@ public class Game {
 					break;
 				case 3:
 					deleteSave();
+					break;
 				default:
 					exitGame();
 			}
