@@ -18,12 +18,21 @@ public class Game {
 		"Exit the game"
 	};
 
-	private static final String ASK_NAME = "Enter your hero name : ";
-	private static final String ASK_CLASS = "Enter your hero class : ";
-	private static final String DB_SIZE_PROMPT = """
+	private static final String ASK_NAME = GamePrint.BOLD +
+	"""
+	The user name limit is 16 Charcter
+	Enter your hero name : 
+	""" + GamePrint.COLOR_RESET;
+
+	private static final String ASK_CLASS = GamePrint.BOLD +
+	"Enter your hero class : " + GamePrint.COLOR_RESET;
+
+	private static final String DB_SIZE_PROMPT =  GamePrint.BOLD +
+	"""
 	You have reached the maximun amount of save,\n
 	do you want to delete a save [y/n]?
-	""";
+	""" + GamePrint.COLOR_RESET;
+
 	public static Boolean GUI;
 	public static int dbSize = 0;
 
@@ -34,14 +43,15 @@ public class Game {
 	}
 
 	public String askPlayerName() {
-		GamePrint.clearTerminal();
-		System.out.print(ASK_NAME);
 		String name;
 		do {
+			GamePrint.clearTerminal();
+			System.out.print(ASK_NAME);
 			name = GamePrint.STD_IN.nextLine();
-		} while (name.isEmpty());
+		} while (name.isEmpty() || name.length() > 16);
 		return name;
 	}
+
 	public int askPlayerClass() {
 		GamePrint.clearTerminal();
 		System.out.println(ASK_CLASS);

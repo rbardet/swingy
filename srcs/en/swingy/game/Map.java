@@ -10,11 +10,6 @@ public class Map {
 	public static final String PLAYER_CELL = "P";
 	public static final String ENNEMY_CELL = "E";
 
-	private final String COLOR_RESET = "\u001B[0m";
-	private final String RED = "\u001B[31m";
-	private final String GREEN = "\u001B[32m";
-	private final String BLUE = "\u001B[34m";
-
 	private String map[][];
 	private int size;
 	private Controller controller;
@@ -50,9 +45,9 @@ public class Map {
 
 	public String getCellColor(String cell) {
 		switch (cell) {
-			case EMPTY_CELL: return GREEN;
-			case PLAYER_CELL: return BLUE;
-			case ENNEMY_CELL: return RED;
+			case EMPTY_CELL: return GamePrint.GREEN;
+			case PLAYER_CELL: return GamePrint.BLUE;
+			case ENNEMY_CELL: return GamePrint.RED;
 			default: return "";
 		}
 	}
@@ -62,7 +57,7 @@ public class Map {
 		for(int i = 0; i < this.size; i++) {
 			for(int j = 0; j < this.size ; j++) {
 				color = getCellColor(this.map[i][j]);
-				System.out.print(color + this.map[i][j] + COLOR_RESET);
+				System.out.print(color + this.map[i][j] + GamePrint.COLOR_RESET);
 			}
 			System.out.println();
 		}

@@ -12,6 +12,12 @@ public class GamePrint {
 	private static final int INFO_WIDTH = 40;
 	public static final Scanner STD_IN = new Scanner(System.in);
 
+	public static final String COLOR_RESET = "\u001B[0m";
+	public static final String RED = "\u001B[31m";
+	public static final String GREEN = "\u001B[32m";
+	public static final String BLUE = "\u001B[34m";
+	public static final String BOLD = "\u001B[1m";
+
 	public static void clearTerminal() {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
