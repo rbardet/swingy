@@ -14,6 +14,7 @@ public class Game {
 	private static final String[] prompt_start = {
 		"Create a new character",
 		"Load a character",
+		"Delete a character",
 		"Exit the game"
 	};
 
@@ -95,6 +96,28 @@ public class Game {
 		return setHeroStats(rs);
 	}
 
+	public void deleteSave() throws SQLException {
+		ResultSet rs = DB.fetchSaves();
+		int size = 0;
+		while (rs.next()) {
+			size++;
+		}
+		String regex = "[1-" + size + "]";
+		String choice;
+
+		rs = DB.fetchSaves();
+		GamePrint.clearTerminal();
+		GamePrint.displaySave(rs);
+		do {
+			System.out.print("Enter the save id to delete: ");
+			choice = GamePrint.STD_IN.nextLine();
+		} while(!choice.matches(regex));
+
+		int idx = Integer.parseInt(choice);
+		DB.deleteHero(idx);
+		return ;
+	}
+
 	public static void exitGame() { System.exit(0); }
 
 	public void runGame(Hero player) throws SQLException {
@@ -128,6 +151,8 @@ public class Game {
 			case 2:
 				player = loadChar();
 				break;
+			case 3:
+				deleteSave();
 			default:
 				exitGame();
 		}

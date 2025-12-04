@@ -80,6 +80,10 @@ public class DB {
 		HP_VAR + "=" + "? " +
 		"WHERE " + ID_VAR + "=" + "?;";
 
+	private static final String DELETE_REQUEST =
+		"DELETE FROM " + MAIN_TABLE +
+		" WHERE " + ID_VAR + "=" + "?;";
+
 	private static final String FETCH_USERS = "SELECT * FROM " + MAIN_TABLE;
 
 	public static Connection conn = null;
@@ -152,6 +156,13 @@ public class DB {
 		s.setFloat(3, player.getEClass().getDefense());
 		s.setFloat(4, player.getEClass().getHP());
 		s.setInt(5, player.getId());
+
+		s.executeUpdate();
+	}
+
+	public static void deleteHero(int idx) throws SQLException {
+		PreparedStatement s = getConnection().prepareStatement(DELETE_REQUEST);
+		s.setInt(1, idx);
 
 		s.executeUpdate();
 	}
