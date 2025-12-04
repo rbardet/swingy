@@ -1,7 +1,9 @@
 package en.swingy.game;
 
+import java.sql.SQLException;
 import java.util.Random;
 
+import en.swingy.db.DB;
 import en.swingy.entity.ennemy.Ennemy;
 import en.swingy.entity.ennemy.EnnemyEnum;
 import en.swingy.entity.entityclass.EntityClass;
@@ -18,7 +20,7 @@ public class Fight {
 	public static final String FLEE_FAILED = "You have failed to flee";
 	public static final String FLEE_SUCCESS = "You have flee";
 
-	public static void AfterFightSim(Hero player, float player_hp) {
+	public static void AfterFightSim(Hero player, float player_hp) throws SQLException {
 		if (player_hp <= 0) {
 			System.out.println(YOU_LOST);
 		} else {
@@ -36,6 +38,8 @@ public class Fight {
 			if (opt.equals("y")) {
 				player.equip(drop);
 			}
+
+			DB.updateAfterFight(player);
 		}
 
 		System.out.print("Press enter to continue...");
@@ -52,7 +56,7 @@ public class Fight {
 		return Math.max(dmg, 1);
 	}
 
-	public static void Simulate(Hero player) {
+	public static void Simulate(Hero player) throws SQLException {
 		float player_hp = player.getEClass().getHP() + player.getHelm().getHP();
 		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
 		float player_dmg;

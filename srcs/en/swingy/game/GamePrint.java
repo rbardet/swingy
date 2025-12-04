@@ -1,7 +1,10 @@
 package en.swingy.game;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
+import en.swingy.db.DB;
 import en.swingy.entity.entityclass.EntityClass;
 import en.swingy.hero.Hero;
 
@@ -34,6 +37,7 @@ public class GamePrint {
 	public static void playerInfo(Hero player) {
 
 		String[] lines = {
+			"Id: " + player.getId(),
 			"Username: " + player.getName(),
 			"Class: " + EntityClass.getType(player.getEClass()),
 			"Level: " + player.getLevel(),
@@ -51,6 +55,28 @@ public class GamePrint {
 			System.out.println(formatLine(line, INFO_WIDTH));
 		System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
 		System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+	}
+
+	public static void displaySave(ResultSet rs) throws SQLException {
+		System.out.println("Player save :");
+		ResultSet save = rs;
+		while (save.next()) {
+			String[] lines = {
+				"Id: " + save.getInt(DB.ID_VAR),
+				"Username: " + save.getString(DB.NAME_VAR),
+				"Class: " + save.getString(DB.CLASS_VAR),
+				"Level: " + save.getInt(DB.LV_VAR)
+			};
+
+			System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
+			for (String line : lines) {
+				System.out.println(formatLine(line, INFO_WIDTH));
+			}
+			System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
+			System.out.println();
+		}
+
+		save.close();
 	}
 
 	public static int askOption(String[] opt) {
