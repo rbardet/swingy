@@ -56,10 +56,13 @@ public class Game {
 	Press q to return to the main menu
 	""" + GamePrint.COLOR_RESET;
 
-	public static Boolean GUI;
+	private Boolean GUI;
 	private int dbSize = 0;
-
-	public Game() {}
+	private GUI screen;
+	
+	public Game() {
+		this.screen = new GUI();
+	}
 
 	/**
 	 * Placeholder function for opening the GUI.
@@ -279,6 +282,10 @@ public class Game {
 	 */
 	public void startGame() throws SQLException {
 		setDbSize();
+		if (this.GUI) {
+			this.screen.runGui(this);
+		}
+
 		Hero player = null;
 
 		do {
