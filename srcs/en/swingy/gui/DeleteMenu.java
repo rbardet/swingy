@@ -66,5 +66,6 @@ public class DeleteMenu {
 		gui.clearScreen();
 		SavesDisplay.showAvailableSaves(gui, g);
 		showDeleteSaveButton(gui, g);
+
 	}
 }

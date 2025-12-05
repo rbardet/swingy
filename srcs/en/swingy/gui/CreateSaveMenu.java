@@ -2,7 +2,6 @@ package en.swingy.gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -14,6 +13,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 
+import en.swingy.db.DB;
+import en.swingy.entity.entityclass.EntityClass;
 import en.swingy.game.Game;
 
 public class CreateSaveMenu {
@@ -72,6 +73,7 @@ public class CreateSaveMenu {
 			try {
 				gui.clearScreen();
 				gui.setFrameBg(bg);
+				gui.setPlayerClass(class_idx);
 				gui.setPlayerClass(class_idx);
 				createChacterMenu(gui, g);
 				setClassDesc(gui, class_header, class_body, class_stats);
@@ -153,8 +155,15 @@ public class CreateSaveMenu {
 		gui.getFrame().repaint();
 	}
 
-	public static void setCreateAccountButton(GUI gui) {
-
+	public static void setCreateAccountButton(GUI gui) throws SQLException {
+		JButton button = MainMenu.createMenuButton(gui, "Start Game", 600, e->{
+			try {
+				DB.createAccount(gui.getUsername(), EntityClass.E_CLASS[gui.getPlayerClass()]);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+		gui.getFrame().add(button);
 	}
 
 	public static void createChacterMenu(GUI gui, Game g) throws SQLException {
@@ -162,6 +171,8 @@ public class CreateSaveMenu {
 		setCharacterNameField(gui);
 		createClassesCaroussel(gui, g);
 		setCharacterNameField(gui);
+		setCreateAccountButton(gui);
+
 	}
 
 }

@@ -3,7 +3,6 @@ package en.swingy.gui;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.SQLException;
 
@@ -121,6 +120,10 @@ public class GUI {
 
 	public String getUsername() {
 		return this.username;
+	}
+
+	public int getPlayerClass() {
+		return this.player_class;
 	}
 
 	public void setUsername(String s) {
