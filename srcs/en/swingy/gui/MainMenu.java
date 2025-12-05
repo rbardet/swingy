@@ -1,0 +1,71 @@
+package en.swingy.gui;
+
+import java.awt.Color;
+import java.awt.Frame;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+
+import en.swingy.game.Game;
+
+public class MainMenu {
+
+	public static final int startY = 200;
+	public static final int padding = 70;
+
+	public static JButton createMenuButton(GUI gui, String content, int y, ActionListener event) {
+		ImageIcon std = new ImageIcon(Assets.MENU_BUTTON);
+		ImageIcon hover = new ImageIcon(Assets.MENU_BUTTON_HOVER);
+
+		JButton button = new JButton(content, std);
+		button.setRolloverIcon(hover);
+		int centerX = (GUI.WIDHT - std.getIconWidth()) / 2;
+		button.setBounds(centerX, y, std.getIconWidth(), std.getIconHeight());
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
+		button.setVerticalTextPosition(SwingConstants.CENTER);
+		button.setForeground(Color.WHITE);
+		button.setFont(gui.getCustomFont());
+		button.addActionListener(event);
+		return button;
+	}
+
+	public static void setMainMenu(GUI gui, Game g) throws SQLException {
+		gui.setFrameBg(Assets.MENU_FONT);
+		Frame f = gui.getFrame();
+		JButton b1 = createMenuButton(gui, "Create a character", startY, e->{
+			try {
+				CreateSaveMenu.createChacterMenu(gui, g);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+
+		f.add(b1);
+
+		JButton b2 = createMenuButton(gui, "Load a character", startY + padding, e->{
+			try {
+				gui.showLoadSaveMenu(g);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+		f.add(b2);
+
+		JButton b3 = createMenuButton(gui, "Delete a character", startY + padding * 2, e->{
+			try {
+				DeleteMenu.showDeleteSaveMenu(gui, g);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+		f.add(b3);
+
+		JButton b4 = createMenuButton(gui, "Exit the game", startY + padding * 3, e->Game.exitGame());
+		f.add(b4);
+	}
+}
