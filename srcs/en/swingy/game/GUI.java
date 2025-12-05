@@ -5,7 +5,10 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import en.swingy.db.DB;
+import en.swingy.entity.entityclass.EntityClass;
 
 public class GUI {
 	private JFrame frame;
@@ -29,14 +33,16 @@ public class GUI {
 	private final int startY = 200;
 	private final int padding = 70;
 
-	private final String ASSETS_PATH = "ressources/assets/";
+	private static final String ASSETS_PATH = "ressources/assets/";
 	private final String CLASS_BG_PATH = ASSETS_PATH + "classes-bg/";
-	private final String CLASS_ICON_PATH = ASSETS_PATH + "classes-icon/";
+	private static final String CLASS_ICON_PATH = ASSETS_PATH + "classes-icon/";
 	private final String MENU_BUTTON =  ASSETS_PATH + "menu_button.png";
 	private final String MENU_BUTTON_HOVER = ASSETS_PATH + "menu_button_hover.png";
 	private final String MENU_FONT = ASSETS_PATH + "menu_font.png";
 	private final String MENU_QUIT = ASSETS_PATH + "menu_quit.png";
 	private final String MENU_QUIT_HOVER = ASSETS_PATH + "menu_quit_hover.png";
+	private final String USERNAME = ASSETS_PATH + "username.png";
+	private final String USERNAME_FIELD = ASSETS_PATH + "username_field.png";
 
 	private final String MONK_BG = CLASS_BG_PATH + "md_monk_background.png";
 	private final String BARBARIAN_BG = CLASS_BG_PATH + "md_barbarian_background.png";
@@ -46,20 +52,20 @@ public class GUI {
 	private final String DEMONHUNTER_BG = CLASS_BG_PATH + "md_demon_hunter_background.png";
 	private final String WIZARD_BG = CLASS_BG_PATH + "md_wizard_background.png";
 
-	private final String BARBARIAN_ICON = CLASS_ICON_PATH + "barbarian_icon_default.png";
-	private final String BARBARIAN_HOVER_ICON = CLASS_ICON_PATH + "barbarian_icon_active.png";
-	private final String CRUSADER_ICON = CLASS_ICON_PATH + "crusader_icon_default.png";
-	private final String CRUSADER_HOVER_ICON = CLASS_ICON_PATH + "crusader_icon_active.png";
-	private final String DEMONHUNTER_ICON = CLASS_ICON_PATH + "demonhunter_icon_default.png";
-	private final String DEMONHUNTER_HOVER_ICON = CLASS_ICON_PATH + "demonhunter_icon_active.png";
-	private final String MONK_ICON = CLASS_ICON_PATH + "monk_icon_default.png";
-	private final String MONK_HOVER_ICON = CLASS_ICON_PATH + "monk_icon_active.png";
-	private final String NECROMANCER_ICON = CLASS_ICON_PATH + "necromancer_icon_default.png";
-	private final String NECROMANCER_HOVER_ICON = CLASS_ICON_PATH + "necromancer_icon_active.png";
-	private final String WITCHDOCTOR_ICON = CLASS_ICON_PATH + "witch_doctor_icon_default.png";
-	private final String WITCHDOCTOR_HOVER_ICON = CLASS_ICON_PATH + "witch_doctor_icon_active.png";
-	private final String WIZARD_ICON = CLASS_ICON_PATH + "wizard_icon_default.png";
-	private final String WIZARD_HOVER_ICON = CLASS_ICON_PATH + "wizard_icon_active.png";
+	public static final String BARBARIAN_ICON = CLASS_ICON_PATH + "barbarian_icon_default.png";
+	public static final String BARBARIAN_HOVER_ICON = CLASS_ICON_PATH + "barbarian_icon_active.png";
+	public static final String CRUSADER_ICON = CLASS_ICON_PATH + "crusader_icon_default.png";
+	public static final String CRUSADER_HOVER_ICON = CLASS_ICON_PATH + "crusader_icon_active.png";
+	public static final String DEMONHUNTER_ICON = CLASS_ICON_PATH + "demonhunter_icon_default.png";
+	public static final String DEMONHUNTER_HOVER_ICON = CLASS_ICON_PATH + "demonhunter_icon_active.png";
+	public static final String MONK_ICON = CLASS_ICON_PATH + "monk_icon_default.png";
+	public static final String MONK_HOVER_ICON = CLASS_ICON_PATH + "monk_icon_active.png";
+	public static final String NECROMANCER_ICON = CLASS_ICON_PATH + "necromancer_icon_default.png";
+	public static final String NECROMANCER_HOVER_ICON = CLASS_ICON_PATH + "necromancer_icon_active.png";
+	public static final String WITCHDOCTOR_ICON = CLASS_ICON_PATH + "witch_doctor_icon_default.png";
+	public static final String WITCHDOCTOR_HOVER_ICON = CLASS_ICON_PATH + "witch_doctor_icon_active.png";
+	public static final String WIZARD_ICON = CLASS_ICON_PATH + "wizard_icon_default.png";
+	public static final String WIZARD_HOVER_ICON = CLASS_ICON_PATH + "wizard_icon_active.png";
 
 	private final String MONK_DESC = """
 	Monk -\n
@@ -150,6 +156,7 @@ public class GUI {
 		this.frame.setSize(WIDHT, HEIGHT);
 		this.frame.setTitle(APP_NAME);
 		this.frame.setResizable(false);
+		this.frame.setLayout(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
@@ -191,11 +198,11 @@ public class GUI {
 		this.frame.setContentPane(bgLabel);
 	}
 
-	public void setMainMenu() throws SQLException {
+	public void setMainMenu(Game g) throws SQLException {
 		this.setFrameBg(MENU_FONT);
 		JButton b1 = createMenuButton("Create a character", startY, e->{
 			try {
-				createChacterMenu();
+				createChacterMenu(g);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -203,30 +210,151 @@ public class GUI {
 
 		this.frame.add(b1);
 
-		JButton b2 = createMenuButton("Load a character", startY + padding, e->Game.exitGame());
-		this.frame.add(b2);
-
-		JButton b3 = createMenuButton("Delete a character", startY + padding * 2, e->{
+		JButton b2 = createMenuButton("Load a character", startY + padding, e->{
 			try {
-				showDeleteSaveMenu();
+				showLoadSaveMenu(g);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		});
+		this.frame.add(b2);
 
+		JButton b3 = createMenuButton("Delete a character", startY + padding * 2, e->{
+			try {
+				showDeleteSaveMenu(g);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
 		this.frame.add(b3);
 
 		JButton b4 = createMenuButton("Exit the game", startY + padding * 3, e->Game.exitGame());
 		this.frame.add(b4);
 	}
 	
-	public void showAvailableSaves() throws SQLException {
-		DB.fetchSaves();
+	public void showAvailableSaves(Game g) throws SQLException {
+		this.clearScreen();
+		ResultSet rs = DB.fetchSaves();
+
+		int panelWidth = 350;
+		int panelHeight = 400;
+		int yPosition = 150;
+
+		int index = 0;
+
+		while (rs.next()) {
+			JPanel savePanel = new JPanel();
+			savePanel.setLayout(null);
+			savePanel.setSize(panelWidth, panelHeight);
+			savePanel.setBackground(new Color(0, 0, 0, 150));
+
+			ImageIcon i = EntityClass.getClassAssetsByName(rs.getString(DB.CLASS_VAR));
+			JLabel iconLabel = new JLabel(i);
+			iconLabel.setBounds((panelWidth - i.getIconWidth()) / 2, 10, i.getIconWidth(), i.getIconHeight());
+			savePanel.add(iconLabel);
+
+			String[] lines = {
+				"Username: " + rs.getString(DB.NAME_VAR),
+				"Class: " + rs.getString(DB.CLASS_VAR),
+				"Level: " + rs.getInt(DB.LV_VAR),
+				"XP: " + rs.getInt(DB.XP_VAR),
+				"Attack: " + rs.getInt(DB.ATT_VAR) + " + " + rs.getInt(DB.WP_ATT_VAR),
+				"Defense: " + rs.getInt(DB.DEF_VAR) + " + " + rs.getInt(DB.AM_DEF_VAR),
+				"HP: " + rs.getInt(DB.HP_VAR) + " + " + rs.getInt(DB.HL_HP_VAR),
+				"Weapon: " + rs.getString(DB.WP_NAME_VAR),
+				"Armor: " + rs.getString(DB.AM_NAME_VAR),
+				"Helm: " + rs.getString(DB.HL_NAME_VAR)
+			};
+
+			int lineHeight = 25;
+			int yText = iconLabel.getY() + i.getIconHeight() + 10;
+			for (String line : lines) {
+				JLabel label = new JLabel(line);
+				label.setForeground(Color.WHITE);
+				label.setBounds(10, yText, panelWidth - 20, lineHeight);
+				savePanel.add(label);
+				yText += lineHeight;
+			}
+
+			int xPosition = 50 + index * (panelWidth + 50);
+			savePanel.setLocation(xPosition, yPosition);
+			this.frame.add(savePanel);
+
+			index++;
+		}
+
+		rs.close();
+		this.setMenuQuitIcon(e -> {
+			try {
+				setMainMenu(g);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
 	}
 
-	public void showDeleteSaveMenu() throws SQLException {
-		showAvailableSaves();
+	
+	public JButton createDeleteSaveButton(int x, int y, ActionListener e) throws SQLException {
+		ImageIcon std = new ImageIcon(MENU_BUTTON);
+		ImageIcon hover = new ImageIcon(MENU_BUTTON_HOVER);
 
+		JButton button = new JButton("Delete Save", std);
+		button.setRolloverIcon(hover);
+
+		button.setBounds(x, y, std.getIconWidth(), std.getIconHeight());
+
+		button.setFocusPainted(false);
+		button.setForeground(Color.WHITE);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
+		button.setVerticalTextPosition(SwingConstants.CENTER);
+		button.addActionListener(e);
+		return button;
+	}
+
+	public void showDeleteSaveButton(Game g) throws SQLException {
+		ResultSet rs = DB.fetchSaves();
+
+		int panelWidth = 350;
+		int panelHeight = 400;
+		int yPosition = 160;
+		int idx = 0;
+
+		while (rs.next()) {
+			int xPosition = 50 + idx * (panelWidth + 50);
+			final int heroId = rs.getInt(DB.ID_VAR);
+
+			JButton button = createDeleteSaveButton(xPosition, yPosition + panelHeight + 30, e -> {
+				try {
+					DB.deleteHero(heroId);
+					setMainMenu(g);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			});
+
+			button.setFocusPainted(false);
+			button.setBorderPainted(false);
+			button.setContentAreaFilled(false);
+			button.setForeground(Color.WHITE);
+
+			this.frame.add(button);
+			idx++;
+		}
+		rs.close();
+	}
+
+	public void showDeleteSaveMenu(Game g) throws SQLException {
+		showAvailableSaves(g);
+		showDeleteSaveButton(g);
+	}
+
+	public void showLoadSaveButton(Game g) throws SQLException {
+
+	}
+
+	public void showLoadSaveMenu(Game g) throws SQLException {
+		showAvailableSaves(g);
+		showLoadSaveButton(g);
 	}
 
 	public void setClassDesc(String desc) {
@@ -260,7 +388,8 @@ public class GUI {
 		int y,
 		String bg,
 		String class_desc,
-		int class_idx) throws SQLException
+		int class_idx,
+		Game g) throws SQLException
 	{
 		ImageIcon def = new ImageIcon(base);
 		ImageIcon hov = new ImageIcon(hover);
@@ -275,7 +404,7 @@ public class GUI {
 				this.clearScreen();
 				setFrameBg(bg);
 				this.player_class = class_idx;
-				createChacterMenu();
+				createChacterMenu(g);
 				setClassDesc(class_desc);
 			} catch (SQLException ex) {
 				ex.printStackTrace();
@@ -285,7 +414,7 @@ public class GUI {
 		return button;
 	}
 
-	public void createClassesCaroussel() throws SQLException {
+	public void createClassesCaroussel(Game g) throws SQLException {
 		int startX = 50;
 		int startY = 125;
 		int gap = 20;
@@ -302,7 +431,7 @@ public class GUI {
 
 		setMenuQuitIcon(e -> {
 			try {
-				setMainMenu();
+				setMainMenu(g);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -315,7 +444,7 @@ public class GUI {
 			String desc = classes[i][3];
 
 			ImageIcon icon = new ImageIcon(base);
-			JButton button = createClassesIcon(base, hover, startX, currentY, bg, desc, i);
+			JButton button = createClassesIcon(base, hover, startX, currentY, bg, desc, i, g);
 			this.frame.add(button);
 
 			currentY += icon.getIconHeight() + gap;
@@ -329,32 +458,32 @@ public class GUI {
 	}
 	
 	public void setCharacterNameField() throws SQLException {
-		ImageIcon bg = new ImageIcon(MENU_BUTTON_HOVER);
-		JLabel background = new JLabel(bg);
-		background.setBounds(75, 75, bg.getIconWidth(), bg.getIconHeight());
+		ImageIcon i = new ImageIcon(USERNAME);
+		JLabel imageLabel = new JLabel(i);
+		imageLabel.setBounds(150, 15, i.getIconWidth(), i.getIconHeight());
+		this.frame.add(imageLabel);
 
-		JLabel label = new JLabel("Enter your nickname :");
-		label.setBounds(150, 20, 300, 25);
-		label.setForeground(Color.WHITE);
-		label.setFont(CUSTOM_FONT);
-		this.frame.add(label);
+		ImageIcon bg = new ImageIcon(USERNAME_FIELD);
+		JLabel background = new JLabel(bg);
+		background.setBounds(150, 70, bg.getIconWidth(), bg.getIconHeight());
+		this.frame.add(background);
 
 		JTextField textField = new JTextField();
-		textField.setBounds(150, 50, bg.getIconWidth(), bg.getIconHeight());
+		textField.setBounds(150, 70, bg.getIconWidth(), bg.getIconHeight());
 		textField.setOpaque(false);
 		textField.setForeground(Color.WHITE);
-		background.add(textField);
+
 		this.frame.add(textField);
 	}
 
-	public void createChacterMenu() throws SQLException {
+	public void createChacterMenu(Game g) throws SQLException {
 		this.clearScreen();
 		this.setCharacterNameField();
-		this.createClassesCaroussel();
+		this.createClassesCaroussel(g);
 	}
 
 	public void runGui(Game game) throws SQLException {
-		this.setMainMenu();
+		this.setMainMenu(game);
 		this.showScreen();
 		while (true) {
 			
