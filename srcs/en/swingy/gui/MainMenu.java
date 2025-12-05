@@ -1,12 +1,14 @@
 package en.swingy.gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import en.swingy.game.Game;
@@ -34,11 +36,44 @@ public class MainMenu {
 		return button;
 	}
 
+	public static void tooManySaves(GUI gui, Game g) throws SQLException {
+		gui.clearScreen();
+		JLabel l = new JLabel("Maximum number of save reached would you like to delete one ?");
+		l.setBounds(150, 150, GUI.WIDHT / 2, GUI.HEIGHT);
+		l.setForeground(Color.WHITE);
+		l.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 20f));
+		gui.getFrame().add(l);
+
+		JButton button = createMenuButton(gui, "Yes", 300, e->{
+			try {
+				DeleteMenu.showDeleteSaveMenu(gui, g);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+		gui.getFrame().add(button);
+		
+		button = createMenuButton(gui, "No", 500, e->{
+			try {
+				MainMenu.setMainMenu(gui, g);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+		gui.getFrame().add(button);
+		gui.getFrame().repaint();
+	}
+
 	public static void setMainMenu(GUI gui, Game g) throws SQLException {
+		g.setDbSize();
 		gui.setFrameBg(Assets.MENU_FONT);
 		Frame f = gui.getFrame();
 		JButton b1 = createMenuButton(gui, "Create a character", startY, e->{
 			try {
+				if (g.getDBSize() >= 3) {
+					tooManySaves(gui, g);
+					return ;
+				}
 				CreateSaveMenu.createChacterMenu(gui, g);
 			} catch (Exception ex) {
 				ex.printStackTrace();

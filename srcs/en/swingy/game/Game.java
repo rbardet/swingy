@@ -172,6 +172,10 @@ public class Game {
 		this.dbSize = size;
 	}
 
+	public int getDBSize() {
+		return this.dbSize;
+	}
+
 	/**
 	 * Prompts the player to select a save from the database.
 	 * Can also return to the main menu if 'q' is entered.
@@ -282,11 +286,11 @@ public class Game {
 	 * @throws SQLException if database operations fail
 	 */
 	public void startGame() throws SQLException {
-		setDbSize();
 		if (this.GUI) {
 			this.screen.runGui(this);
 		}
 
+		setDbSize();
 		Hero player = null;
 
 		do {
