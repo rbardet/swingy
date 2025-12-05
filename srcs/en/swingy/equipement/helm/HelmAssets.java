@@ -1,0 +1,99 @@
+package en.swingy.equipement.helm;
+
+public enum HelmAssets {
+	VEIL_OF_STEEL("helmets/VEIL_OF_STEEL.png"),
+	LEORICS_CROWN("helmets/LEORICS_CROWN.png"),
+	HARLEQUIN_CREST("helmets/HARLEQUIN_CREST.png"),
+	THE_UNDEAD_CROWN("helmets/THE_UNDEAD_CROWN.png"),
+	MYSTERY_HELM("helmets/MYSTERY_HELM.png"),
+	HELM_OF_THE_CRANIAL_CRUSTACEAN("helmets/HELM_OF_THE_CRANIAL_CRUSTACEAN.png"),
+	STAR_HELM("helmets/STAR_HELM.png"),
+	LEATHER_HOOD("helmets/LEATHER_HOOD.png"),
+	COIF("helmets/COIF.png"),
+	PRIDES_FALL("helmets/PRIDES_FALL.png"),
+	ARMING_CAP("helmets/ARMING_CAP.png"),
+	CHAIN_HOOD("helmets/CHAIN_HOOD.png"),
+	BROKEN_CROWN("helmets/BROKEN_CROWN.png"),
+	HELMET("helmets/HELMET.png"),
+	CAINS_MEMORY("helmets/CAINS_MEMORY.png"),
+	PLATED_HELM("helmets/PLATED_HELM.png"),
+	BLIND_FAITH("helmets/BLIND_FAITH.png"),
+	CROWN("helmets/CROWN.png"),
+	DEATHSEERS_COWL("helmets/DEATHSEERS_COWL.png"),
+	WARHELM_OF_KASSAR("helmets/WARHELM_OF_KASSAR.png"),
+	VISAGE_OF_GUNES("helmets/VISAGE_OF_GUNES.png"),
+	BASINET("helmets/BASINET.png"),
+	KLAPPVISIER("helmets/KLAPPVISIER.png"),
+	MASK_OF_SCARLET_DEATH("helmets/MASK_OF_SCARLET_DEATH.png"),
+	AUGHILDS_PEAK("helmets/AUGHILDS_PEAK.png"),
+	CASQUE("helmets/CASQUE.png"),
+	SKULL_OF_RESONANCE("helmets/SKULL_OF_RESONANCE.png"),
+	GREAT_HELM("helmets/GREAT_HELM.png"),
+	HOUNSKULL("helmets/HOUNSKULL.png"),
+	GUARDIANS_FORESIGHT("helmets/GUARDIANS_FORESIGHT.png"),
+	STECHHELM("helmets/STECHHELM.png"),
+	ZISCHAGGE("helmets/ZISCHAGGE.png"),
+	NATALYAS_SIGHT("helmets/NATALYAS_SIGHT.png"),
+	MEMPO_OF_TWILIGHT("helmets/MEMPO_OF_TWILIGHT.png"),
+	TAL_RASHAS_GUISE_OF_WISDOM("helmets/TAL_RASHAS_GUISE_OF_WISDOM.png"),
+	SAGES_ORBIT("helmets/SAGES_ORBIT.png"),
+	IMMORTAL_KINGS_TRIUMPH("helmets/IMMORTAL_KINGS_TRIUMPH.png"),
+	THE_HELM_OF_COMMAND("helmets/THE_HELM_OF_COMMAND.png"),
+	ANDARIELS_VISAGE("helmets/ANDARIELS_VISAGE.png"),
+	HELLSCAPE_MASK("helmets/HELLSCAPE_MASK.png"),
+	SOVEREIGN_HELM("helmets/SOVEREIGN_HELM.png"),
+	ARCHON_CROWN("helmets/ARCHON_CROWN.png"),
+	FATES_VOW("helmets/FATES_VOW.png"),
+	RAKKISGARD_HELM("helmets/RAKKISGARD_HELM.png"),
+	JADE_HARVESTERS_WISDOM("helmets/JADE_HARVESTERS_WISDOM.png"),
+	THE_HELM_OF_RULE("helmets/THE_HELM_OF_RULE.png"),
+	SUNWUKOS_CROWN("helmets/SUNWUKOS_CROWN.png"),
+	SAGES_APOGEE("helmets/SAGES_APOGEE.png"),
+	VYRS_SIGHTLESS_SKULL("helmets/VYRS_SIGHTLESS_SKULL.png"),
+	CAINS_INSIGHT("helmets/CAINS_INSIGHT.png"),
+	CROWN_OF_THE_INVOKER("helmets/CROWN_OF_THE_INVOKER.png"),
+	AUGHILDS_SPIKE("helmets/AUGHILDS_SPIKE.png"),
+	THE_SHADOWS_MASK("helmets/THE_SHADOWS_MASK.png"),
+	EYES_OF_THE_EARTH("helmets/EYES_OF_THE_EARTH.png"),
+	GUARDIANS_GAZE("helmets/GUARDIANS_GAZE.png"),
+	ASCENDED_CROWN("helmets/ASCENDED_CROWN.png"),
+	RAEKORS_WILL("helmets/RAEKORS_WILL.png"),
+	HELM_OF_THE_WASTES("helmets/HELM_OF_THE_WASTES.png"),
+	SKULL_OF_SAVAGES("helmets/SKULL_OF_SAVAGES.png"),
+	CROWN_OF_THE_LIGHT("helmets/CROWN_OF_THE_LIGHT.png"),
+	CROWN_OF_VALOR("helmets/CROWN_OF_VALOR.png"),
+	ROLANDS_VISAGE("helmets/ROLANDS_VISAGE.png"),
+	HELM_OF_AKKHAN("helmets/HELM_OF_AKKHAN.png"),
+	ACCURSED_VISAGE("helmets/ACCURSED_VISAGE.png"),
+	DYSTOPIAN_GOGGLES("helmets/DYSTOPIAN_GOGGLES.png"),
+	MARAUDERS_VISAGE("helmets/MARAUDERS_VISAGE.png"),
+	MASK_OF_THE_SEARING_SKY("helmets/MASK_OF_THE_SEARING_SKY.png"),
+	ULIANAS_SPIRIT("helmets/ULIANAS_SPIRIT.png"),
+	DECREE_OF_JUSTICE("helmets/DECREE_OF_JUSTICE.png"),
+	FIREBIRDS_PLUME("helmets/FIREBIRDS_PLUME.png"),
+	SHROUDED_MASK("helmets/SHROUDED_MASK.png"),
+	TYPHONS_FRONS("helmets/TYPHONS_FRONS.png"),
+	ARACHYRS_VISAGE("helmets/ARACHYRS_VISAGE.png"),
+	HELLTOOTH_MASK("helmets/HELLTOOTH_MASK.png"),
+	LUXURIOUS_BAUTA("helmets/LUXURIOUS_BAUTA.png"),
+	TRAGOULS_GUISE("helmets/TRAGOULS_GUISE.png"),
+	INARIUSS_UNDERSTANDING("helmets/INARIUSS_UNDERSTANDING.png"),
+	PESTILENCE_MASK("helmets/PESTILENCE_MASK.png"),
+	RATHMAS_SKULL_HELM("helmets/RATHMAS_SKULL_HELM.png");
+
+	private static final String BASE_PATH = "ressources/assets/stuff/helm/";
+	private final String path;
+
+	HelmAssets(String relativePath) {
+		this.path = BASE_PATH + relativePath;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	@Override
+	public String toString() {
+		return path;
+	}
+}

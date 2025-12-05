@@ -1,7 +1,5 @@
 package en.swingy;
 
-import java.sql.SQLException;
-
 import en.swingy.game.Game;
 
 public class Main {
@@ -12,7 +10,7 @@ public class Main {
 		}
 	}
 
-	public static void main(String args[]) throws SQLException {
+	public static void main(String args[]) throws Exception {
 		Game game = new Game();
 		if (args[0].equals("gui")) {
 			game.setGui(true);
