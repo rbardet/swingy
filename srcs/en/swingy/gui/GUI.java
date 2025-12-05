@@ -136,16 +136,6 @@ public class GUI {
 		this.frame.setContentPane(bgLabel);
 	}
 
-	public void showLoadSaveButton(Game g) throws SQLException {
-
-	}
-
-	public void showLoadSaveMenu(Game g) throws SQLException {
-		clearScreen();
-		SavesDisplay.showAvailableSaves(this, g);
-		showLoadSaveButton(g);
-	}
-
 	public void setClassDesc(String desc) {
 		JTextArea textArea = new JTextArea(desc);
 		textArea.setBounds(150, 150, 480, 320);

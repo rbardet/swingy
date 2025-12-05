@@ -49,7 +49,7 @@ public class MainMenu {
 
 		JButton b2 = createMenuButton(gui, "Load a character", startY + padding, e->{
 			try {
-				gui.showLoadSaveMenu(g);
+				LoadMenu.showLoadSaveMenu(gui, g);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
