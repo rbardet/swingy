@@ -38,31 +38,38 @@ public class MainMenu {
 
 	public static void tooManySaves(GUI gui, Game g) throws SQLException {
 		gui.clearScreen();
-		JLabel l = new JLabel("Maximum number of save reached would you like to delete one ?");
-		l.setBounds(150, 150, GUI.WIDHT / 2, GUI.HEIGHT);
+
+		JLabel l = new JLabel("Maximum number of save reached, Would you like to delete one ?");
 		l.setForeground(Color.WHITE);
 		l.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 20f));
+		int labelWidth = 900;
+		int labelX = (GUI.WIDHT - labelWidth) / 2;
+		l.setBounds(labelX, 100, labelWidth, 50);
 		gui.getFrame().add(l);
 
-		JButton button = createMenuButton(gui, "Yes", 300, e->{
+		JButton buttonYes = createMenuButton(gui, "Yes", 250, e -> {
 			try {
 				DeleteMenu.showDeleteSaveMenu(gui, g);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		});
-		gui.getFrame().add(button);
-		
-		button = createMenuButton(gui, "No", 500, e->{
+
+		gui.getFrame().add(buttonYes);
+
+		JButton buttonNo = createMenuButton(gui, "No", 350, e -> {
 			try {
 				MainMenu.setMainMenu(gui, g);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		});
-		gui.getFrame().add(button);
+		gui.getFrame().add(buttonNo);
+
 		gui.getFrame().repaint();
 	}
+
+
 
 	public static void setMainMenu(GUI gui, Game g) throws SQLException {
 		g.setDbSize();
