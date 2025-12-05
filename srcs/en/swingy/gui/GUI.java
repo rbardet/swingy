@@ -1,4 +1,4 @@
-package en.swingy.game;
+package en.swingy.gui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,6 +19,7 @@ import javax.swing.SwingConstants;
 
 import en.swingy.db.DB;
 import en.swingy.entity.entityclass.EntityClass;
+import en.swingy.game.Game;
 
 public class GUI {
 	private JFrame frame;
@@ -32,40 +31,6 @@ public class GUI {
 
 	private final int startY = 200;
 	private final int padding = 70;
-
-	private static final String ASSETS_PATH = "ressources/assets/";
-	private final String CLASS_BG_PATH = ASSETS_PATH + "classes-bg/";
-	private static final String CLASS_ICON_PATH = ASSETS_PATH + "classes-icon/";
-	private final String MENU_BUTTON =  ASSETS_PATH + "menu_button.png";
-	private final String MENU_BUTTON_HOVER = ASSETS_PATH + "menu_button_hover.png";
-	private final String MENU_FONT = ASSETS_PATH + "menu_font.png";
-	private final String MENU_QUIT = ASSETS_PATH + "menu_quit.png";
-	private final String MENU_QUIT_HOVER = ASSETS_PATH + "menu_quit_hover.png";
-	private final String USERNAME = ASSETS_PATH + "username.png";
-	private final String USERNAME_FIELD = ASSETS_PATH + "username_field.png";
-
-	private final String MONK_BG = CLASS_BG_PATH + "md_monk_background.png";
-	private final String BARBARIAN_BG = CLASS_BG_PATH + "md_barbarian_background.png";
-	private final String NECROMANCER_BG = CLASS_BG_PATH + "md_necromancer_background.png";
-	private final String CRUSADER_BG = CLASS_BG_PATH + "md_crusader_background.png";
-	private final String WITCHDOCTOR_BG = CLASS_BG_PATH + "md_witch_doctor_background.png";
-	private final String DEMONHUNTER_BG = CLASS_BG_PATH + "md_demon_hunter_background.png";
-	private final String WIZARD_BG = CLASS_BG_PATH + "md_wizard_background.png";
-
-	public static final String BARBARIAN_ICON = CLASS_ICON_PATH + "barbarian_icon_default.png";
-	public static final String BARBARIAN_HOVER_ICON = CLASS_ICON_PATH + "barbarian_icon_active.png";
-	public static final String CRUSADER_ICON = CLASS_ICON_PATH + "crusader_icon_default.png";
-	public static final String CRUSADER_HOVER_ICON = CLASS_ICON_PATH + "crusader_icon_active.png";
-	public static final String DEMONHUNTER_ICON = CLASS_ICON_PATH + "demonhunter_icon_default.png";
-	public static final String DEMONHUNTER_HOVER_ICON = CLASS_ICON_PATH + "demonhunter_icon_active.png";
-	public static final String MONK_ICON = CLASS_ICON_PATH + "monk_icon_default.png";
-	public static final String MONK_HOVER_ICON = CLASS_ICON_PATH + "monk_icon_active.png";
-	public static final String NECROMANCER_ICON = CLASS_ICON_PATH + "necromancer_icon_default.png";
-	public static final String NECROMANCER_HOVER_ICON = CLASS_ICON_PATH + "necromancer_icon_active.png";
-	public static final String WITCHDOCTOR_ICON = CLASS_ICON_PATH + "witch_doctor_icon_default.png";
-	public static final String WITCHDOCTOR_HOVER_ICON = CLASS_ICON_PATH + "witch_doctor_icon_active.png";
-	public static final String WIZARD_ICON = CLASS_ICON_PATH + "wizard_icon_default.png";
-	public static final String WIZARD_HOVER_ICON = CLASS_ICON_PATH + "wizard_icon_active.png";
 
 	private final String MONK_DESC = """
 	Monk -\n
@@ -141,7 +106,6 @@ public class GUI {
 	HP - 9\n
 	""";
 
-
 	private int player_class = -1;
 
 	public GUI() throws Exception {
@@ -169,8 +133,8 @@ public class GUI {
 	}
 
 	public JButton createMenuButton(String content, int y, ActionListener event) {
-		ImageIcon std = new ImageIcon(MENU_BUTTON);
-		ImageIcon hover = new ImageIcon(MENU_BUTTON_HOVER);
+		ImageIcon std = new ImageIcon(Assets.MENU_BUTTON);
+		ImageIcon hover = new ImageIcon(Assets.MENU_BUTTON_HOVER);
 
 		JButton button = new JButton(content, std);
 		button.setRolloverIcon(hover);
@@ -199,7 +163,7 @@ public class GUI {
 	}
 
 	public void setMainMenu(Game g) throws SQLException {
-		this.setFrameBg(MENU_FONT);
+		this.setFrameBg(Assets.MENU_FONT);
 		JButton b1 = createMenuButton("Create a character", startY, e->{
 			try {
 				createChacterMenu(g);
@@ -232,6 +196,14 @@ public class GUI {
 		this.frame.add(b4);
 	}
 	
+	public JLabel setBanner(int x, int y) {
+		ImageIcon bannerIcon = new ImageIcon(Assets.BANNER);
+		JLabel bannerLabel = new JLabel(bannerIcon);
+		bannerLabel.setBounds(x, y, 320, bannerIcon.getIconHeight());
+		this.frame.add(bannerLabel);
+		return bannerLabel;
+	}
+
 	public void showAvailableSaves(Game g) throws SQLException {
 		this.clearScreen();
 		ResultSet rs = DB.fetchSaves();
@@ -239,19 +211,20 @@ public class GUI {
 		int panelWidth = 350;
 		int panelHeight = 400;
 		int yPosition = 150;
-
 		int index = 0;
+		int spacing = 50;
 
 		while (rs.next()) {
-			JPanel savePanel = new JPanel();
-			savePanel.setLayout(null);
-			savePanel.setSize(panelWidth, panelHeight);
-			savePanel.setBackground(new Color(0, 0, 0, 150));
+			int xPosition = 50 + index * (panelWidth + spacing);
 
-			ImageIcon i = EntityClass.getClassAssetsByName(rs.getString(DB.CLASS_VAR));
-			JLabel iconLabel = new JLabel(i);
-			iconLabel.setBounds((panelWidth - i.getIconWidth()) / 2, 10, i.getIconWidth(), i.getIconHeight());
-			savePanel.add(iconLabel);
+			JLabel saveBanner = setBanner(xPosition, yPosition);
+			saveBanner.setSize(panelWidth, panelHeight);
+
+			ImageIcon charIcon = EntityClass.getClassAssetsByName(rs.getString(DB.CLASS_VAR));
+			JLabel iconLabel = new JLabel(charIcon);
+			iconLabel.setBounds((panelWidth - charIcon.getIconWidth()) / 2, 10,
+			charIcon.getIconWidth(), charIcon.getIconHeight());
+			saveBanner.add(iconLabel);
 
 			String[] lines = {
 				"Username: " + rs.getString(DB.NAME_VAR),
@@ -267,23 +240,20 @@ public class GUI {
 			};
 
 			int lineHeight = 25;
-			int yText = iconLabel.getY() + i.getIconHeight() + 10;
+			int yText = iconLabel.getY() + charIcon.getIconHeight() + 10;
 			for (String line : lines) {
 				JLabel label = new JLabel(line);
 				label.setForeground(Color.WHITE);
 				label.setBounds(10, yText, panelWidth - 20, lineHeight);
-				savePanel.add(label);
+				saveBanner.add(label);
 				yText += lineHeight;
 			}
-
-			int xPosition = 50 + index * (panelWidth + 50);
-			savePanel.setLocation(xPosition, yPosition);
-			this.frame.add(savePanel);
 
 			index++;
 		}
 
 		rs.close();
+
 		this.setMenuQuitIcon(e -> {
 			try {
 				setMainMenu(g);
@@ -291,12 +261,14 @@ public class GUI {
 				ex.printStackTrace();
 			}
 		});
+
+		this.frame.repaint();
 	}
 
-	
+
 	public JButton createDeleteSaveButton(int x, int y, ActionListener e) throws SQLException {
-		ImageIcon std = new ImageIcon(MENU_BUTTON);
-		ImageIcon hover = new ImageIcon(MENU_BUTTON_HOVER);
+		ImageIcon std = new ImageIcon(Assets.MENU_BUTTON);
+		ImageIcon hover = new ImageIcon(Assets.MENU_BUTTON_HOVER);
 
 		JButton button = new JButton("Delete Save", std);
 		button.setRolloverIcon(hover);
@@ -344,6 +316,7 @@ public class GUI {
 	}
 
 	public void showDeleteSaveMenu(Game g) throws SQLException {
+		clearScreen();
 		showAvailableSaves(g);
 		showDeleteSaveButton(g);
 	}
@@ -353,6 +326,7 @@ public class GUI {
 	}
 
 	public void showLoadSaveMenu(Game g) throws SQLException {
+		clearScreen();
 		showAvailableSaves(g);
 		showLoadSaveButton(g);
 	}
@@ -370,8 +344,8 @@ public class GUI {
 	}
 
 	public void setMenuQuitIcon(ActionListener e) throws SQLException {
-		ImageIcon i = new ImageIcon(MENU_QUIT);
-		ImageIcon hover = new ImageIcon(MENU_QUIT_HOVER);
+		ImageIcon i = new ImageIcon(Assets.MENU_QUIT);
+		ImageIcon hover = new ImageIcon(Assets.MENU_QUIT_HOVER);
 		JButton button = new JButton(i);
 		button.setRolloverIcon(hover);
 		button.setBounds(20, 20, 50, 50);
@@ -420,13 +394,13 @@ public class GUI {
 		int gap = 20;
 
 		String[][] classes = {
-			{BARBARIAN_ICON, BARBARIAN_HOVER_ICON, BARBARIAN_BG, BARBARIAN_DESC},
-			{CRUSADER_ICON, CRUSADER_HOVER_ICON, CRUSADER_BG, CRUSADER_DESC},
-			{DEMONHUNTER_ICON, DEMONHUNTER_HOVER_ICON, DEMONHUNTER_BG, DEMONHUNTER_DESC},
-			{MONK_ICON, MONK_HOVER_ICON, MONK_BG, MONK_DESC},
-			{NECROMANCER_ICON, NECROMANCER_HOVER_ICON, NECROMANCER_BG, NECROMANCER_DESC},
-			{WITCHDOCTOR_ICON, WITCHDOCTOR_HOVER_ICON, WITCHDOCTOR_BG, WITCHDOCTOR_DESC},
-			{WIZARD_ICON, WIZARD_HOVER_ICON, WIZARD_BG, WIZARD_DESC}
+			{Assets.BARBARIAN_ICON, Assets.BARBARIAN_HOVER_ICON, Assets.BARBARIAN_BG, BARBARIAN_DESC},
+			{Assets.CRUSADER_ICON, Assets.CRUSADER_HOVER_ICON, Assets.CRUSADER_BG, CRUSADER_DESC},
+			{Assets.DEMONHUNTER_ICON, Assets.DEMONHUNTER_HOVER_ICON, Assets.DEMONHUNTER_BG, DEMONHUNTER_DESC},
+			{Assets.MONK_ICON, Assets.MONK_HOVER_ICON, Assets.MONK_BG, MONK_DESC},
+			{Assets.NECROMANCER_ICON, Assets.NECROMANCER_HOVER_ICON, Assets.NECROMANCER_BG, NECROMANCER_DESC},
+			{Assets.WITCHDOCTOR_ICON, Assets.WITCHDOCTOR_HOVER_ICON, Assets.WITCHDOCTOR_BG, WITCHDOCTOR_DESC},
+			{Assets.WIZARD_ICON, Assets.WIZARD_HOVER_ICON, Assets.WIZARD_BG, WIZARD_DESC}
 		};
 
 		setMenuQuitIcon(e -> {
@@ -436,6 +410,7 @@ public class GUI {
 				ex.printStackTrace();
 			}
 		});
+
 		int currentY = startY;
 		for (int i = 0; i < classes.length; i++) {
 			String base = classes[i][0];
@@ -456,14 +431,14 @@ public class GUI {
 
 		this.frame.add(line);
 	}
-	
+
 	public void setCharacterNameField() throws SQLException {
-		ImageIcon i = new ImageIcon(USERNAME);
+		ImageIcon i = new ImageIcon(Assets.USERNAME);
 		JLabel imageLabel = new JLabel(i);
 		imageLabel.setBounds(150, 15, i.getIconWidth(), i.getIconHeight());
 		this.frame.add(imageLabel);
 
-		ImageIcon bg = new ImageIcon(USERNAME_FIELD);
+		ImageIcon bg = new ImageIcon(Assets.USERNAME_FIELD);
 		JLabel background = new JLabel(bg);
 		background.setBounds(150, 70, bg.getIconWidth(), bg.getIconHeight());
 		this.frame.add(background);

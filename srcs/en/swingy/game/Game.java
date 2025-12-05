@@ -9,6 +9,7 @@ import en.swingy.equipement.armor.Armor;
 import en.swingy.equipement.helm.Helm;
 import en.swingy.equipement.weapon.Weapon;
 import en.swingy.hero.Hero;
+import en.swingy.gui.GUI;
 
 public class Game {
 	private static final String[] prompt_start = {
