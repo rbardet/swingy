@@ -60,7 +60,7 @@ public class Game {
 	private int dbSize = 0;
 	private GUI screen;
 	
-	public Game() {
+	public Game() throws Exception {
 		this.screen = new GUI();
 	}
 

@@ -2,10 +2,10 @@ package en.swingy.game;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Label;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionListener;
+import java.io.File;
 
-import javax.print.attribute.standard.MediaSize.JIS;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +19,8 @@ public class GUI {
 	private final int WIDHT = 1280;
 	private final int HEIGHT = 720;
 	private final String APP_NAME = "Swingy";
+	private final String FONT = "ressources/diablo.ttf";
+	private Font CUSTOM_FONT;
 
 	private final int startY = 200;
 	private final int padding = 70;
@@ -132,8 +134,15 @@ public class GUI {
 
 	private int player_class = -1;
 
-	public GUI() {
+	public GUI() throws Exception {
 		this.frame = new JFrame();
+		CUSTOM_FONT = Font.createFont(
+			Font.TRUETYPE_FONT,
+			new File(FONT)
+		).deriveFont(18f);
+		
+		GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		g.registerFont(CUSTOM_FONT);
 		this.frame.setSize(WIDHT, HEIGHT);
 		this.frame.setTitle(APP_NAME);
 		this.frame.setResizable(false);
@@ -161,7 +170,7 @@ public class GUI {
 		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setVerticalTextPosition(SwingConstants.CENTER);
 		button.setForeground(Color.WHITE);
-		button.setFont(new Font("Serif", Font.BOLD, 18));
+		button.setFont(CUSTOM_FONT);
 		button.addActionListener(event);
 		return button;
 	}
@@ -195,13 +204,13 @@ public class GUI {
 
 	public void setClassDesc(String desc) {
 		JTextArea textArea = new JTextArea(desc);
-		textArea.setBounds(150, 150, 480, 250);
+		textArea.setBounds(150, 150, 480, 320);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
 		textArea.setOpaque(false);
 		textArea.setForeground(Color.WHITE);
-		textArea.setFont(new Font("Serif", Font.BOLD, 16));
+		textArea.setFont(CUSTOM_FONT);
 		this.frame.add(textArea);
 	}
 
@@ -282,9 +291,9 @@ public class GUI {
 		background.setBounds(75, 75, bg.getIconWidth(), bg.getIconHeight());
 
 		JLabel label = new JLabel("Enter your nickname :");
-		label.setBounds(150, 20, 200, 25);
+		label.setBounds(150, 20, 300, 25);
 		label.setForeground(Color.WHITE);
-		label.setFont(new Font("Arial", Font.BOLD, 16));
+		label.setFont(CUSTOM_FONT);
 		this.frame.add(label);
 
 		JTextField textField = new JTextField();
