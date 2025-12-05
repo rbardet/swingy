@@ -71,13 +71,7 @@ public class SavesDisplay {
 
 		rs.close();
 
-		gui.setMenuQuitIcon(e -> {
-			try {
-				MainMenu.setMainMenu(gui, g);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+		gui.setMenuQuitIcon(gui, g);
 
 		gui.getFrame().repaint();
 	}

@@ -1,6 +1,5 @@
 package en.swingy.gui;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
@@ -12,8 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import en.swingy.game.Game;
 
@@ -24,6 +21,7 @@ public class GUI {
 	private final String APP_NAME = "Swingy";
 	public final String FONT = "ressources/diablo.ttf";
 	private Font CUSTOM_FONT;
+	private String username;
 
 	public static final String MONK_DESC_HEADER = "Monk";
 	public static final String MONK_DESC_BODY = "A swift, spiritual melee fighter using martial arts, holy powers and high mobility to strike fast and dodge attacks — a balance of offense and agility.";
@@ -52,7 +50,6 @@ public class GUI {
 	public static final String WIZARD_DESC_HEADER = "Wizard";
 	public static final String WIZARD_DESC_BODY = "A master of arcane and elemental magic, capable of dealing massive damage from afar — manipulating fire, ice, lightning (and sometimes even time) to obliterate enemies.";
 	public static final String WIZARD_DESC_STAT = "Attack - 8; Defense - 3; HP - 9";
-
 
 	private int player_class = -1;
 
@@ -92,7 +89,7 @@ public class GUI {
 		this.frame.setContentPane(bgLabel);
 	}
 
-	public void setMenuQuitIcon(ActionListener e) throws SQLException {
+	public void setMenuQuitIcon(GUI gui, Game g) throws SQLException {
 		ImageIcon i = new ImageIcon(Assets.MENU_QUIT);
 		ImageIcon hover = new ImageIcon(Assets.MENU_QUIT_HOVER);
 		JButton button = new JButton(i);
@@ -100,7 +97,13 @@ public class GUI {
 		button.setBounds(20, 20, 50, 50);
 		button.setBorderPainted(false);
 		button.setContentAreaFilled(false);
-		button.addActionListener(e);
+		button.addActionListener(e -> {
+			try {
+				MainMenu.setMainMenu(gui, g);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
 		this.frame.add(button);
 	}
 
@@ -116,11 +119,17 @@ public class GUI {
 		return this.frame;
 	}
 
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String s) {
+		this.username = s;
+	}
+
 	public void runGui(Game game) throws SQLException {
 		MainMenu.setMainMenu(this , game);
 		this.showScreen();
-		while (true) {
-			
-		}
+		while (true);
 	}
 }

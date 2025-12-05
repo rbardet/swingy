@@ -2,14 +2,17 @@ package en.swingy.gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
 
 import en.swingy.game.Game;
 
@@ -95,13 +98,7 @@ public class CreateSaveMenu {
 			{Assets.WIZARD_ICON, Assets.WIZARD_HOVER_ICON, Assets.WIZARD_BG, GUI.WIZARD_DESC_HEADER, GUI.WIZARD_DESC_BODY, GUI.WIZARD_DESC_STAT}
 		};
 
-		gui.setMenuQuitIcon(e -> {
-			try {
-				MainMenu.setMainMenu(gui, g);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+		gui.setMenuQuitIcon(gui, g);
 		int currentY = startY;
 		for (int i = 0; i < classes.length; i++) {
 			String base = classes[i][0];
@@ -125,48 +122,46 @@ public class CreateSaveMenu {
 		gui.getFrame().add(line);
 	}
 
-	public static void setClassDesc(GUI gui) throws SQLException {
+	public static void setCharacterNameField(GUI gui) {
 		ImageIcon i = new ImageIcon(Assets.USERNAME);
-		JLabel imageLabel = new JLabel(i);
-		imageLabel.setBounds(150, 15, i.getIconWidth(), i.getIconHeight());
-		gui.getFrame().add(imageLabel);
-
-		ImageIcon bg = new ImageIcon(Assets.USERNAME_FIELD);
-		JLabel background = new JLabel(bg);
-		background.setBounds(150, 70, bg.getIconWidth(), bg.getIconHeight());
-		gui.getFrame().add(background);
+		JLabel l = new JLabel(i);
+		l.setBounds(150, 15, i.getIconWidth(), i.getIconHeight());
+		gui.getFrame().add(l);
 
 		JTextField textField = new JTextField();
-		textField.setBounds(150, 70, bg.getIconWidth(), bg.getIconHeight());
-		textField.setOpaque(false);
 		textField.setForeground(Color.WHITE);
+		textField.setFont(gui.getCustomFont().deriveFont(16f));
+		textField.setOpaque(false);
+		textField.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createLineBorder(Color.WHITE, 2),
+			BorderFactory.createEmptyBorder(5, 5, 5, 5)
+		));
+		textField.setCaretColor(Color.WHITE);
+		textField.setBounds(150, 70, 250, 35);
+
+		textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+			public void insertUpdate(DocumentEvent e) { updateUsername(); }
+			public void removeUpdate(DocumentEvent e) { updateUsername(); }
+			public void changedUpdate(DocumentEvent e) { updateUsername(); }
+
+			private void updateUsername() {
+				gui.setUsername(textField.getText());
+			}
+		});
 
 		gui.getFrame().add(textField);
+		gui.getFrame().repaint();
 	}
 
-	public static void setCharacterNameField(GUI gui) throws SQLException {
-		ImageIcon i = new ImageIcon(Assets.USERNAME);
-		JLabel imageLabel = new JLabel(i);
-		imageLabel.setBounds(150, 15, i.getIconWidth(), i.getIconHeight());
-		gui.getFrame().add(imageLabel);
+	public static void setCreateAccountButton(GUI gui) {
 
-		ImageIcon bg = new ImageIcon(Assets.USERNAME_FIELD);
-		JLabel background = new JLabel(bg);
-		background.setBounds(150, 70, bg.getIconWidth(), bg.getIconHeight());
-		gui.getFrame().add(background);
-
-		JTextField textField = new JTextField();
-		textField.setBounds(150, 70, bg.getIconWidth(), bg.getIconHeight());
-		textField.setOpaque(false);
-		textField.setForeground(Color.WHITE);
-
-		gui.getFrame().add(textField);
 	}
 
 	public static void createChacterMenu(GUI gui, Game g) throws SQLException {
 		gui.clearScreen();
 		setCharacterNameField(gui);
 		createClassesCaroussel(gui, g);
+		setCharacterNameField(gui);
 	}
 
 }
