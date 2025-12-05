@@ -5,14 +5,18 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import en.swingy.db.DB;
 
 public class GUI {
 	private JFrame frame;
@@ -187,19 +191,42 @@ public class GUI {
 		this.frame.setContentPane(bgLabel);
 	}
 
-	public void setMainMenu() {
+	public void setMainMenu() throws SQLException {
 		this.setFrameBg(MENU_FONT);
-		JButton b1 = createMenuButton("Create a character", startY, e->createChacterMenu());
+		JButton b1 = createMenuButton("Create a character", startY, e->{
+			try {
+				createChacterMenu();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+
 		this.frame.add(b1);
 
 		JButton b2 = createMenuButton("Load a character", startY + padding, e->Game.exitGame());
 		this.frame.add(b2);
 
-		JButton b3 = createMenuButton("Delete a character", startY + padding * 2, e->Game.exitGame());
+		JButton b3 = createMenuButton("Delete a character", startY + padding * 2, e->{
+			try {
+				showDeleteSaveMenu();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+
 		this.frame.add(b3);
 
 		JButton b4 = createMenuButton("Exit the game", startY + padding * 3, e->Game.exitGame());
 		this.frame.add(b4);
+	}
+	
+	public void showAvailableSaves() throws SQLException {
+		DB.fetchSaves();
+	}
+
+	public void showDeleteSaveMenu() throws SQLException {
+		showAvailableSaves();
+
 	}
 
 	public void setClassDesc(String desc) {
@@ -214,7 +241,7 @@ public class GUI {
 		this.frame.add(textArea);
 	}
 
-	public void setMenuQuitIcon(ActionListener e) {
+	public void setMenuQuitIcon(ActionListener e) throws SQLException {
 		ImageIcon i = new ImageIcon(MENU_QUIT);
 		ImageIcon hover = new ImageIcon(MENU_QUIT_HOVER);
 		JButton button = new JButton(i);
@@ -233,7 +260,7 @@ public class GUI {
 		int y,
 		String bg,
 		String class_desc,
-		int class_idx)
+		int class_idx) throws SQLException
 	{
 		ImageIcon def = new ImageIcon(base);
 		ImageIcon hov = new ImageIcon(hover);
@@ -244,19 +271,23 @@ public class GUI {
 		button.setBorderPainted(false);
 		button.setContentAreaFilled(false);
 		button.addActionListener(e -> {
-			this.clearScreen();
-			setFrameBg(bg);
-			this.player_class = class_idx;
-			createChacterMenu();
-			setClassDesc(class_desc);
+			try {
+				this.clearScreen();
+				setFrameBg(bg);
+				this.player_class = class_idx;
+				createChacterMenu();
+				setClassDesc(class_desc);
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
 		});
 
 		return button;
 	}
 
-	public void createClassesCaroussel() {
+	public void createClassesCaroussel() throws SQLException {
 		int startX = 50;
-		int startY = 100;
+		int startY = 125;
 		int gap = 20;
 
 		String[][] classes = {
@@ -269,7 +300,13 @@ public class GUI {
 			{WIZARD_ICON, WIZARD_HOVER_ICON, WIZARD_BG, WIZARD_DESC}
 		};
 
-		setMenuQuitIcon(e -> setMainMenu());
+		setMenuQuitIcon(e -> {
+			try {
+				setMainMenu();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
 		int currentY = startY;
 		for (int i = 0; i < classes.length; i++) {
 			String base = classes[i][0];
@@ -283,9 +320,15 @@ public class GUI {
 
 			currentY += icon.getIconHeight() + gap;
 		}
+
+		JPanel line = new JPanel();
+		line.setBackground(Color.WHITE);
+		line.setBounds(startX + 50 + 20, startY, 2, currentY - startY); 
+
+		this.frame.add(line);
 	}
 	
-	public void setCharacterNameField() {
+	public void setCharacterNameField() throws SQLException {
 		ImageIcon bg = new ImageIcon(MENU_BUTTON_HOVER);
 		JLabel background = new JLabel(bg);
 		background.setBounds(75, 75, bg.getIconWidth(), bg.getIconHeight());
@@ -303,13 +346,14 @@ public class GUI {
 		background.add(textField);
 		this.frame.add(textField);
 	}
-	public void createChacterMenu() {
+
+	public void createChacterMenu() throws SQLException {
 		this.clearScreen();
 		this.setCharacterNameField();
 		this.createClassesCaroussel();
 	}
 
-	public void runGui(Game game) {
+	public void runGui(Game game) throws SQLException {
 		this.setMainMenu();
 		this.showScreen();
 		while (true) {
