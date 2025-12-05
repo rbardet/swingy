@@ -237,9 +237,9 @@ public class GUI {
 		button.addActionListener(e -> {
 			this.clearScreen();
 			setFrameBg(bg);
-			setClassDesc(class_desc);
 			this.player_class = class_idx;
-			createClassesCaroussel();
+			createChacterMenu();
+			setClassDesc(class_desc);
 		});
 
 		return button;
@@ -275,21 +275,28 @@ public class GUI {
 			currentY += icon.getIconHeight() + gap;
 		}
 	}
-
-	public void createChacterMenu() {
-		this.clearScreen();
+	
+	public void setCharacterNameField() {
 		ImageIcon bg = new ImageIcon(MENU_BUTTON_HOVER);
 		JLabel background = new JLabel(bg);
-		background.setBounds(100, 100, bg.getIconWidth(), bg.getIconHeight());
-		
-		int centerX = (WIDHT - bg.getIconWidth()) / 2;
+		background.setBounds(75, 75, bg.getIconWidth(), bg.getIconHeight());
+
+		JLabel label = new JLabel("Enter your nickname :");
+		label.setBounds(150, 20, 200, 25);
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("Arial", Font.BOLD, 16));
+		this.frame.add(label);
+
 		JTextField textField = new JTextField();
-		textField.setBounds(centerX - 30, 50, bg.getIconWidth(), bg.getIconHeight());
+		textField.setBounds(150, 50, bg.getIconWidth(), bg.getIconHeight());
 		textField.setOpaque(false);
 		textField.setForeground(Color.WHITE);
 		background.add(textField);
 		this.frame.add(textField);
-
+	}
+	public void createChacterMenu() {
+		this.clearScreen();
+		this.setCharacterNameField();
 		this.createClassesCaroussel();
 	}
 
