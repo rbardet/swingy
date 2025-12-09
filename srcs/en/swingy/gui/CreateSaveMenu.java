@@ -12,10 +12,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import en.swingy.db.DB;
 import en.swingy.entity.entityclass.EntityClass;
 import en.swingy.game.Game;
+import en.swingy.hero.Hero;
 
 public class CreateSaveMenu {
 
@@ -138,27 +140,37 @@ public class CreateSaveMenu {
 			BorderFactory.createLineBorder(Color.WHITE, 2),
 			BorderFactory.createEmptyBorder(5, 5, 5, 5)
 		));
+		textField.setText(gui.getUsername());
 		textField.setCaretColor(Color.WHITE);
 		textField.setBounds(150, 70, 250, 35);
 
-		textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+		DocumentListener dl = new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) { updateUsername(); }
-			public void removeUpdate(DocumentEvent e) { updateUsername(); }
+			public void removeUpdate(DocumentEvent e) { gui.setUsername(textField.getText()); }
 			public void changedUpdate(DocumentEvent e) { updateUsername(); }
 
 			private void updateUsername() {
+				if (gui.getUsername().length() >= 16) {
+					return ;
+				}
 				gui.setUsername(textField.getText());
 			}
-		});
-
+		};
+		textField.getDocument().addDocumentListener(dl);
 		gui.getFrame().add(textField);
-		gui.getFrame().repaint();
 	}
 
-	public static void setCreateAccountButton(GUI gui) throws SQLException {
+	public static void setStartGameButton(GUI gui, Game g) throws SQLException {
 		JButton button = MainMenu.createMenuButton(gui, "Start Game", 600, e->{
 			try {
-				DB.createAccount(gui.getUsername(), EntityClass.E_CLASS[gui.getPlayerClass()]);
+				if (gui.getPlayerClass() != -1 && !gui.getUsername().isEmpty()) {
+					Hero player = new Hero(gui.getUsername(), EntityClass.E_CLASS[gui.getPlayerClass()]);
+					DB.createAccount(player.getName(), player.getEClass());
+					gui.clearUsername();
+					gui.clearClass();
+					GUI_Game gGame = new GUI_Game(player);
+					gGame.setGameMainScene(gui, g);
+				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -171,8 +183,8 @@ public class CreateSaveMenu {
 		setCharacterNameField(gui);
 		createClassesCaroussel(gui, g);
 		setCharacterNameField(gui);
-		setCreateAccountButton(gui);
-
+		setStartGameButton(gui, g);
+		gui.getFrame().repaint();
 	}
 
 }

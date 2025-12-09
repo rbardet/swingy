@@ -2,7 +2,6 @@ package en.swingy.gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
@@ -73,8 +72,7 @@ public class MainMenu {
 
 	public static void setMainMenu(GUI gui, Game g) throws SQLException {
 		g.setDbSize();
-		gui.setFrameBg(Assets.MENU_FONT);
-		Frame f = gui.getFrame();
+		gui.setFrameBg(Assets.MENU_BG);
 		JButton b1 = createMenuButton(gui, "Create a character", startY, e->{
 			try {
 				if (g.getDBSize() >= 3) {
@@ -86,8 +84,7 @@ public class MainMenu {
 				ex.printStackTrace();
 			}
 		});
-
-		f.add(b1);
+		gui.getFrame().add(b1);
 
 		JButton b2 = createMenuButton(gui, "Load a character", startY + padding, e->{
 			try {
@@ -96,7 +93,7 @@ public class MainMenu {
 				ex.printStackTrace();
 			}
 		});
-		f.add(b2);
+		gui.getFrame().add(b2);
 
 		JButton b3 = createMenuButton(gui, "Delete a character", startY + padding * 2, e->{
 			try {
@@ -105,9 +102,9 @@ public class MainMenu {
 				ex.printStackTrace();
 			}
 		});
-		f.add(b3);
+		gui.getFrame().add(b3);
 
 		JButton b4 = createMenuButton(gui, "Exit the game", startY + padding * 3, e->Game.exitGame());
-		f.add(b4);
+		gui.getFrame().add(b4);
 	}
 }

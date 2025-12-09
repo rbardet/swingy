@@ -139,7 +139,7 @@ public class Game {
 	 * @return a Hero object populated with data from the ResultSet
 	 * @throws SQLException if accessing ResultSet fields fails
 	 */
-	public Hero setHeroStats(ResultSet rs) throws SQLException {
+	public static Hero setHeroStats(ResultSet rs) throws SQLException {
 		Hero player = new Hero(rs.getString(DB.NAME_VAR), EntityClass.getClassByName(rs.getString(DB.CLASS_VAR)));
 		player.setId(rs.getInt(DB.ID_VAR));
 		player.setLv(rs.getInt(DB.LV_VAR));

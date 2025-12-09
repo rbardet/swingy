@@ -2,7 +2,6 @@ package en.swingy.gui;
 
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -22,7 +21,7 @@ public class GUI {
 	private final String APP_NAME = "Swingy";
 	public final String FONT = "ressources/diablo.ttf";
 	private Font CUSTOM_FONT;
-	private String username;
+	private String username = null;
 
 	public static final String MONK_DESC_HEADER = "Monk";
 	public static final String MONK_DESC_BODY = "A swift, spiritual melee fighter using martial arts, holy powers and high mobility to strike fast and dodge attacks — a balance of offense and agility.";
@@ -56,30 +55,44 @@ public class GUI {
 
 	public GUI() throws Exception {
 		this.frame = new JFrame();
-		CUSTOM_FONT = Font.createFont(
-			Font.TRUETYPE_FONT,
-			new File(FONT)
-		).deriveFont(18f);
-		
-		GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		g.registerFont(CUSTOM_FONT);
+
 		this.frame.setSize(WIDHT, HEIGHT);
 		this.frame.setTitle(APP_NAME);
 		this.frame.setResizable(false);
 		this.frame.setLayout(null);
-		this.frame.setFocusable(true);
-		this.frame.requestFocusInWindow();
+		this.initCustomFont();
+		this.setWindowCloseToggle();
+		this.setKeyboardFocus();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void initCustomFont() throws Exception {
+		CUSTOM_FONT = Font.createFont(
+			Font.TRUETYPE_FONT,
+			new File(FONT)
+		).deriveFont(18f);
+	}
+
+	public void setWindowCloseToggle() {
 		KeyListener k = new KeyListener() {
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyChar() == 27) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					Game.exitGame();
 				}
 			}
 			public void keyTyped(KeyEvent e) {}
 			public void keyReleased(KeyEvent e) {}
 		};
+		this.AddEventToFrame(k);
+	}
+
+	public void setKeyboardFocus() {
+		this.frame.setFocusable(true);
+		this.frame.requestFocusInWindow();
+	}
+
+	public void AddEventToFrame(KeyListener k) {
 		this.frame.addKeyListener(k);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public void showScreen() {
@@ -133,6 +146,9 @@ public class GUI {
 	}
 
 	public String getUsername() {
+		if (this.username == null) {
+			return "";
+		}
 		return this.username;
 	}
 
@@ -142,6 +158,14 @@ public class GUI {
 
 	public void setUsername(String s) {
 		this.username = s;
+	}
+
+	public void clearUsername() {
+		this.username = "";
+	}
+
+	public void clearClass() {
+		this.player_class = -1;
 	}
 
 	public void runGui(Game game) throws SQLException {
