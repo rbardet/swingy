@@ -1,8 +1,10 @@
 package en.swingy.game;
 
+import java.awt.Point;
 import java.sql.SQLException;
 import java.util.Random;
 
+import en.swingy.gui.Assets;
 import en.swingy.hero.Hero;
 
 public class Map {
@@ -17,6 +19,27 @@ public class Map {
 	public Map() {
 		this.map = null;
 		this.size = 0;
+	}
+
+	public int getMapSize() {
+		return this.size;
+	}
+
+	public Point getPlayerPos() {
+		return new Point(this.controller.getPlayerX(), this.controller.getPlayerY());
+	}
+
+	public String getTileAsset(int x, int y) {
+		switch (map[y][x]) {
+			case EMPTY_CELL: return Assets.GROUND;
+			case PLAYER_CELL: return Assets.PLAYER;
+			case ENNEMY_CELL: return Assets.ENNEMY;
+			default: return "";
+		}
+	}
+
+	public String getTile(int x, int y) {
+		return this.map[y][x];
 	}
 
 	/**
