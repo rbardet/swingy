@@ -9,18 +9,10 @@ public class DemonHunter extends EntityClass {
 	private static final float DEF_COEFF = 1.03f;
 	private static final float HP_COEFF  = 1.05f;
 
-	/**
-	 * Constructor for the DemonHunter class.
-	 * Initializes base attack, defense, and HP values.
-	 */
 	public DemonHunter() {
 		super(BASE_ATTACK, BASE_DEFENSE, BASE_HP);
 	}
 
-	/**
-	 * Applies level-up scaling to the DemonHunter's stats.
-	 * Each stat is multiplied by its respective coefficient.
-	 */
 	public void statsLevelUp() {
 		this.setAttack(this.getAttack() * ATT_COEFF);
 		this.setDefense(this.getDefense() * DEF_COEFF);

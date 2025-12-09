@@ -203,20 +203,10 @@ public enum WeaponEnum {
 		this.label = label;
 	}
 
-	/**
-	 * Returns the label (display name) of the weapon.
-	 *
-	 * @return weapon label as a string
-	 */
 	public String getLabel() {
 		return label;
 	}
 
-	/**
-	 * Returns the label of a randomly selected weapon from the enum.
-	 *
-	 * @return a random weapon label as a string
-	 */
 	public static String getRandom() {
 		WeaponEnum[] values = WeaponEnum.values();
 		int index = new Random().nextInt(values.length);

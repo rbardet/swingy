@@ -84,20 +84,10 @@ public enum ArmorEnum {
 		this.label = label;
 	}
 
-	/**
-	 * Returns the label (display name) of the armor.
-	 *
-	 * @return armor label as a string
-	 */
 	public String getLabel() {
 		return label;
 	}
 
-	/**
-	 * Returns the label of a randomly selected armor from the enum.
-	 *
-	 * @return a random armor label as a string
-	 */
 	public static String getRandom() {
 		ArmorEnum[] values = ArmorEnum.values();
 		int index = new Random().nextInt(values.length);

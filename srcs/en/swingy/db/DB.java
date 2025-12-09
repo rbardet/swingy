@@ -28,7 +28,6 @@ public class DB {
 	public static final String HL_HP_VAR = "h_hp";
 	private static final String SQL_URL = "jdbc:sqlite:game.db";
 
-	// SQL queries
 	private static final String RQ_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + MAIN_TABLE + " (" +
 		ID_VAR + " INTEGER PRIMARY KEY, " +
 		NAME_VAR + " TEXT, " +
@@ -91,152 +90,147 @@ public class DB {
 
 	public DB() {}
 
-	/**
-	 * Returns the current database connection.
-	 *
-	 * @return Active database connection
-	 * @throws SQLException If the connection is not initialized
-	 */
-	public static Connection getConnection() throws SQLException {
+	
+	public static Connection getConnection()  {
 		return conn;
 	}
 
-	/**
-	 * Initializes the SQLite database and creates the Hero table if it does not exist.
-	 *
-	 * @throws SQLException If database connection or table creation fails
-	 */
-	public static void initDb() throws SQLException {
-		if (conn == null) {
-			conn = DriverManager.getConnection(SQL_URL);
-			getConnection().prepareStatement(RQ_CREATE_TABLE).execute();
-		}
-	}
-
-	/**
-	 * Returns the next available user ID in the Hero table.
-	 *
-	 * @return Next available ID
-	 * @throws SQLException If database query fails
-	 */
-	public static int getUserId() throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(RQ_ENTRY_SIZE);
-		ResultSet rs = s.executeQuery();
-
-		int exId = 1;
-		while (rs.next()) {
-			int currId = rs.getInt(ID_VAR);
-			if (currId != exId) {
-				return exId;
+	
+	public static void initDb()  {
+		try {
+			if (conn == null) {
+				conn = DriverManager.getConnection(SQL_URL);
+				getConnection().prepareStatement(RQ_CREATE_TABLE).execute();
 			}
-			exId++;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return exId;
 	}
 
-	/**
-	 * Creates a new hero account in the database.
-	 *
-	 * @param name Hero's name
-	 * @param c Hero's entity class (stats)
-	 * @return Generated key (ID) of the new hero
-	 * @throws SQLException If insertion fails
-	 */
-	public static long createAccount(String name, EntityClass c) throws SQLException {
-		initDb();
-		PreparedStatement s = getConnection().prepareStatement(RQ_INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS);
-		s.setInt(1, getUserId());
-		s.setString(2, name);
-		s.setString(3, c.getClass().getSimpleName());
-		s.setInt(4, 1);
-		s.setInt(5, 0);
-		s.setFloat(6, c.getAttack());
-		s.setFloat(7, c.getDefense());
-		s.setFloat(8, c.getHP());
-		s.setString(9, "None");
-		s.setFloat(10, 0);
-		s.setString(11, "None");
-		s.setFloat(12, 0);
-		s.setString(13, "None");
-		s.setFloat(14, 0);
+	
+	public static int getUserId()  {
+		try {
+			PreparedStatement s = getConnection().prepareStatement(RQ_ENTRY_SIZE);
+			ResultSet rs = s.executeQuery();
 
-		s.executeUpdate();
-
-		long key = -1L;
-		ResultSet rs = s.getGeneratedKeys();
-		if (rs.next()) {
-			key = rs.getLong(1);
+			int exId = 1;
+			while (rs.next()) {
+				int currId = rs.getInt(ID_VAR);
+				if (currId != exId) {
+					return exId;
+				}
+				exId++;
+			}
+			return exId;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-
-		return key;
+		return -1;
 	}
 
-	/**
-	 * Updates a hero's data after a fight (XP, weapon, armor, helm).
-	 *
-	 * @param player Hero object to update
-	 * @throws SQLException If update fails
-	 */
-	public static void updateAfterFight(Hero player) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(RQ_UPDATE_FIGHT);
-		s.setInt(1, player.getXP());
-		s.setString(2, player.getWeapon().getName());
-		s.setFloat(3, player.getWeapon().getAttack());
-		s.setString(4, player.getArmor().getName());
-		s.setFloat(5, player.getArmor().getDefense());
-		s.setString(6, player.getHelm().getName());
-		s.setFloat(7, player.getHelm().getHP());
-		s.setInt(8, player.getId());
+	
+	public static long createAccount(String name, EntityClass c)  {
+		try {
+			initDb();
+			PreparedStatement s = getConnection().prepareStatement(RQ_INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS);
+			s.setInt(1, getUserId());
+			s.setString(2, name);
+			s.setString(3, c.getClass().getSimpleName());
+			s.setInt(4, 1);
+			s.setInt(5, 0);
+			s.setFloat(6, c.getAttack());
+			s.setFloat(7, c.getDefense());
+			s.setFloat(8, c.getHP());
+			s.setString(9, "None");
+			s.setFloat(10, 0);
+			s.setString(11, "None");
+			s.setFloat(12, 0);
+			s.setString(13, "None");
+			s.setFloat(14, 0);
 
-		s.executeUpdate();
+			s.executeUpdate();
+
+			long key = -1L;
+			ResultSet rs = s.getGeneratedKeys();
+			if (rs.next()) {
+				key = rs.getLong(1);
+			}
+
+			return key;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
-	/**
-	 * Updates a hero's level and base stats after leveling up.
-	 *
-	 * @param player Hero object to update
-	 * @throws SQLException If update fails
-	 */
-	public static void updateAfterLevel(Hero player) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(RQ_UPDATE_LEVEL_UP);
-		s.setInt(1, player.getLevel());
-		s.setFloat(2, player.getEClass().getAttack());
-		s.setFloat(3, player.getEClass().getDefense());
-		s.setFloat(4, player.getEClass().getHP());
-		s.setInt(5, player.getId());
+	
+	public static void updateAfterFight(Hero player)  {
+		try {
+			PreparedStatement s = getConnection().prepareStatement(RQ_UPDATE_FIGHT);
+			s.setInt(1, player.getXP());
+			s.setString(2, player.getWeapon().getName());
+			s.setFloat(3, player.getWeapon().getAttack());
+			s.setString(4, player.getArmor().getName());
+			s.setFloat(5, player.getArmor().getDefense());
+			s.setString(6, player.getHelm().getName());
+			s.setFloat(7, player.getHelm().getHP());
+			s.setInt(8, player.getId());
 
-		s.executeUpdate();
+			s.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	/**
-	 * Deletes a hero from the database.
-	 *
-	 * @param idx ID of the hero to delete
-	 * @throws SQLException If deletion fails
-	 */
-	public static void deleteHero(int idx) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(RQ_DELETE_REQUEST);
-		s.setInt(1, idx);
-		s.executeUpdate();
+	
+	public static void updateAfterLevel(Hero player)  {
+		try {
+			PreparedStatement s = getConnection().prepareStatement(RQ_UPDATE_LEVEL_UP);
+			s.setInt(1, player.getLevel());
+			s.setFloat(2, player.getEClass().getAttack());
+			s.setFloat(3, player.getEClass().getDefense());
+			s.setFloat(4, player.getEClass().getHP());
+			s.setInt(5, player.getId());
+
+			s.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	/**
-	 * Fetches all saved heroes from the database.
-	 *
-	 * @return ResultSet containing all heroes
-	 * @throws SQLException If query fails
-	 */
-	public static ResultSet fetchSaves() throws SQLException {
-		initDb();
-		PreparedStatement s = getConnection().prepareStatement(RQ_FETCH_USERS);
-		return s.executeQuery();
+	
+	public static void deleteHero(int idx)  {
+		try {
+			PreparedStatement s = getConnection().prepareStatement(RQ_DELETE_REQUEST);
+			s.setInt(1, idx);
+			s.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static Hero loadSave(int idx) throws SQLException {
-		PreparedStatement s = getConnection().prepareStatement(RQ_FETCH_USER_BY_ID);
-		s.setInt(1, idx);
-		ResultSet rs = s.executeQuery();
-		
-		return Game.setHeroStats(rs);
+	
+	public static ResultSet fetchSaves() {
+		try {
+			initDb();
+			PreparedStatement s = getConnection().prepareStatement(RQ_FETCH_USERS);
+			return s.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Hero loadSave(int idx) {
+		try {
+			PreparedStatement s = getConnection().prepareStatement(RQ_FETCH_USER_BY_ID);
+			s.setInt(1, idx);
+			ResultSet rs = s.executeQuery();
+			
+			return Game.setHeroStats(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

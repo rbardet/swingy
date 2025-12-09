@@ -1,6 +1,5 @@
 package en.swingy.game;
 
-import java.sql.SQLException;
 import java.util.Random;
 
 import en.swingy.db.DB;
@@ -51,18 +50,11 @@ public class Fight {
 	You have flee
 	""" + GamePrint.COLOR_RESET;
 
-	/**
-	 * Handles the post-fight logic including XP gain, level up, item drop, and equipping.
-	 *
-	 * @param player The hero who fought
-	 * @param player_hp Remaining HP of the player after the fight
-	 * @throws SQLException If database update fails
-	 */
-	public static void AfterFightSim(Hero player, float player_hp) throws SQLException {
+	public static void AfterFightSim(Hero player, float player_hp)  {
 		if (player_hp <= 0) {
-			System.out.println(LOSE_PROMPT);
+			GamePrint.println(LOSE_PROMPT);
 		} else {
-			System.out.println(WIN_PROMPT);
+			GamePrint.println(WIN_PROMPT);
 			player.addXp(250);
 			player.checkLevelUp();
 			Equipement drop = Equipement.generateItem(player.getLevel());
@@ -84,13 +76,6 @@ public class Fight {
 		GamePrint.STD_IN.nextLine();
 	}
 
-	/**
-	 * Computes the damage dealt based on attack and defense with a random variation.
-	 *
-	 * @param atk Attacker's attack value
-	 * @param def Defender's defense value
-	 * @return Calculated damage (minimum 1)
-	 */
 	public static float computeDamage(float atk, float def) {
 		float variation = (float)(1 + (Math.random() * 0.3 - 0.15));
 		float raw = atk * variation;
@@ -99,21 +84,15 @@ public class Fight {
 		return Math.max(dmg, 1);
 	}
 
-	/**
-	 * Simulates a fight between the hero and a random enemy until one dies.
-	 * Updates hero stats and calls post-fight logic.
-	 *
-	 * @param player The hero participating in the fight
-	 * @throws SQLException If database update fails
-	 */
-	public static void Simulate(Hero player) throws SQLException {
+	public static void Simulate(Hero player)  {
 		float baseHp = player.getEClass().getHP();
 		float player_hp = player.getEClass().getHP() + player.getHelm().getHP();
 
 		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
 		float player_dmg;
 		float bot_dmg;
-		System.out.println(FIGHT_PROMPT + bot.getName());
+		
+		GamePrint.println(FIGHT_PROMPT + bot.getName());
 
 		do {
 			player_dmg = computeDamage(player.getEClass().getAttack() + player.getWeapon().getAttack(), bot.getEClass().getDefense());
@@ -129,11 +108,6 @@ public class Fight {
 		player.getEClass().setHP(baseHp);
 	}
 
-	/**
-	 * Handles the flee mechanic allowing the player to attempt to escape a fight.
-	 *
-	 * @return true if flee is successful, false otherwise
-	 */
 	public static boolean flee() {
 		String opt;
 		do {

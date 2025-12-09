@@ -5,7 +5,6 @@ import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -94,6 +93,10 @@ public class GUI {
 		this.frame.addKeyListener(k);
 	}
 
+	public void removeEventToFrame(KeyListener k) {
+		this.frame.removeKeyListener(k);
+	}
+
 	public void showScreen() {
 		this.frame.setVisible(true);
 	}
@@ -114,7 +117,7 @@ public class GUI {
 		this.frame.setContentPane(bgLabel);
 	}
 
-	public void setMenuQuitIcon(GUI gui, Game g) throws SQLException {
+	public void setMenuQuitIcon(GUI gui, Game g)  {
 		ImageIcon i = new ImageIcon(Assets.MENU_QUIT);
 		ImageIcon hover = new ImageIcon(Assets.MENU_QUIT_HOVER);
 		JButton button = new JButton(i);
@@ -167,7 +170,7 @@ public class GUI {
 		this.player_class = -1;
 	}
 
-	public void runGui(Game game) throws SQLException {
+	public void runGui(Game game)  {
 		MainMenu.setMainMenu(this , game);
 		this.showScreen();
 		while (true);

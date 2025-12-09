@@ -85,29 +85,14 @@ public enum HelmEnum {
 
 	private final String label;
 
-	/**
-	 * Constructor for HelmEnum.
-	 *
-	 * @param label The display name of the helm
-	 */
 	HelmEnum(String label) {
 		this.label = label;
 	}
 
-	/**
-	 * Returns the display name of the helm.
-	 *
-	 * @return Helm label
-	 */
 	public String getLabel() {
 		return label;
 	}
 
-	/**
-	 * Returns a random helm label from the enum.
-	 *
-	 * @return Random helm name
-	 */
 	public static String getRandom() {
 		HelmEnum[] values = HelmEnum.values();
 		int index = new Random().nextInt(values.length);

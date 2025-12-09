@@ -1,13 +1,13 @@
 package en.swingy.gui.guigame;
 
 import java.awt.Point;
-import java.sql.SQLException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import en.swingy.game.Game;
-import en.swingy.game.GamePrint;
 import en.swingy.game.Map;
 import en.swingy.gui.Assets;
 import en.swingy.gui.GUI;
@@ -16,6 +16,7 @@ import en.swingy.hero.Hero;
 public class GuiGame {
 	Hero player;
 	Boolean Inventory_seen = false;
+	static KeyListener movEvent = null;
 
 	public GuiGame(Hero p_player) {
 		this.player = p_player;
@@ -29,7 +30,7 @@ public class GuiGame {
 		gui.getFrame().add(label);
 	}
 
-	public void drawMap(GUI gui, Game g, Map m) {
+	public void drawMap(GUI gui, Map m) {
 		Point playerPos = m.getPlayerPos();
 		int tileWidth = 64;
 		int tileHeight = 64;
@@ -63,28 +64,59 @@ public class GuiGame {
 		gui.getFrame().repaint();
 	}
 
-	public void waitForMovement(GUI gui, Game g, Map m) {
 
+	public void initMovementEvent(GUI gui, Game g, Map m) {
+		movEvent = new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				switch (e.getKeyCode()) {
+					case KeyEvent.VK_W -> m.getController().Movement(g, m.getMap(), "W");
+					case KeyEvent.VK_A -> m.getController().Movement(g, m.getMap(), "A");
+					case KeyEvent.VK_S -> m.getController().Movement(g, m.getMap(), "S");
+					case KeyEvent.VK_D -> m.getController().Movement(g, m.getMap(), "D");
+				}
+
+				gui.clearScreen();
+				drawMap(gui, m);
+				InventoryGUI.showPlayerInventory(gui, player);
+				gui.getFrame().repaint();
+			}
+			public void keyReleased(KeyEvent e) {}
+			public void keyTyped(KeyEvent e) {}
+		};
 	}
 
-	public void startGame(GUI gui, Game g) {
+	public static void removeMovementEvent(GUI gui) {
+		if (movEvent == null) {
+			return ;
+		}
+		gui.removeEventToFrame(movEvent);
+	}
+
+	public static void addMovementEvent(GUI gui) {
+		if (movEvent == null) {
+			return ;
+		}
+		gui.AddEventToFrame(movEvent);
+	}
+
+	public void startGame(GUI gui, Game g)  {
 		Map m = new Map();
 		m.setMapSize(player.getLevel());
 		m.generateMap();
 		m.initController();
-		do {
-			gui.clearScreen();
-			drawMap(gui, g, m);
-			InventoryGUI.showPlayerInventory(gui, player);
-			waitForMovement(gui, g, m);
-		} while (!m.Clear());
+		initMovementEvent(gui, g, m);
+		addMovementEvent(gui);
+
+		gui.setKeyboardFocus();
+		drawMap(gui, m);
+		InventoryGUI.showPlayerInventory(gui, player);
 	}
 
-	public void setGameMainScene(GUI gui, Game g) throws SQLException {
+	public void setGameMainScene(GUI gui, Game g)  {
 		gui.clearScreen();
 		gui.setFrameBg(Assets.MENU_BG);
 		gui.setMenuQuitIcon(gui, g);
-		InventoryGUI.showPlayerInventory(gui, player);
+		addMovementEvent(gui);
 		startGame(gui, g);
 	}
 }

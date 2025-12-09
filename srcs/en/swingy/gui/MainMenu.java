@@ -3,7 +3,6 @@ package en.swingy.gui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import en.swingy.game.Game;
+import en.swingy.gui.guigame.GuiGame;
 
 public class MainMenu {
 
@@ -35,7 +35,7 @@ public class MainMenu {
 		return button;
 	}
 
-	public static void tooManySaves(GUI gui, Game g) throws SQLException {
+	public static void tooManySaves(GUI gui, Game g)  {
 		gui.clearScreen();
 
 		JLabel l = new JLabel("Maximum number of save reached, Would you like to delete one ?");
@@ -70,7 +70,8 @@ public class MainMenu {
 
 
 
-	public static void setMainMenu(GUI gui, Game g) throws SQLException {
+	public static void setMainMenu(GUI gui, Game g)  {
+		GuiGame.removeMovementEvent(gui);
 		g.setDbSize();
 		gui.setFrameBg(Assets.MENU_BG);
 		JButton b1 = createMenuButton(gui, "Create a character", startY, e->{

@@ -18,17 +18,11 @@ public class GamePrint {
 	public static final String BLUE = "\u001B[34m";
 	public static final String BOLD = "\u001B[1m";
 
-	/**
-	 * Clears the terminal screen using ANSI escape codes.
-	 */
 	public static void clearTerminal() {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
 	}
 
-	/**
-	 * Prints the game title in ASCII art with bold formatting.
-	 */
 	public static void printTitle() {
 		String title = BOLD +
 			"██████╗ ██╗ █████╗ ██████╗ ██╗      ██████╗     ██████╗ \n" +
@@ -41,22 +35,10 @@ public class GamePrint {
 		System.out.println(title);
 	}
 
-	/**
-	 * Formats a line of text for display in a bordered box.
-	 *
-	 * @param content The text to format
-	 * @param width Width of the formatted line
-	 * @return Formatted line string with borders
-	 */
 	private static String formatLine(String content, int width) {
 		return String.format("┃ %-" + width + "s ┃", content);
 	}
 
-	/**
-	 * Prints detailed information about a hero including stats and equipment.
-	 *
-	 * @param player The hero whose information is displayed
-	 */
 	public static void playerInfo(Hero player) {
 		String[] lines = {
 			"Id: " + player.getId(),
@@ -78,43 +60,37 @@ public class GamePrint {
 		System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 	}
 
-	/**
-	 * Fetches and displays all saved heroes from the database in a formatted box.
-	 *
-	 * @throws SQLException If database query fails
-	 */
-	public static void displaySave() throws SQLException {
-		ResultSet rs = DB.fetchSaves();
-		while (rs.next()) {
-			String[] lines = {
-				"Id: " + rs.getString(DB.ID_VAR),
-				"Username: " + rs.getString(DB.NAME_VAR),
-				"Class: " + rs.getString(DB.CLASS_VAR),
-				"Level: " + rs.getInt(DB.LV_VAR),
-				"XP: " + rs.getInt(DB.XP_VAR),
-				"Attack: " + rs.getInt(DB.ATT_VAR) + " + " + rs.getInt(DB.WP_ATT_VAR),
-				"Defense: " + rs.getInt(DB.DEF_VAR) + " + " + rs.getInt(DB.AM_DEF_VAR),
-				"HP: " + rs.getInt(DB.HP_VAR) + " + " + rs.getInt(DB.HL_HP_VAR),
-				"Weapon: " + rs.getString(DB.WP_NAME_VAR),
-				"Armor: " + rs.getString(DB.AM_NAME_VAR),
-				"Helm: " + rs.getString(DB.HL_NAME_VAR)
-			};
-			System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
-			for (String line : lines) {
-				System.out.println(formatLine(line, INFO_WIDTH));
+	public static void displaySave()  {
+		try {
+			ResultSet rs = DB.fetchSaves();
+			while (rs.next()) {
+				String[] lines = {
+					"Id: " + rs.getString(DB.ID_VAR),
+					"Username: " + rs.getString(DB.NAME_VAR),
+					"Class: " + rs.getString(DB.CLASS_VAR),
+					"Level: " + rs.getInt(DB.LV_VAR),
+					"XP: " + rs.getInt(DB.XP_VAR),
+					"Attack: " + rs.getInt(DB.ATT_VAR) + " + " + rs.getInt(DB.WP_ATT_VAR),
+					"Defense: " + rs.getInt(DB.DEF_VAR) + " + " + rs.getInt(DB.AM_DEF_VAR),
+					"HP: " + rs.getInt(DB.HP_VAR) + " + " + rs.getInt(DB.HL_HP_VAR),
+					"Weapon: " + rs.getString(DB.WP_NAME_VAR),
+					"Armor: " + rs.getString(DB.AM_NAME_VAR),
+					"Helm: " + rs.getString(DB.HL_NAME_VAR)
+				};
+				System.out.println("┏" + "━".repeat(INFO_WIDTH + 2) + "┓");
+				for (String line : lines) {
+					System.out.println(formatLine(line, INFO_WIDTH));
+				}
+				System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
+				System.out.println();
 			}
-			System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
-			System.out.println();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		rs.close();
+
 	}
 
-	/**
-	 * Asks the user to select an option from a list and validates input.
-	 *
-	 * @param opt Array of options to display
-	 * @return Selected option as integer
-	 */
 	public static int askOption(String[] opt) {
 		String regex = "[1-" + opt.length + "]";
 		try {
@@ -133,4 +109,11 @@ public class GamePrint {
 		Game.exitGame();
 		return -1;
 	}
+
+	public static void println(String s) {
+		if (!Game.GUI) {
+			System.out.println(s);
+		}
+	}
+
 }

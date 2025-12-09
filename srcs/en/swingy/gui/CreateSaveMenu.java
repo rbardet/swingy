@@ -2,7 +2,6 @@ package en.swingy.gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -62,7 +61,7 @@ public class CreateSaveMenu {
 		String class_stats,
 		int class_idx,
 		Game g,
-		GUI gui) throws SQLException
+		GUI gui) 
 	{
 		ImageIcon def = new ImageIcon(base);
 		ImageIcon hov = new ImageIcon(hover);
@@ -73,22 +72,18 @@ public class CreateSaveMenu {
 		button.setBorderPainted(false);
 		button.setContentAreaFilled(false);
 		button.addActionListener(e -> {
-			try {
-				gui.clearScreen();
-				gui.setFrameBg(bg);
-				gui.setPlayerClass(class_idx);
-				gui.setPlayerClass(class_idx);
-				createChacterMenu(gui, g);
-				setClassDesc(gui, class_header, class_body, class_stats);
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-			}
+			gui.clearScreen();
+			gui.setFrameBg(bg);
+			gui.setPlayerClass(class_idx);
+			gui.setPlayerClass(class_idx);
+			createChacterMenu(gui, g);
+			setClassDesc(gui, class_header, class_body, class_stats);
 		});
 
 		return button;
 	}
 
-	public static void createClassesCaroussel(GUI gui, Game g) throws SQLException {
+	public static void createClassesCaroussel(GUI gui, Game g)  {
 		int startX = 50;
 		int startY = 125;
 		int gap = 20;
@@ -161,7 +156,7 @@ public class CreateSaveMenu {
 		gui.getFrame().add(textField);
 	}
 
-	public static void setStartGameButton(GUI gui, Game g) throws SQLException {
+	public static void setStartGameButton(GUI gui, Game g)  {
 		JButton button = MainMenu.createMenuButton(gui, "Start Game", 600, e->{
 			try {
 				if (gui.getPlayerClass() != -1 && !gui.getUsername().isEmpty()) {
@@ -179,7 +174,7 @@ public class CreateSaveMenu {
 		gui.getFrame().add(button);
 	}
 
-	public static void createChacterMenu(GUI gui, Game g) throws SQLException {
+	public static void createChacterMenu(GUI gui, Game g)  {
 		gui.clearScreen();
 		setCharacterNameField(gui);
 		createClassesCaroussel(gui, g);
