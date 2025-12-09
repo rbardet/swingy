@@ -17,6 +17,7 @@ import javax.swing.event.DocumentListener;
 import en.swingy.db.DB;
 import en.swingy.entity.entityclass.EntityClass;
 import en.swingy.game.Game;
+import en.swingy.gui.guigame.GuiGame;
 import en.swingy.hero.Hero;
 
 public class CreateSaveMenu {
@@ -168,7 +169,7 @@ public class CreateSaveMenu {
 					DB.createAccount(player.getName(), player.getEClass());
 					gui.clearUsername();
 					gui.clearClass();
-					GUI_Game gGame = new GUI_Game(player);
+					GuiGame gGame = new GuiGame(player);
 					gGame.setGameMainScene(gui, g);
 				}
 			} catch (Exception ex) {

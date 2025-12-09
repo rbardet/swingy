@@ -59,7 +59,6 @@ public class GUI {
 		this.frame.setSize(WIDHT, HEIGHT);
 		this.frame.setTitle(APP_NAME);
 		this.frame.setResizable(false);
-		this.frame.setLayout(null);
 		this.initCustomFont();
 		this.setWindowCloseToggle();
 		this.setKeyboardFocus();

@@ -33,16 +33,15 @@ public class DeleteMenu {
 	public static void showDeleteSaveButton(GUI gui, Game g) throws SQLException {
 		ResultSet rs = DB.fetchSaves();
 
-		int panelWidth = 350;
-		int panelHeight = 400;
-		int yPosition = 160;
 		int idx = 0;
 
 		while (rs.next()) {
-			int xPosition = 50 + idx * (panelWidth + 50);
 			final int heroId = rs.getInt(DB.ID_VAR);
 
-			JButton button = createDeleteSaveButton(xPosition, yPosition + panelHeight + 30, e -> {
+			int xPosition = 60  + idx * (SavesDisplay.bannerWidth + SavesDisplay.bannerSpacing);
+			int yPosition = SavesDisplay.bannerYPos + SavesDisplay.bannerHeight + 20;
+
+			JButton button = createDeleteSaveButton(xPosition, yPosition, e -> {
 				try {
 					DB.deleteHero(heroId);
 					MainMenu.setMainMenu(gui, g);

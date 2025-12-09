@@ -11,6 +11,7 @@ import javax.swing.SwingConstants;
 
 import en.swingy.db.DB;
 import en.swingy.game.Game;
+import en.swingy.gui.guigame.GuiGame;
 
 public class LoadMenu {
 	public static JButton createLoadSaveButton(int x, int y, ActionListener e) throws SQLException {
@@ -33,18 +34,17 @@ public class LoadMenu {
 	public static void showLoadSaveButton(GUI gui, Game g) throws SQLException {
 		ResultSet rs = DB.fetchSaves();
 
-		int panelWidth = 350;
-		int panelHeight = 400;
-		int yPosition = 160;
 		int idx = 0;
 
 		while (rs.next()) {
-			int xPosition = 50 + idx * (panelWidth + 50);
 			final int heroId = rs.getInt(DB.ID_VAR);
 
-			JButton button = createLoadSaveButton(xPosition, yPosition + panelHeight + 30, e -> {
+			int xPosition = 60  + idx * (SavesDisplay.bannerWidth + SavesDisplay.bannerSpacing);
+			int yPosition = SavesDisplay.bannerYPos + SavesDisplay.bannerHeight + 20;
+
+			JButton button = createLoadSaveButton(xPosition, yPosition, e -> {
 				try {
-					GUI_Game gGame = new GUI_Game(DB.loadSave(heroId));
+					GuiGame gGame = new GuiGame(DB.loadSave(heroId));
 					gGame.setGameMainScene(gui, g);
 				} catch (Exception ex) {
 					ex.printStackTrace();
