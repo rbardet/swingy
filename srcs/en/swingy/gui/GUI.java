@@ -3,6 +3,8 @@ package en.swingy.gui;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.sql.SQLException;
 
@@ -65,6 +67,17 @@ public class GUI {
 		this.frame.setTitle(APP_NAME);
 		this.frame.setResizable(false);
 		this.frame.setLayout(null);
+		this.frame.setFocusable(true);
+		KeyListener k = new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyChar() == 27) {
+					Game.exitGame();
+				}
+			}
+			public void keyTyped(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {}
+		};
+		this.frame.addKeyListener(k);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
