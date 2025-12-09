@@ -68,6 +68,7 @@ public class GUI {
 		this.frame.setResizable(false);
 		this.frame.setLayout(null);
 		this.frame.setFocusable(true);
+		this.frame.requestFocusInWindow();
 		KeyListener k = new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyChar() == 27) {
