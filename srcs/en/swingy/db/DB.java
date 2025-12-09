@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import en.swingy.entity.entityclass.EntityClass;
+import en.swingy.game.Game;
 import en.swingy.hero.Hero;
 
 public class DB {
@@ -83,6 +84,8 @@ public class DB {
 	private static final String RQ_ENTRY_SIZE = "SELECT id FROM " + MAIN_TABLE + " ORDER BY id";
 
 	private static final String RQ_FETCH_USERS = "SELECT * FROM " + MAIN_TABLE;
+
+	private static final String RQ_FETCH_USER_BY_ID = "SELECT * FROM " + MAIN_TABLE + " WHERE " + ID_VAR + "=?;";
 
 	public static Connection conn = null;
 
@@ -227,5 +230,13 @@ public class DB {
 		initDb();
 		PreparedStatement s = getConnection().prepareStatement(RQ_FETCH_USERS);
 		return s.executeQuery();
+	}
+
+	public static Hero loadSave(int idx) throws SQLException {
+		PreparedStatement s = getConnection().prepareStatement(RQ_FETCH_USER_BY_ID);
+		s.setInt(1, idx);
+		ResultSet rs = s.executeQuery();
+		
+		return Game.setHeroStats(rs);
 	}
 }
