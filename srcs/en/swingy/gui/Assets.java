@@ -13,6 +13,9 @@ public class Assets {
 	public static final String USERNAME_FIELD = ASSETS_PATH + "username_field.png";
 	public static final String BANNER = ASSETS_PATH + "banner.png";
 	public static final String PLAYER_INV = ASSETS_PATH + "player_inv.png";
+	public static final String GROUND = ASSETS_PATH + "ground.png";
+	public static final String PLAYER = ASSETS_PATH + "player.png";
+	public static final String ENNEMY = ASSETS_PATH + "ennemy.png";
 
 	public static final String MONK_BG = CLASS_BG_PATH + "md_monk_background.png";
 	public static final String BARBARIAN_BG = CLASS_BG_PATH + "md_barbarian_background.png";
