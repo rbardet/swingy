@@ -268,12 +268,10 @@ public class Game {
 		m.generateMap();
 		m.initController();
 		do {
-			if (!GUI) {
-				GamePrint.clearTerminal();
-				GamePrint.playerInfo(player);
-				System.out.println(RETURN_MENU_PROMPT);
-				m.printMap();
-			}
+			GamePrint.clearTerminal();
+			GamePrint.playerInfo(player);
+			System.out.println(RETURN_MENU_PROMPT);
+			m.printMap();
 			m.playerAction(this, player);
 		} while (!m.Clear());
 	}
