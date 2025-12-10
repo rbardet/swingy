@@ -97,10 +97,11 @@ public class FightGUI {
 		GUI gui = GUI.getInstance();
 		gui.clearScreen();
 		GUI.setMenuQuitIcon();
-		JLabel label = centeredLabel("You Lost", 300, 40f);
+		JLabel label = centeredLabel("You Lost", 100, 40f);
 		gui.getFrame().add(label);
 
 		gui.getFrame().repaint();
+		quitMenu(false);
 	}
 
 	public static void FleeSuccess(GUI gui) {
