@@ -11,7 +11,7 @@ public class Main {
 	}
 
 	public static void main(String args[]) throws Exception {
-		Game game = new Game();
+		Game game = Game.getInstance();
 		if (args[0].equals("gui")) {
 			game.setGui(true);
 		} else if (args[0].equals("console")) {

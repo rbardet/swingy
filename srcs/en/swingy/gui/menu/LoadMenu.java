@@ -1,4 +1,4 @@
-package en.swingy.gui;
+package en.swingy.gui.menu;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -10,14 +10,16 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import en.swingy.db.DB;
-import en.swingy.game.Game;
+import en.swingy.gui.Assets;
+import en.swingy.gui.GUI;
+import en.swingy.gui.guigame.GUIGame;
 
-public class DeleteMenu {
-	public static JButton createDeleteSaveButton(int x, int y, ActionListener e)  {
+public class LoadMenu {
+	public static JButton createLoadSaveButton(int x, int y, ActionListener e)  {
 		ImageIcon std = new ImageIcon(Assets.MENU_BUTTON);
 		ImageIcon hover = new ImageIcon(Assets.MENU_BUTTON_HOVER);
 
-		JButton button = new JButton("Delete Save", std);
+		JButton button = new JButton("Load Save", std);
 		button.setRolloverIcon(hover);
 
 		button.setBounds(x, y, std.getIconWidth(), std.getIconHeight());
@@ -30,7 +32,7 @@ public class DeleteMenu {
 		return button;
 	}
 
-	public static void showDeleteSaveButton(GUI gui, Game g)  {
+	public static void showLoadSaveButton(GUI gui)  {
 		try {
 			ResultSet rs = DB.fetchSaves();
 
@@ -42,10 +44,10 @@ public class DeleteMenu {
 				int xPosition = 60  + idx * (SavesDisplay.bannerWidth + SavesDisplay.bannerSpacing);
 				int yPosition = SavesDisplay.bannerYPos + SavesDisplay.bannerHeight + 20;
 
-				JButton button = createDeleteSaveButton(xPosition, yPosition, e -> {
+				JButton button = createLoadSaveButton(xPosition, yPosition, e -> {
 					try {
-						DB.deleteHero(heroId);
-						MainMenu.setMainMenu(gui, g);
+						GUIGame gGame = new GUIGame(DB.loadSave(heroId));
+						gGame.setGameMainScene(gui);
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
@@ -63,13 +65,12 @@ public class DeleteMenu {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public static void showDeleteSaveMenu(GUI gui, Game g)  {
+	public static void showLoadSaveMenu(GUI gui)  {
 		gui.clearScreen();
-		SavesDisplay.showAvailableSaves(gui, g);
-		showDeleteSaveButton(gui, g);
-
+		SavesDisplay.showAvailableSaves(gui);
+		showLoadSaveButton(gui);
 	}
+
 }

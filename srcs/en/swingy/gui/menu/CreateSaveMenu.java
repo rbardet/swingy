@@ -1,4 +1,4 @@
-package en.swingy.gui;
+package en.swingy.gui.menu;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,8 +15,10 @@ import javax.swing.event.DocumentListener;
 
 import en.swingy.db.DB;
 import en.swingy.entity.entityclass.EntityClass;
-import en.swingy.game.Game;
-import en.swingy.gui.guigame.GuiGame;
+import en.swingy.gui.Assets;
+import en.swingy.gui.GUI;
+import en.swingy.gui.button.Button;
+import en.swingy.gui.guigame.GUIGame;
 import en.swingy.hero.Hero;
 
 public class CreateSaveMenu {
@@ -60,7 +62,6 @@ public class CreateSaveMenu {
 		String class_body,
 		String class_stats,
 		int class_idx,
-		Game g,
 		GUI gui) 
 	{
 		ImageIcon def = new ImageIcon(base);
@@ -76,14 +77,14 @@ public class CreateSaveMenu {
 			gui.setFrameBg(bg);
 			gui.setPlayerClass(class_idx);
 			gui.setPlayerClass(class_idx);
-			createChacterMenu(gui, g);
+			createChacterMenu(gui);
 			setClassDesc(gui, class_header, class_body, class_stats);
 		});
 
 		return button;
 	}
 
-	public static void createClassesCaroussel(GUI gui, Game g)  {
+	public static void createClassesCaroussel(GUI gui)  {
 		int startX = 50;
 		int startY = 125;
 		int gap = 20;
@@ -98,7 +99,7 @@ public class CreateSaveMenu {
 			{Assets.WIZARD_ICON, Assets.WIZARD_HOVER_ICON, Assets.WIZARD_BG, GUI.WIZARD_DESC_HEADER, GUI.WIZARD_DESC_BODY, GUI.WIZARD_DESC_STAT}
 		};
 
-		gui.setMenuQuitIcon(gui, g);
+		gui.setMenuQuitIcon(gui);
 		int currentY = startY;
 		for (int i = 0; i < classes.length; i++) {
 			String base = classes[i][0];
@@ -109,7 +110,7 @@ public class CreateSaveMenu {
 			String desc_stat = classes[i][5];
 
 			ImageIcon icon = new ImageIcon(base);
-			JButton button = createClassesIcon(base, hover, startX, currentY, bg, desc_header, desc_body, desc_stat, i, g, gui);
+			JButton button = createClassesIcon(base, hover, startX, currentY, bg, desc_header, desc_body, desc_stat, i, gui);
 			gui.getFrame().add(button);
 
 			currentY += icon.getIconHeight() + gap;
@@ -156,16 +157,18 @@ public class CreateSaveMenu {
 		gui.getFrame().add(textField);
 	}
 
-	public static void setStartGameButton(GUI gui, Game g)  {
-		JButton button = MainMenu.createMenuButton(gui, "Start Game", 600, e->{
+	public static void setStartGameButton(GUI gui)  {
+		JButton button = Button.createMenuButton(gui, "Start Game", 0, 600,
+		true, Assets.MENU_BUTTON, Assets.MENU_BUTTON_HOVER,
+		e->{
 			try {
 				if (gui.getPlayerClass() != -1 && !gui.getUsername().isEmpty()) {
 					Hero player = new Hero(gui.getUsername(), EntityClass.E_CLASS[gui.getPlayerClass()]);
 					DB.createAccount(player.getName(), player.getEClass());
 					gui.clearUsername();
 					gui.clearClass();
-					GuiGame gGame = new GuiGame(player);
-					gGame.setGameMainScene(gui, g);
+					GUIGame gGame = new GUIGame(player);
+					gGame.setGameMainScene(gui);
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -174,12 +177,12 @@ public class CreateSaveMenu {
 		gui.getFrame().add(button);
 	}
 
-	public static void createChacterMenu(GUI gui, Game g)  {
+	public static void createChacterMenu(GUI gui)  {
 		gui.clearScreen();
 		setCharacterNameField(gui);
-		createClassesCaroussel(gui, g);
+		createClassesCaroussel(gui);
 		setCharacterNameField(gui);
-		setStartGameButton(gui, g);
+		setStartGameButton(gui);
 		gui.getFrame().repaint();
 	}
 

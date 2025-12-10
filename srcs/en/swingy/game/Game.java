@@ -57,12 +57,17 @@ public class Game {
 	Press q to return to the main menu
 	""" + GamePrint.COLOR_RESET;
 
-	public static Boolean GUI;
-	private int dbSize = 0;
-	private GUI screen;
+	public static Boolean GUI_MODE;
+	public static int dbSize = 0;
+	private static Game instance = null;
 
-	public Game() throws Exception {
-		this.screen = new GUI();
+	private Game() { }
+
+	public static synchronized Game getInstance() {
+		if (instance == null) {
+			instance = new Game();
+		}
+		return instance;
 	}
 
 	public void openGUI() {
@@ -87,7 +92,7 @@ public class Game {
 	}
 
 	public Hero createNewChar()  {
-		if (this.dbSize >= 3) {
+		if (getDBSize() >= 3) {
 			String s;
 			do {
 				System.out.println(DB_SIZE_PROMPT);
@@ -131,7 +136,7 @@ public class Game {
 		return null;
 	}
 
-	public void setDbSize() {
+	public static void setDbSize() {
 		try {
 			ResultSet rs = DB.fetchSaves();
 			int size = 0;
@@ -139,19 +144,19 @@ public class Game {
 				size++;
 			}
 
-			this.dbSize = size;
+			dbSize = size;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public int getDBSize() {
-		return this.dbSize;
+	public static int getDBSize() {
+		return dbSize;
 	}
 
 	public int selectSave(String msg)  {
-		String regex = "[1-" + this.dbSize + "q]";
+		String regex = "[1-" + getDBSize() + "q]";
 		String choice;
 		do {
 			GamePrint.clearTerminal();
@@ -169,7 +174,7 @@ public class Game {
 	}
 
 	public Hero loadChar()  {
-		if (this.dbSize <= 0) {
+		if (getDBSize() <= 0) {
 			System.out.println(NO_SAVE_PROMPT);
 			String s;
 			do {
@@ -186,23 +191,25 @@ public class Game {
 		ResultSet rs = DB.fetchSaves();
 		int idx = selectSave(LOAD_CHAR_PROMPT);
 		try {
-			while (rs.getInt(DB.ID_VAR) != idx) {
+			while (idx != 1) {
 				rs.next();
+				idx--;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return setHeroStats(null);
+		return setHeroStats(rs);
 	}
 
 	public void deleteSave()  {
-		if (this.dbSize <= 0) {
+		if (getDBSize() <= 0) {
 			System.out.println(NO_SAVE_PROMPT);
 			return ;
 		}
 
 		int idx = selectSave(DEL_CHAR_PROMPT);
 		DB.deleteHero(idx);
+		setDbSize();
 		return ;
 	}
 
@@ -218,16 +225,15 @@ public class Game {
 			GamePrint.playerInfo(player);
 			System.out.println(RETURN_MENU_PROMPT);
 			m.printMap();
-			m.playerAction(this, player);
+			m.playerAction(player, "");
 		} while (!m.Clear());
 	}
 
 	public void startGame() {
-		if (GUI) {
-			this.screen.runGui(this);
-		}
-
 		setDbSize();
+		if (GUI_MODE) {
+			GUI.getInstance().runGui();;
+		}
 		Hero player = null;
 
 		do {
@@ -256,6 +262,6 @@ public class Game {
 	}
 
 	public void setGui(boolean mode) {
-		GUI = mode;
+		GUI_MODE = mode;
 	}
 }

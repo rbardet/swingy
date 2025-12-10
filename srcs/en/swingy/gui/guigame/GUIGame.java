@@ -7,18 +7,18 @@ import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import en.swingy.game.Game;
+import en.swingy.game.Controller;
 import en.swingy.game.Map;
 import en.swingy.gui.Assets;
 import en.swingy.gui.GUI;
 import en.swingy.hero.Hero;
 
-public class GuiGame {
+public class GUIGame {
 	Hero player;
 	Boolean Inventory_seen = false;
-	static KeyListener movEvent = null;
+	public static KeyListener movEvent = null;
 
-	public GuiGame(Hero p_player) {
+	public GUIGame(Hero p_player) {
 		this.player = p_player;
 	}
 
@@ -64,19 +64,22 @@ public class GuiGame {
 		gui.getFrame().repaint();
 	}
 
-
-	public void initMovementEvent(GUI gui, Game g, Map m) {
+	public void initMovementEvent(GUI gui, Map m) {
 		movEvent = new KeyListener() {
 			public void keyPressed(KeyEvent e) {
+				gui.removeKeyboardFocus();
 				switch (e.getKeyCode()) {
-					case KeyEvent.VK_W -> m.getController().Movement(g, m.getMap(), "W");
-					case KeyEvent.VK_A -> m.getController().Movement(g, m.getMap(), "A");
-					case KeyEvent.VK_S -> m.getController().Movement(g, m.getMap(), "S");
-					case KeyEvent.VK_D -> m.getController().Movement(g, m.getMap(), "D");
+					case KeyEvent.VK_W -> m.playerAction(player, Controller.NORTH_MOV);
+					case KeyEvent.VK_A -> m.playerAction(player, Controller.WEST_MOV);
+					case KeyEvent.VK_S -> m.playerAction(player, Controller.SOUTH_MOV);
+					case KeyEvent.VK_D -> m.playerAction(player, Controller.EAST_MOV);
 				}
+				gui.setKeyboardFocus();
+
 
 				gui.clearScreen();
 				drawMap(gui, m);
+				gui.setMenuQuitIcon(gui);
 				InventoryGUI.showPlayerInventory(gui, player);
 				gui.getFrame().repaint();
 			}
@@ -99,12 +102,12 @@ public class GuiGame {
 		gui.AddEventToFrame(movEvent);
 	}
 
-	public void startGame(GUI gui, Game g)  {
+	public void startGame(GUI gui)  {
 		Map m = new Map();
 		m.setMapSize(player.getLevel());
 		m.generateMap();
 		m.initController();
-		initMovementEvent(gui, g, m);
+		initMovementEvent(gui, m);
 		addMovementEvent(gui);
 
 		gui.setKeyboardFocus();
@@ -112,11 +115,10 @@ public class GuiGame {
 		InventoryGUI.showPlayerInventory(gui, player);
 	}
 
-	public void setGameMainScene(GUI gui, Game g)  {
+	public void setGameMainScene(GUI gui)  {
 		gui.clearScreen();
 		gui.setFrameBg(Assets.MENU_BG);
-		gui.setMenuQuitIcon(gui, g);
 		addMovementEvent(gui);
-		startGame(gui, g);
+		startGame(gui);
 	}
 }

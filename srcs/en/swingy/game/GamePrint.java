@@ -63,9 +63,10 @@ public class GamePrint {
 	public static void displaySave()  {
 		try {
 			ResultSet rs = DB.fetchSaves();
+			int idx = 1;
 			while (rs.next()) {
 				String[] lines = {
-					"Id: " + rs.getString(DB.ID_VAR),
+					"Id: " + idx,
 					"Username: " + rs.getString(DB.NAME_VAR),
 					"Class: " + rs.getString(DB.CLASS_VAR),
 					"Level: " + rs.getInt(DB.LV_VAR),
@@ -83,6 +84,7 @@ public class GamePrint {
 				}
 				System.out.println("┗" + "━".repeat(INFO_WIDTH + 2) + "┛");
 				System.out.println();
+				idx++;
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -111,9 +113,14 @@ public class GamePrint {
 	}
 
 	public static void println(String s) {
-		if (!Game.GUI) {
+		if (!Game.GUI_MODE) {
 			System.out.println(s);
 		}
 	}
 
+	public static void print(String s) {
+		if (!Game.GUI_MODE) {
+			System.out.print(s);
+		}
+	}
 }

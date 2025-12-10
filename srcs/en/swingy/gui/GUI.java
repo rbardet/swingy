@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import en.swingy.game.Game;
+import en.swingy.gui.menu.MainMenu;
 
 public class GUI {
 	private JFrame frame;
@@ -21,6 +22,7 @@ public class GUI {
 	public final String FONT = "ressources/diablo.ttf";
 	private Font CUSTOM_FONT;
 	private String username = null;
+	private static GUI instance = null;
 
 	public static final String MONK_DESC_HEADER = "Monk";
 	public static final String MONK_DESC_BODY = "A swift, spiritual melee fighter using martial arts, holy powers and high mobility to strike fast and dodge attacks — a balance of offense and agility.";
@@ -52,16 +54,26 @@ public class GUI {
 
 	private int player_class = -1;
 
-	public GUI() throws Exception {
-		this.frame = new JFrame();
-
-		this.frame.setSize(WIDHT, HEIGHT);
-		this.frame.setTitle(APP_NAME);
-		this.frame.setResizable(false);
-		this.initCustomFont();
-		this.setWindowCloseToggle();
-		this.setKeyboardFocus();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	private GUI() {
+		try {
+			this.frame = new JFrame();
+			this.frame.setSize(WIDHT, HEIGHT);
+			this.frame.setTitle(APP_NAME);
+			this.frame.setResizable(false);
+			initCustomFont();
+			setWindowCloseToggle();
+			setKeyboardFocus();
+			this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static synchronized GUI getInstance() {
+		if (instance == null) {
+			instance = new GUI();
+		}
+		return instance;
 	}
 
 	public void initCustomFont() throws Exception {
@@ -81,11 +93,16 @@ public class GUI {
 			public void keyTyped(KeyEvent e) {}
 			public void keyReleased(KeyEvent e) {}
 		};
-		this.AddEventToFrame(k);
+		AddEventToFrame(k);
 	}
 
 	public void setKeyboardFocus() {
 		this.frame.setFocusable(true);
+		this.frame.requestFocusInWindow();
+	}
+
+	public void removeKeyboardFocus() {
+		this.frame.setFocusable(false);
 		this.frame.requestFocusInWindow();
 	}
 
@@ -117,7 +134,7 @@ public class GUI {
 		this.frame.setContentPane(bgLabel);
 	}
 
-	public void setMenuQuitIcon(GUI gui, Game g)  {
+	public void setMenuQuitIcon(GUI gui)  {
 		ImageIcon i = new ImageIcon(Assets.MENU_QUIT);
 		ImageIcon hover = new ImageIcon(Assets.MENU_QUIT_HOVER);
 		JButton button = new JButton(i);
@@ -127,7 +144,7 @@ public class GUI {
 		button.setContentAreaFilled(false);
 		button.addActionListener(e -> {
 			try {
-				MainMenu.setMainMenu(gui, g);
+				MainMenu.setMainMenu(gui);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -170,9 +187,9 @@ public class GUI {
 		this.player_class = -1;
 	}
 
-	public void runGui(Game game)  {
-		MainMenu.setMainMenu(this , game);
-		this.showScreen();
+	public void runGui()  {
+		MainMenu.setMainMenu(getInstance());
+		showScreen();
 		while (true);
 	}
 }

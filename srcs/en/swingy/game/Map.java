@@ -3,6 +3,7 @@ package en.swingy.game;
 import java.awt.Point;
 import java.util.Random;
 
+import en.swingy.game.Fight.Fight;
 import en.swingy.gui.Assets;
 import en.swingy.hero.Hero;
 
@@ -98,16 +99,27 @@ public class Map {
 		this.controller = new Controller(this.size / 2, this.size / 2);
 	}
 
-	public void playerAction(Game g, Hero player)  {
-		String mov = this.controller.Movement(g, this.map, "");
+	public boolean isOnEnnemy() {
 		if (this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] == ENNEMY_CELL) {
-			if (Fight.flee()) {
+			return true;
+		}
+		return false;
+	}
+
+	public void movePlayer() {
+		this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] = Map.PLAYER_CELL;
+	}
+
+	public void playerAction(Hero player, String mov) {
+		mov = this.controller.Movement(this.map, mov);
+		if (isOnEnnemy()) {
+			if (Fight.Flee()) {
 				this.controller.goBack(mov);
 			} else {
 				Fight.Simulate(player);
 			}
 		}
-		this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] = Map.PLAYER_CELL;
+		movePlayer();
 	}
 
 	public boolean Clear() {
