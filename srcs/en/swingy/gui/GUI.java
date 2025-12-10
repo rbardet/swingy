@@ -146,6 +146,7 @@ public class GUI {
 		button.setContentAreaFilled(false);
 		button.addActionListener(e -> {
 			try {
+				gui.setKeyboardFocus();
 				gui.clearClass();
 				gui.clearUsername();
 				gui.clearScreen();

@@ -71,7 +71,10 @@ public class GUIGame {
 		movEvent = new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (m.Clear()) {
-					startGame(gui);
+					m.setMapSize(Game.getPlayer().getLevel());
+					m.generateMap();
+					m.initController();
+					return ;
 				}
 
 				gui.removeKeyboardFocus();
