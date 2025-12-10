@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 
 import en.swingy.game.Controller;
 import en.swingy.game.Game;
-import en.swingy.game.GamePrint;
 import en.swingy.game.Map;
 import en.swingy.game.Fight.gui.FightGUI;
 import en.swingy.gui.Assets;
@@ -90,7 +89,6 @@ public class GUIGame {
 				if (!FightGUI.isInMenu) {
 					gui.setKeyboardFocus();
 					gui.clearScreen();
-					GamePrint.clearTerminal();
 					m.printMap();
 					drawMap(gui, m);
 					GUI.setMenuQuitIcon();
@@ -122,6 +120,7 @@ public class GUIGame {
 		m.setMapSize(Game.getPlayer().getLevel());
 		m.generateMap();
 		m.initController();
+		removeMovementEvent(gui);
 		initMovementEvent(gui, m);
 		addMovementEvent(gui);
 
