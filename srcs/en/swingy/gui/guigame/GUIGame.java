@@ -64,7 +64,7 @@ public class GUIGame {
 	}
 
 	public void initMovementEvent(GUI gui, Map m) {
-		if (movEvent == null) {
+		if (movEvent != null) {
 			return ;
 		}
 
