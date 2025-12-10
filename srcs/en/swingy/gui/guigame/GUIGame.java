@@ -65,10 +65,6 @@ public class GUIGame {
 	}
 
 	public void initMovementEvent(GUI gui, Map m) {
-		if (movEvent != null) {
-			return ;
-		}
-
 		movEvent = new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (m.Clear()) {
