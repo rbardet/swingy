@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import en.swingy.entity.entityclass.EntityClass;
+import en.swingy.equipement.weapon.WeaponEnum;
 import en.swingy.gui.Assets;
 import en.swingy.gui.GUI;
 import en.swingy.hero.Hero;
@@ -42,8 +43,13 @@ public class InventoryGUI {
 
 	}
 
-	public static void placePlayerStuff(GUI gui, Hero player) {
-		ImageIcon weapon = new ImageIcon(player.getWeapon().getName());
+	public static void displayPlayerStuff(GUI gui, Hero player, JLabel label) {
+		System.out.println(WeaponEnum.findAssetByName(player.getWeapon().getName()));
+		ImageIcon weapon = new ImageIcon(WeaponEnum.findAssetByName(player.getWeapon().getName()));
+		JLabel l = new JLabel(weapon);
+		l.setBounds(40, 600, 66, 110);
+
+		label.add(l);
 	}
 
 	public static void showPlayerInventory(GUI gui, Hero player) {
@@ -55,9 +61,8 @@ public class InventoryGUI {
 
 		displayPlayerName(gui, player, label, i.getIconWidth());
 		displayerPlayerIcon(gui, player, label);
+		displayPlayerStuff(gui, player, label);
 
 		gui.getFrame().add(label);
-
-		placePlayerStuff(gui, player);
 	}
 }

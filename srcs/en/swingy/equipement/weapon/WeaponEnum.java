@@ -207,6 +207,16 @@ public enum WeaponEnum {
 		return label;
 	}
 
+	public static String findAssetByName(String name) {
+		WeaponEnum[] values = WeaponEnum.values();
+		for (WeaponEnum value : values) {
+			if (value.getLabel() == name) {
+				return WeaponAssets.getAsset(value.name());
+			}
+		}
+		return null;
+	}
+
 	public static String getRandom() {
 		WeaponEnum[] values = WeaponEnum.values();
 		int index = new Random().nextInt(values.length);
