@@ -64,6 +64,10 @@ public class GUIGame {
 	}
 
 	public void initMovementEvent(GUI gui, Map m) {
+		if (movEvent == null) {
+			return ;
+		}
+
 		movEvent = new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (m.Clear()) {
@@ -82,7 +86,7 @@ public class GUIGame {
 					gui.setKeyboardFocus();
 					gui.clearScreen();
 					drawMap(gui, m);
-					gui.setMenuQuitIcon(gui);
+					GUI.setMenuQuitIcon();
 					InventoryGUI.showPlayerInventory(gui, Game.getPlayer());
 					gui.getFrame().repaint();
 				}
@@ -122,7 +126,7 @@ public class GUIGame {
 	public void setGameMainScene(GUI gui)  {
 		gui.clearScreen();
 		gui.setFrameBg(Assets.MENU_BG);
-		gui.setMenuQuitIcon(gui);
+		GUI.setMenuQuitIcon();
 		addMovementEvent(gui);
 		startGame(gui);
 	}

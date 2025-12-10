@@ -22,6 +22,7 @@ public class GUI {
 	public final String FONT = "ressources/diablo.ttf";
 	private Font CUSTOM_FONT;
 	private String username = null;
+	private int player_class = -1;
 	private static GUI instance = null;
 	public static float MENU_TEXT_SIZE = 20f;
 
@@ -52,8 +53,6 @@ public class GUI {
 	public static final String WIZARD_DESC_HEADER = "Wizard";
 	public static final String WIZARD_DESC_BODY = "A master of arcane and elemental magic, capable of dealing massive damage from afar — manipulating fire, ice, lightning (and sometimes even time) to obliterate enemies.";
 	public static final String WIZARD_DESC_STAT = "Attack - 8; Defense - 3; HP - 9";
-
-	private int player_class = -1;
 
 	private GUI() {
 		try {
@@ -136,7 +135,8 @@ public class GUI {
 		this.frame.setContentPane(bgLabel);
 	}
 
-	public void setMenuQuitIcon(GUI gui)  {
+	public static void setMenuQuitIcon()  {
+		GUI gui = GUI.getInstance();
 		ImageIcon i = new ImageIcon(Assets.MENU_QUIT);
 		ImageIcon hover = new ImageIcon(Assets.MENU_QUIT_HOVER);
 		JButton button = new JButton(i);
@@ -146,12 +146,15 @@ public class GUI {
 		button.setContentAreaFilled(false);
 		button.addActionListener(e -> {
 			try {
+				gui.clearClass();
+				gui.clearUsername();
+				gui.clearScreen();
 				MainMenu.setMainMenu(gui);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		});
-		this.frame.add(button);
+		gui.getFrame().add(button);
 	}
 
 	public void setPlayerClass(int choice) {

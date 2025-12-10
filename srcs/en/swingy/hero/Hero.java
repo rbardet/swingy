@@ -108,6 +108,6 @@ public class Hero extends Entity {
 		} else {
 			setHelm(item);
 		}
-		System.out.println(EQUIPED_PROMPT + item.getName());
+		GamePrint.println(EQUIPED_PROMPT + item.getName());
 	}
 }

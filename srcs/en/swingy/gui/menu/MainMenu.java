@@ -54,8 +54,6 @@ public class MainMenu {
 		gui.getFrame().repaint();
 	}
 
-
-
 	public static void setMainMenu(GUI gui)  {
 		GUIGame.removeMovementEvent(gui);
 		Game.setDbSize();

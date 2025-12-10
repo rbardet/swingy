@@ -86,7 +86,7 @@ public class SavesDisplay {
 			}
 
 			rs.close();
-			gui.setMenuQuitIcon(gui);
+			GUI.setMenuQuitIcon();
 			gui.getFrame().repaint();
 
 		} catch (SQLException e) {

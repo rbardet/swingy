@@ -107,7 +107,6 @@ public class DB {
 		}
 	}
 
-	
 	public static int getUserId()  {
 		try {
 			PreparedStatement s = getConnection().prepareStatement(RQ_ENTRY_SIZE);
@@ -128,7 +127,7 @@ public class DB {
 		return -1;
 	}
 
-	
+
 	public static long createAccount(String name, EntityClass c)  {
 		try {
 			initDb();

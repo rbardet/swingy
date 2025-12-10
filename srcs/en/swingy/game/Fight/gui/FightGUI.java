@@ -2,11 +2,13 @@ package en.swingy.game.Fight.gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import en.swingy.db.DB;
 import en.swingy.equipement.Equipement;
 import en.swingy.game.Controller;
 import en.swingy.game.Game;
@@ -18,19 +20,36 @@ import en.swingy.hero.Hero;
 
 public class FightGUI { 	
 	public static boolean isInMenu = false;
-	
-	public static void placeYesNoButton(
-		ActionListener yesEvent,
-		ActionListener noEvent
-	)
-	{
+
+	private static JLabel centeredLabel(String text, int y, float size) {
 		GUI gui = GUI.getInstance();
-		JButton yesButton = Button.createMenuButton(gui, "Yes", 0, 400, true,
-		Assets.MENU_BUTTON, Assets.MENU_BUTTON_HOVER, yesEvent);
+	
+		JLabel label = new JLabel(text);
+		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, size));
+		label.setForeground(Color.WHITE);
+	
+		FontMetrics fm = label.getFontMetrics(label.getFont());
+		int textWidth = fm.stringWidth(text);
+	
+		int x = (GUI.WIDHT / 2) - (textWidth / 2);
+	
+		label.setBounds(x, y, textWidth, (int)(size + 20));
+		return label;
+	}
+
+	public static void placeYesNoButton(ActionListener yesEvent, ActionListener noEvent) {
+		GUI gui = GUI.getInstance();
+
+		JButton yesButton = Button.createMenuButton(
+			gui, "Yes", 0, 400, true,
+			Assets.MENU_BUTTON, Assets.MENU_BUTTON_HOVER, yesEvent
+		);
 		gui.getFrame().add(yesButton);
 
-		JButton noButton = Button.createMenuButton(gui, "No", 0, 500, true,
-		Assets.MENU_BUTTON, Assets.MENU_BUTTON_HOVER, noEvent);
+		JButton noButton = Button.createMenuButton(
+			gui, "No", 0, 490, true,
+			Assets.MENU_BUTTON, Assets.MENU_BUTTON_HOVER, noEvent
+		);
 		gui.getFrame().add(noButton);
 	}
 
@@ -39,12 +58,11 @@ public class FightGUI {
 		if (clearScreen) {
 			gui.clearScreen();
 		}
-		JLabel label = new JLabel("Press any key to continue");
-		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
-		label.setForeground(Color.WHITE);
-		label.setBounds(400, 200, 800, 100);
+		GUI.setMenuQuitIcon();
 
+		JLabel label = centeredLabel("Press any key to continue", 300, 30f);
 		gui.getFrame().add(label);
+
 		gui.getFrame().repaint();
 
 		isInMenu = false;
@@ -53,28 +71,23 @@ public class FightGUI {
 
 	public static void AfterFightEquipEvent(Hero player, Equipement drop) {
 		GUI gui = GUI.getInstance();
-		gui.clearScreen();
 
-		JLabel label = new JLabel("You Won");
-		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
-		label.setForeground(Color.WHITE);
-		label.setBounds(300, 200, 500, 100);
-		gui.getFrame().add(label);
+		JLabel title = centeredLabel("You Won", 200, 42f);
+		gui.getFrame().add(title);
 
-		JLabel label2 = new JLabel("You have dropped : " + drop.getName());
-		label2.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
-		label2.setForeground(Color.WHITE);
-		label2.setBounds(300, 300, 500, 100);
-		gui.getFrame().add(label2);
+		JLabel dropped = centeredLabel("You have dropped : " + drop.getName(), 280, 32f);
+		gui.getFrame().add(dropped);
+		
+		JLabel question = centeredLabel("Would you like to equip", 320, 32f);
+		gui.getFrame().add(question);
 
 		ActionListener yesEvent = e -> {
 			player.equip(drop);
+			DB.updateAfterFight(player);
 			quitMenu(true);
 		};
 
-		ActionListener noEvent = e -> {
-			quitMenu(true);
-		};
+		ActionListener noEvent = e -> quitMenu(true);
 
 		placeYesNoButton(yesEvent, noEvent);
 		gui.getFrame().repaint();
@@ -83,20 +96,25 @@ public class FightGUI {
 	public static void Lose() {
 		GUI gui = GUI.getInstance();
 		gui.clearScreen();
-		JLabel label = new JLabel("You Lost");
-		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
-		label.setForeground(Color.WHITE);
-		label.setBounds(300, 200, 500, 100);
+		GUI.setMenuQuitIcon();
+		JLabel label = centeredLabel("You Lost", 300, 40f);
 		gui.getFrame().add(label);
+
 		gui.getFrame().repaint();
 	}
 
 	public static void FleeSuccess(GUI gui) {
 		gui.clearScreen();
-		JLabel label = new JLabel("You fleed");
-		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
-		label.setForeground(Color.WHITE);
-		label.setBounds(300, 200, 500, 100);
+		GUI.setMenuQuitIcon();
+		JLabel label = centeredLabel("You fled successfully", 100, 40f);
+		gui.getFrame().add(label);
+		gui.getFrame().repaint();
+	}
+
+	public static void FleeFailed(GUI gui) {
+		gui.clearScreen();
+		GUI.setMenuQuitIcon();
+		JLabel label = centeredLabel("You failed to flee", 100, 40f);
 		gui.getFrame().add(label);
 		gui.getFrame().repaint();
 	}
@@ -104,29 +122,35 @@ public class FightGUI {
 	public static void Flee(Controller ctl, String mov) {
 		GUI gui = GUI.getInstance();
 		gui.clearScreen();
+		GUI.setMenuQuitIcon();
 
-		JLabel label = new JLabel("A fight will start, Would you like to flee");
-		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
-		label.setForeground(Color.WHITE);
-		label.setBounds(250, 200, 1000, 100);
+		JLabel label = centeredLabel(
+			"A fight will start, would you like to flee ?", 
+			200, 30f
+		);
 		gui.getFrame().add(label);
 
 		ActionListener yesEvent = e -> {
 			if (!Fight.calculateFleeOdds()) {
+				FleeFailed(gui);
 				Fight.Simulate(Game.getPlayer());
+				return;
 			}
 			ctl.goBack(mov);
 			FleeSuccess(gui);
-			quitMenu(true);
+			quitMenu(false);
 		};
 
 		ActionListener noEvent = e -> {
+			gui.clearScreen();
+			GUI.setMenuQuitIcon();
 			Fight.Simulate(Game.getPlayer());
-			quitMenu(false);
+			quitMenu(true);
 		};
 
 		placeYesNoButton(yesEvent, noEvent);
 		gui.getFrame().repaint();
+
 		isInMenu = true;
 	}
 }

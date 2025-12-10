@@ -100,7 +100,7 @@ public class CreateSaveMenu {
 			{Assets.WIZARD_ICON, Assets.WIZARD_HOVER_ICON, Assets.WIZARD_BG, GUI.WIZARD_DESC_HEADER, GUI.WIZARD_DESC_BODY, GUI.WIZARD_DESC_STAT}
 		};
 
-		gui.setMenuQuitIcon(gui);
+		GUI.setMenuQuitIcon();
 		int currentY = startY;
 		for (int i = 0; i < classes.length; i++) {
 			String base = classes[i][0];
@@ -166,8 +166,6 @@ public class CreateSaveMenu {
 				if (gui.getPlayerClass() != -1 && !gui.getUsername().isEmpty()) {
 					Hero player = new Hero(gui.getUsername(), EntityClass.E_CLASS[gui.getPlayerClass()]);
 					DB.createAccount(player.getName(), player.getEClass());
-					gui.clearUsername();
-					gui.clearClass();
 					GUIGame gGame = new GUIGame();
 					Game.setPlayer(player);
 					gGame.setGameMainScene(gui);
