@@ -1,5 +1,7 @@
 package en.swingy.game.Fight;
 
+import java.util.Random;
+
 import en.swingy.db.DB;
 import en.swingy.entity.ennemy.Ennemy;
 import en.swingy.entity.ennemy.EnnemyEnum;
@@ -27,9 +29,23 @@ public class Fight {
 	You have won the fight
 	""" + GamePrint.COLOR_RESET;
 
+	public static final String FLEE_FAILED_PROMPT = GamePrint.BOLD +
+	"""
+	You have failed to flee
+	""" + GamePrint.COLOR_RESET;
+
+	public static final String FLEE_SUCCESS_PROMPT = GamePrint.BOLD +
+	"""
+	You have flee
+	""" + GamePrint.COLOR_RESET;
+
 	public static void AfterFightSim(Hero player, float player_hp)  {
 		if (player_hp <= 0) {
-			GamePrint.println(LOSE_PROMPT);
+			if (!Game.GUI_MODE) {
+				GamePrint.println(LOSE_PROMPT);
+			} else {
+				FightGUI.Lose();
+			}
 		} else {
 			GamePrint.println(WIN_PROMPT);
 			player.addXp(250);
@@ -41,7 +57,6 @@ public class Fight {
 			} else {
 				FightGUI.AfterFightEquipEvent(player, drop);
 			}
-
 			DB.updateAfterFight(player);
 		}
 
@@ -50,6 +65,17 @@ public class Fight {
 			GamePrint.print("Press enter to continue...");
 			GamePrint.STD_IN.nextLine();
 		}
+	}
+
+	public static boolean calculateFleeOdds() {
+		Random r = new Random();
+		int value = r.nextInt(2) + 1;
+		if (value == 1) {
+			GamePrint.println(FLEE_SUCCESS_PROMPT);
+			return true;
+		}
+		GamePrint.println(FLEE_FAILED_PROMPT);
+		return false;
 	}
 
 	public static float computeDamage(float atk, float def) {
@@ -82,13 +108,5 @@ public class Fight {
 
 		AfterFightSim(player, player_hp);
 		player.getEClass().setHP(baseHp);
-	}
-
-	public static boolean Flee() {
-		if (!Game.GUI_MODE) {
-			return FightConsole.Flee();
-		} else {
-			return FightGUI.Flee();
-		}
 	}
 }

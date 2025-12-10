@@ -2,92 +2,131 @@ package en.swingy.game.Fight.gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import en.swingy.equipement.Equipement;
+import en.swingy.game.Controller;
+import en.swingy.game.Game;
+import en.swingy.game.Fight.Fight;
 import en.swingy.gui.Assets;
 import en.swingy.gui.GUI;
 import en.swingy.gui.button.Button;
 import en.swingy.hero.Hero;
 
-public class FightGUI {
+public class FightGUI { 	
+	public static boolean isInMenu = false;
+	
+	public static void placeYesNoButton(
+		ActionListener yesEvent,
+		ActionListener noEvent
+	)
+	{
+		GUI gui = GUI.getInstance();
+		JButton yesButton = Button.createMenuButton(gui, "Yes", 0, 400, true,
+		Assets.MENU_BUTTON, Assets.MENU_BUTTON_HOVER, yesEvent);
+		gui.getFrame().add(yesButton);
+
+		JButton noButton = Button.createMenuButton(gui, "No", 0, 500, true,
+		Assets.MENU_BUTTON, Assets.MENU_BUTTON_HOVER, noEvent);
+		gui.getFrame().add(noButton);
+	}
+
+	public static void quitMenu(boolean clearScreen) {
+		GUI gui = GUI.getInstance();
+		if (clearScreen) {
+			gui.clearScreen();
+		}
+		JLabel label = new JLabel("Press any key to continue");
+		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
+		label.setForeground(Color.WHITE);
+		label.setBounds(400, 200, 800, 100);
+
+		gui.getFrame().add(label);
+		gui.getFrame().repaint();
+
+		isInMenu = false;
+		gui.setKeyboardFocus();
+	}
 
 	public static void AfterFightEquipEvent(Hero player, Equipement drop) {
-
-	}
-	
-	public static boolean Flee() {
 		GUI gui = GUI.getInstance();
+		gui.clearScreen();
 
-		final boolean[] fleeResult = {false};
+		JLabel label = new JLabel("You Won");
+		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
+		label.setForeground(Color.WHITE);
+		label.setBounds(300, 200, 500, 100);
+		gui.getFrame().add(label);
 
-		int dialogWidth = 400;
-		int dialogHeight = 220;
+		JLabel label2 = new JLabel("You have dropped : " + drop.getName());
+		label2.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
+		label2.setForeground(Color.WHITE);
+		label2.setBounds(300, 300, 500, 100);
+		gui.getFrame().add(label2);
 
-		// JDialog transparent et modale
-		JDialog dialog = new JDialog(gui.getFrame(), "Flee", true);
-		dialog.setUndecorated(true);
-		dialog.setSize(dialogWidth, dialogHeight);
+		ActionListener yesEvent = e -> {
+			player.equip(drop);
+			quitMenu(true);
+		};
 
-		// Rend la fenêtre vraiment transparente
-		dialog.setBackground(new Color(0, 0, 0, 0)); // <-- TRANSPARENT
+		ActionListener noEvent = e -> {
+			quitMenu(true);
+		};
 
-		// Centrage
-		int centerX = (GUI.WIDHT - dialogWidth) / 2;
-		int centerY = (GUI.HEIGHT - dialogHeight) / 2;
-		dialog.setLocation(centerX, centerY);
+		placeYesNoButton(yesEvent, noEvent);
+		gui.getFrame().repaint();
+	}
 
-		// Panel transparent pour contenir les éléments
-		JPanel panel = new JPanel(null);
-		panel.setOpaque(false); // <-- PAS DE FOND
-		dialog.setContentPane(panel);
+	public static void Lose() {
+		GUI gui = GUI.getInstance();
+		gui.clearScreen();
+		JLabel label = new JLabel("You Lost");
+		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
+		label.setForeground(Color.WHITE);
+		label.setBounds(300, 200, 500, 100);
+		gui.getFrame().add(label);
+		gui.getFrame().repaint();
+	}
 
-		// Texte
-		JLabel text = new JLabel("Do you want to flee?", SwingConstants.CENTER);
-		text.setBounds(0, 20, dialogWidth, 60);
-		text.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 26f));
-		text.setForeground(Color.WHITE);
-		panel.add(text);
+	public static void FleeSuccess(GUI gui) {
+		gui.clearScreen();
+		JLabel label = new JLabel("You fleed");
+		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
+		label.setForeground(Color.WHITE);
+		label.setBounds(300, 200, 500, 100);
+		gui.getFrame().add(label);
+		gui.getFrame().repaint();
+	}
 
-		// Bouton YES
-		JButton yesButton = Button.createMenuButton(
-			gui,
-			"Yes",
-			0,
-			120,
-			false,
-			Assets.MENU_BUTTON,
-			Assets.MENU_BUTTON_HOVER,
-			e -> {
-				fleeResult[0] = true;
-				dialog.dispose();
+	public static void Flee(Controller ctl, String mov) {
+		GUI gui = GUI.getInstance();
+		gui.clearScreen();
+
+		JLabel label = new JLabel("A fight will start, Would you like to flee");
+		label.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 30f));
+		label.setForeground(Color.WHITE);
+		label.setBounds(250, 200, 1000, 100);
+		gui.getFrame().add(label);
+
+		ActionListener yesEvent = e -> {
+			if (!Fight.calculateFleeOdds()) {
+				Fight.Simulate(Game.getPlayer());
 			}
-		);
-		panel.add(yesButton);
+			ctl.goBack(mov);
+			FleeSuccess(gui);
+			quitMenu(true);
+		};
 
-		// Bouton NO
-		JButton noButton = Button.createMenuButton(
-			gui,
-			"No",
-			800,
-			120,
-			false,
-			Assets.MENU_BUTTON,
-			Assets.MENU_BUTTON_HOVER,
-			e -> {
-				fleeResult[0] = false;
-				dialog.dispose();
-			}
-		);
-		panel.add(noButton);
+		ActionListener noEvent = e -> {
+			Fight.Simulate(Game.getPlayer());
+			quitMenu(false);
+		};
 
-		dialog.setVisible(true);
-
-		return fleeResult[0];
+		placeYesNoButton(yesEvent, noEvent);
+		gui.getFrame().repaint();
+		isInMenu = true;
 	}
 }

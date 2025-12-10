@@ -15,6 +15,10 @@ public class InventoryGUI {
 		ImageIcon i = new ImageIcon(player.getWeapon().getName());
 	}
 
+	public static void showPlayerStats(GUI gui, Hero player) {
+
+	}
+
 	public static void showPlayerInventory(GUI gui, Hero player) {
 		ImageIcon i = new ImageIcon(Assets.PLAYER_INV);
 		JLabel label = new JLabel(i);
@@ -25,7 +29,7 @@ public class InventoryGUI {
 		JLabel PlayerName = new JLabel(player.getName());
 		PlayerName.setFont(gui.getCustomFont());
 		PlayerName.setForeground(Color.WHITE);
-		PlayerName.setBounds(80, 90, 200, 30);
+		PlayerName.setBounds(200, 90, 200, 30);
 		PlayerName.setSize(400, 30);
 
 		ImageIcon pIcon = EntityClass.getClassAssetsByName(

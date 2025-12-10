@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.Random;
 
 import en.swingy.game.Fight.Fight;
+import en.swingy.game.Fight.console.FightConsole;
+import en.swingy.game.Fight.gui.FightGUI;
 import en.swingy.gui.Assets;
 import en.swingy.hero.Hero;
 
@@ -113,11 +115,16 @@ public class Map {
 	public void playerAction(Hero player, String mov) {
 		mov = this.controller.Movement(this.map, mov);
 		if (isOnEnnemy()) {
-			if (Fight.Flee()) {
-				this.controller.goBack(mov);
+			if (!Game.GUI_MODE) {
+				if (FightConsole.Flee()) {
+					this.controller.goBack(mov);
+				}
 			} else {
-				Fight.Simulate(player);
+				FightGUI.Flee(this.controller, mov);
+				movePlayer();
+				return ;
 			}
+			Fight.Simulate(player);
 		}
 		movePlayer();
 	}

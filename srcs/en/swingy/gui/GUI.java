@@ -23,6 +23,7 @@ public class GUI {
 	private Font CUSTOM_FONT;
 	private String username = null;
 	private static GUI instance = null;
+	public static float MENU_TEXT_SIZE = 20f;
 
 	public static final String MONK_DESC_HEADER = "Monk";
 	public static final String MONK_DESC_BODY = "A swift, spiritual melee fighter using martial arts, holy powers and high mobility to strike fast and dodge attacks — a balance of offense and agility.";
@@ -60,6 +61,7 @@ public class GUI {
 			this.frame.setSize(WIDHT, HEIGHT);
 			this.frame.setTitle(APP_NAME);
 			this.frame.setResizable(false);
+			this.frame.setLocationRelativeTo(null);
 			initCustomFont();
 			setWindowCloseToggle();
 			setKeyboardFocus();
@@ -80,7 +82,7 @@ public class GUI {
 		CUSTOM_FONT = Font.createFont(
 			Font.TRUETYPE_FONT,
 			new File(FONT)
-		).deriveFont(18f);
+		).deriveFont(GUI.MENU_TEXT_SIZE);
 	}
 
 	public void setWindowCloseToggle() {
@@ -190,6 +192,5 @@ public class GUI {
 	public void runGui()  {
 		MainMenu.setMainMenu(getInstance());
 		showScreen();
-		while (true);
 	}
 }

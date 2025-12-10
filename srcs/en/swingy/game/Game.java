@@ -60,6 +60,7 @@ public class Game {
 	public static Boolean GUI_MODE;
 	public static int dbSize = 0;
 	private static Game instance = null;
+	private static Hero player = null;
 
 	private Game() { }
 
@@ -69,9 +70,13 @@ public class Game {
 		}
 		return instance;
 	}
+	
+	public static Hero getPlayer() {
+		return player;
+	}
 
-	public void openGUI() {
-		return ;
+	public static void setPlayer(Hero p_player) {
+		player = p_player;
 	}
 
 	public String askPlayerName() {
@@ -143,12 +148,10 @@ public class Game {
 			while (rs.next()) {
 				size++;
 			}
-
 			dbSize = size;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static int getDBSize() {
@@ -232,8 +235,10 @@ public class Game {
 	public void startGame() {
 		setDbSize();
 		if (GUI_MODE) {
-			GUI.getInstance().runGui();;
+			GUI.getInstance().runGui();
+			return ;
 		}
+
 		Hero player = null;
 
 		do {

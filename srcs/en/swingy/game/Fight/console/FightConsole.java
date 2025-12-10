@@ -1,9 +1,8 @@
 package en.swingy.game.Fight.console;
 
-import java.util.Random;
-
 import en.swingy.equipement.Equipement;
 import en.swingy.game.GamePrint;
+import en.swingy.game.Fight.Fight;
 import en.swingy.hero.Hero;
 
 public class FightConsole {
@@ -20,16 +19,6 @@ public class FightConsole {
 	public static final String FLEE_PROMPT = GamePrint.BOLD +
 	"""
 	A fight will start would you like to flee ? [y/n]
-	""" + GamePrint.COLOR_RESET;
-
-	public static final String FLEE_FAILED_PROMPT = GamePrint.BOLD +
-	"""
-	You have failed to flee
-	""" + GamePrint.COLOR_RESET;
-
-	public static final String FLEE_SUCCESS_PROMPT = GamePrint.BOLD +
-	"""
-	You have flee
 	""" + GamePrint.COLOR_RESET;
 
 	public static void AfterFightEquipEvent(Hero player, Equipement drop) {
@@ -53,13 +42,9 @@ public class FightConsole {
 		} while (!opt.matches("y|n"));
 
 		if (opt.matches("y")) {
-			Random r = new Random();
-			int value = r.nextInt(2) + 1;
-			if (value == 1) {
-				System.out.println(FLEE_SUCCESS_PROMPT);
+			if (Fight.calculateFleeOdds())  {
 				return true;
 			}
-			System.out.println(FLEE_FAILED_PROMPT);
 		}
 		return false;
 	}

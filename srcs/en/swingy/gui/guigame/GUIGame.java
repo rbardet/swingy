@@ -8,18 +8,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import en.swingy.game.Controller;
+import en.swingy.game.Game;
 import en.swingy.game.Map;
+import en.swingy.game.Fight.gui.FightGUI;
 import en.swingy.gui.Assets;
 import en.swingy.gui.GUI;
-import en.swingy.hero.Hero;
 
 public class GUIGame {
-	Hero player;
 	Boolean Inventory_seen = false;
 	public static KeyListener movEvent = null;
 
-	public GUIGame(Hero p_player) {
-		this.player = p_player;
+	public GUIGame() {
 	}
 
 	public void placeTile(GUI gui, int x, int y, String sprite) {
@@ -67,18 +66,26 @@ public class GUIGame {
 	public void initMovementEvent(GUI gui, Map m) {
 		movEvent = new KeyListener() {
 			public void keyPressed(KeyEvent e) {
-				switch (e.getKeyCode()) {
-					case KeyEvent.VK_W -> m.playerAction(player, Controller.NORTH_MOV);
-					case KeyEvent.VK_A -> m.playerAction(player, Controller.WEST_MOV);
-					case KeyEvent.VK_S -> m.playerAction(player, Controller.SOUTH_MOV);
-					case KeyEvent.VK_D -> m.playerAction(player, Controller.EAST_MOV);
+				if (m.Clear()) {
+					startGame(gui);
 				}
 
-				gui.clearScreen();
-				drawMap(gui, m);
-				gui.setMenuQuitIcon(gui);
-				InventoryGUI.showPlayerInventory(gui, player);
-				gui.getFrame().repaint();
+				gui.removeKeyboardFocus();
+				switch (e.getKeyCode()) {
+					case KeyEvent.VK_W -> m.playerAction(Game.getPlayer(), Controller.NORTH_MOV);
+					case KeyEvent.VK_A -> m.playerAction(Game.getPlayer(), Controller.WEST_MOV);
+					case KeyEvent.VK_S -> m.playerAction(Game.getPlayer(), Controller.SOUTH_MOV);
+					case KeyEvent.VK_D -> m.playerAction(Game.getPlayer(), Controller.EAST_MOV);
+				}
+
+				if (!FightGUI.isInMenu) {
+					gui.setKeyboardFocus();
+					gui.clearScreen();
+					drawMap(gui, m);
+					gui.setMenuQuitIcon(gui);
+					InventoryGUI.showPlayerInventory(gui, Game.getPlayer());
+					gui.getFrame().repaint();
+				}
 			}
 			public void keyReleased(KeyEvent e) {}
 			public void keyTyped(KeyEvent e) {}
@@ -101,7 +108,7 @@ public class GUIGame {
 
 	public void startGame(GUI gui)  {
 		Map m = new Map();
-		m.setMapSize(player.getLevel());
+		m.setMapSize(Game.getPlayer().getLevel());
 		m.generateMap();
 		m.initController();
 		initMovementEvent(gui, m);
@@ -109,7 +116,7 @@ public class GUIGame {
 
 		gui.setKeyboardFocus();
 		drawMap(gui, m);
-		InventoryGUI.showPlayerInventory(gui, player);
+		InventoryGUI.showPlayerInventory(gui, Game.getPlayer());
 	}
 
 	public void setGameMainScene(GUI gui)  {

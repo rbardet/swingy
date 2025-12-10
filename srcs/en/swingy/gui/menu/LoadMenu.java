@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import en.swingy.db.DB;
+import en.swingy.game.Game;
 import en.swingy.gui.Assets;
 import en.swingy.gui.GUI;
 import en.swingy.gui.guigame.GUIGame;
@@ -46,7 +47,8 @@ public class LoadMenu {
 
 				JButton button = createLoadSaveButton(xPosition, yPosition, e -> {
 					try {
-						GUIGame gGame = new GUIGame(DB.loadSave(heroId));
+						GUIGame gGame = new GUIGame();
+						Game.setPlayer(DB.loadSave(heroId));
 						gGame.setGameMainScene(gui);
 					} catch (Exception ex) {
 						ex.printStackTrace();

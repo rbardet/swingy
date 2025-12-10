@@ -38,7 +38,7 @@ public class SavesDisplay {
 
 		JLabel name = new JLabel(rs.getString(DB.NAME_VAR), SwingConstants.CENTER);
 		name.setForeground(Color.WHITE);
-		name.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 18f));
+		name.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
 		name.setBounds(0, iconLabel.getY() + charIcon.getIconHeight() + 20, bannerWidth, 30);
 		banner.add(name);
 

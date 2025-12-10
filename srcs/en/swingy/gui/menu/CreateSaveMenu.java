@@ -15,6 +15,7 @@ import javax.swing.event.DocumentListener;
 
 import en.swingy.db.DB;
 import en.swingy.entity.entityclass.EntityClass;
+import en.swingy.game.Game;
 import en.swingy.gui.Assets;
 import en.swingy.gui.GUI;
 import en.swingy.gui.button.Button;
@@ -27,7 +28,7 @@ public class CreateSaveMenu {
 		JLabel header = new JLabel(descHeader);
 		header.setBounds(150, 150, 480, 30);
 		header.setForeground(Color.WHITE);
-		header.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 20f));
+		header.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
 		gui.getFrame().add(header);
 
 		JTextArea body = new JTextArea(descBody);
@@ -167,7 +168,8 @@ public class CreateSaveMenu {
 					DB.createAccount(player.getName(), player.getEClass());
 					gui.clearUsername();
 					gui.clearClass();
-					GUIGame gGame = new GUIGame(player);
+					GUIGame gGame = new GUIGame();
+					Game.setPlayer(player);
 					gGame.setGameMainScene(gui);
 				}
 			} catch (Exception ex) {

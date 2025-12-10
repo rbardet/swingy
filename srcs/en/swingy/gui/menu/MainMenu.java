@@ -22,7 +22,7 @@ public class MainMenu {
 
 		JLabel l = new JLabel("Maximum number of save reached, Would you like to delete one ?");
 		l.setForeground(Color.WHITE);
-		l.setFont(gui.getCustomFont().deriveFont(Font.BOLD, 20f));
+		l.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
 		int labelWidth = 900;
 		int labelX = (GUI.WIDHT - labelWidth) / 2;
 		l.setBounds(labelX, 100, labelWidth, 50);
