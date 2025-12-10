@@ -89,6 +89,7 @@ public class GUIGame {
 				if (!FightGUI.isInMenu) {
 					gui.setKeyboardFocus();
 					gui.clearScreen();
+					drawMap(gui, m);
 					GUI.setMenuQuitIcon();
 					InventoryGUI.showPlayerInventory(gui, Game.getPlayer());
 					gui.getFrame().repaint();
