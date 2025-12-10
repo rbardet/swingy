@@ -146,7 +146,7 @@ public class FightGUI {
 			gui.clearScreen();
 			GUI.setMenuQuitIcon();
 			Fight.Simulate(Game.getPlayer());
-			quitMenu(true);
+			return ;
 		};
 
 		placeYesNoButton(yesEvent, noEvent);
