@@ -67,15 +67,12 @@ public class GUIGame {
 	public void initMovementEvent(GUI gui, Map m) {
 		movEvent = new KeyListener() {
 			public void keyPressed(KeyEvent e) {
-				gui.removeKeyboardFocus();
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_W -> m.playerAction(player, Controller.NORTH_MOV);
 					case KeyEvent.VK_A -> m.playerAction(player, Controller.WEST_MOV);
 					case KeyEvent.VK_S -> m.playerAction(player, Controller.SOUTH_MOV);
 					case KeyEvent.VK_D -> m.playerAction(player, Controller.EAST_MOV);
 				}
-				gui.setKeyboardFocus();
-
 
 				gui.clearScreen();
 				drawMap(gui, m);
@@ -118,6 +115,7 @@ public class GUIGame {
 	public void setGameMainScene(GUI gui)  {
 		gui.clearScreen();
 		gui.setFrameBg(Assets.MENU_BG);
+		gui.setMenuQuitIcon(gui);
 		addMovementEvent(gui);
 		startGame(gui);
 	}
