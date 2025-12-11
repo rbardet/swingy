@@ -90,7 +90,7 @@ public class Fight {
 		float baseHp = player.getEClass().getHP();
 		float player_hp = player.getEClass().getHP() + player.getHelm().getHP();
 
-		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass());
+		Ennemy bot = new Ennemy(EnnemyEnum.getRandom(), EntityClass.randomClass(), player.getLevel());
 		float player_dmg;
 		float bot_dmg;
 		
