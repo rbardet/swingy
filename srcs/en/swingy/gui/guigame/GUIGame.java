@@ -50,11 +50,13 @@ public class GUIGame {
 				int mapX = startX + x;
 				int mapY = startY + y;
 
-				if (mapX < 0 || mapX >= m.getMapSize() || mapY < 0 || mapY >= m.getMapSize())
-					continue;
-
 				int screenX = offsetX + x * tileWidth;
 				int screenY = offsetY + y * tileHeight;
+				if (mapX < 0 || mapX >= m.getMapSize() || mapY < 0 || mapY >= m.getMapSize()) {
+					placeTile(gui, screenX, screenY, Assets.WALL);
+					continue;
+				}
+
 
 				placeTile(gui, screenX, screenY, m.getTileAsset(mapX, mapY));
 			}

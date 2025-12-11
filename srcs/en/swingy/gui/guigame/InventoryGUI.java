@@ -63,7 +63,6 @@ public class InventoryGUI {
 			label.add(all[i]);
 		}
 	}
-
 	public static void displayPlayerStuff(GUI gui, Hero player, JLabel label) {
 		ImageIcon weapon = new ImageIcon(WeaponEnum.findAssetByName(player.getWeapon().getName()));
 		JLabel l1 = new JLabel(weapon);
