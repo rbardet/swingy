@@ -11,6 +11,10 @@ public abstract class EntityClass {
 	protected float defense;
 	protected float HP;
 
+	public final float ATT_COEFF;
+	public final float DEF_COEFF;
+	public final float HP_COEFF ;
+
 	public static final EntityClass[] E_CLASS = {
 		new Barbarian(),
 		new Crusader(),
@@ -31,10 +35,15 @@ public abstract class EntityClass {
 		"Wizard 8/3/9"
 	};
 
-	public EntityClass(float p_attack, float p_defense, float p_HP) {
+	public EntityClass(float p_attack, float p_defense, float p_HP,
+		float ATT_COEFF, float DEF_COEFF, float HP_COEFF) {
 		this.attack = p_attack;
 		this.defense = p_defense;
 		this.HP = p_HP;
+
+		this.ATT_COEFF = ATT_COEFF;
+		this.DEF_COEFF = DEF_COEFF;
+		this.HP_COEFF = HP_COEFF;
 	}
 
 	public float getAttack() {
