@@ -7,6 +7,7 @@ public class Assets {
 	public static final String MENU_BUTTON =  ASSETS_PATH + "menu_button.png";
 	public static final String MENU_BUTTON_HOVER = ASSETS_PATH + "menu_button_hover.png";
 	public static final String MENU_BG = ASSETS_PATH + "menu_bg.png";
+	public static final String GAME_BG = ASSETS_PATH + "game_bg.png";
 	public static final String MENU_QUIT = ASSETS_PATH + "menu_quit.png";
 	public static final String MENU_QUIT_HOVER = ASSETS_PATH + "menu_quit_hover.png";
 	public static final String USERNAME = ASSETS_PATH + "username.png";

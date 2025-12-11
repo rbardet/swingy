@@ -1,6 +1,7 @@
 package en.swingy.gui.guigame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 
 import javax.swing.ImageIcon;
@@ -41,8 +42,41 @@ public class InventoryGUI {
 		label.add(PlayerName);
 	}
 	
-	public static void displayPlayerStats(GUI gui, Hero player) {
+	public static void displayPlayerStats(GUI gui, Hero player, JLabel label) {
+		JLabel lv = new JLabel("LV " + player.getLevel());
+		JLabel xp = new JLabel("XP " + player.getXP());
+		float p_att = player.getEClass().getAttack() + player.getWeapon().getAttack();
+		JLabel att = new JLabel("ATT " + p_att);
+		float p_def = player.getEClass().getDefense() + player.getArmor().getDefense();
+		JLabel def = new JLabel("DEF " + p_def);
+		float p_hp = player.getEClass().getHP() + player.getHelm().getHP();
+		JLabel hp = new JLabel("HP " + p_hp);
 
+		lv.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
+		lv.setBounds(110, 280, 400, 30);
+		lv.setForeground(Color.white);
+
+		xp.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
+		xp.setBounds(110, 320, 400, 30);
+		xp.setForeground(Color.white);
+
+		att.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
+		att.setBounds(110, 360, 400, 30);
+		att.setForeground(Color.white);
+
+		def.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
+		def.setBounds(110, 400, 400, 30);
+		def.setForeground(Color.white);
+
+		hp.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
+		hp.setBounds(110, 440, 400, 30);
+		hp.setForeground(Color.white);
+
+		label.add(lv);
+		label.add(xp);
+		label.add(att);
+		label.add(def);
+		label.add(hp);
 	}
 
 	public static void displayPlayerStuff(GUI gui, Hero player, JLabel label) {
@@ -70,10 +104,10 @@ public class InventoryGUI {
 		int y = 20;
 		label.setBounds(x, y, i.getIconWidth(), i.getIconHeight());
 
-		displayPlayerName(gui, player, label, i.getIconWidth());
 		displayerPlayerIcon(gui, player, label);
+		displayPlayerName(gui, player, label, i.getIconWidth());
+		displayPlayerStats(gui, player, label);
 		displayPlayerStuff(gui, player, label);
-
 		gui.getFrame().add(label);
 	}
 }
