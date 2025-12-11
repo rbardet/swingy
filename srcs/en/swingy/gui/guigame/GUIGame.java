@@ -130,7 +130,7 @@ public class GUIGame {
 
 	public void setGameMainScene(GUI gui)  {
 		gui.clearScreen();
-		gui.setFrameBg(Assets.MENU_BG);
+		gui.setFrameBg(Assets.GAME_BG);
 		GUI.setMenuQuitIcon();
 		addMovementEvent(gui);
 		startGame(gui);

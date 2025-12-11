@@ -52,31 +52,16 @@ public class InventoryGUI {
 		float p_hp = player.getEClass().getHP() + player.getHelm().getHP();
 		JLabel hp = new JLabel("HP " + p_hp);
 
-		lv.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
-		lv.setBounds(110, 280, 400, 30);
-		lv.setForeground(Color.white);
-
-		xp.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
-		xp.setBounds(110, 320, 400, 30);
-		xp.setForeground(Color.white);
-
-		att.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
-		att.setBounds(110, 360, 400, 30);
-		att.setForeground(Color.white);
-
-		def.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
-		def.setBounds(110, 400, 400, 30);
-		def.setForeground(Color.white);
-
-		hp.setFont(gui.getCustomFont().deriveFont(Font.BOLD));
-		hp.setBounds(110, 440, 400, 30);
-		hp.setForeground(Color.white);
-
-		label.add(lv);
-		label.add(xp);
-		label.add(att);
-		label.add(def);
-		label.add(hp);
+		int BaseY = 280;
+		int diff = 0;
+		JLabel[] all = {lv, xp, att, def, hp};
+		for (int i = 0; i < all.length; i++) {
+			all[i].setFont(gui.getCustomFont().deriveFont(Font.BOLD));
+			all[i].setBounds(110, BaseY + diff, 400, 30);
+			all[i].setForeground(Color.white);
+			diff += 40;
+			label.add(all[i]);
+		}
 	}
 
 	public static void displayPlayerStuff(GUI gui, Hero player, JLabel label) {
