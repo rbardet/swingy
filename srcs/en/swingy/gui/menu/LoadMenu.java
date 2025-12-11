@@ -43,7 +43,7 @@ public class LoadMenu {
 				final int heroId = rs.getInt(DB.ID_VAR);
 
 				int xPosition = 60  + idx * (SavesDisplay.bannerWidth + SavesDisplay.bannerSpacing);
-				int yPosition = SavesDisplay.bannerYPos + SavesDisplay.bannerHeight + 20;
+				int yPosition = SavesDisplay.bannerYPos + SavesDisplay.bannerHeight + 10;
 
 				JButton button = createLoadSaveButton(xPosition, yPosition, e -> {
 					try {
