@@ -93,4 +93,14 @@ public enum ArmorEnum {
 		int index = new Random().nextInt(values.length);
 		return values[index].getLabel();
 	}
+
+	public static String findAssetByName(String name) {
+		ArmorEnum[] values = ArmorEnum.values();
+		for (ArmorEnum value : values) {
+			if (value.getLabel().equals(name)) {
+				return ArmorAssets.getAsset(value.name());
+			}
+		}
+		return null;
+	}
 }

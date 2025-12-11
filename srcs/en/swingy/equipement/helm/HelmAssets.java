@@ -81,7 +81,7 @@ public enum HelmAssets {
 	PESTILENCE_MASK("helmets/PESTILENCE_MASK.png"),
 	RATHMAS_SKULL_HELM("helmets/RATHMAS_SKULL_HELM.png");
 
-	private static final String BASE_PATH = "ressources/assets/stuff/helm/";
+	private static final String BASE_PATH = "ressources/assets/stuff/";
 	private final String path;
 
 	HelmAssets(String relativePath) {
@@ -90,5 +90,15 @@ public enum HelmAssets {
 
 	public String getPath() {
 		return path;
+	}
+
+	public static String getAsset(String target) {
+		HelmAssets[] values = HelmAssets.values();
+		for (HelmAssets value : values) {
+			if (value.name().equals(target)) {
+				return value.getPath();
+			}
+		}
+		return null;
 	}
 }

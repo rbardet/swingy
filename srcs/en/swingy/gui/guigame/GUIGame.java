@@ -34,8 +34,8 @@ public class GUIGame {
 		int tileWidth = 64;
 		int tileHeight = 64;
 
-		int screenCenterX = 800;
-		int screenCenterY = 300;
+		int screenCenterX = 850;
+		int screenCenterY = 325;
 
 		int radius = 4;
 		int startX = playerPos.x - radius;

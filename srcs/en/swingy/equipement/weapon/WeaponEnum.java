@@ -210,7 +210,7 @@ public enum WeaponEnum {
 	public static String findAssetByName(String name) {
 		WeaponEnum[] values = WeaponEnum.values();
 		for (WeaponEnum value : values) {
-			if (value.getLabel() == name) {
+			if (value.getLabel().equals(name)) {
 				return WeaponAssets.getAsset(value.name());
 			}
 		}

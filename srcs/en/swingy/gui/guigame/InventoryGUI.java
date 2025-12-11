@@ -7,6 +7,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import en.swingy.entity.entityclass.EntityClass;
+import en.swingy.equipement.armor.ArmorEnum;
+import en.swingy.equipement.helm.HelmEnum;
 import en.swingy.equipement.weapon.WeaponEnum;
 import en.swingy.gui.Assets;
 import en.swingy.gui.GUI;
@@ -19,7 +21,7 @@ public class InventoryGUI {
 				player.getEClass().getClass().getSimpleName()
 		);
 		JLabel PlayerIcon = new JLabel(pIcon);
-		PlayerIcon.setBounds(182, 30, pIcon.getIconWidth(), pIcon.getIconHeight());
+		PlayerIcon.setBounds(192, 27, pIcon.getIconWidth(), pIcon.getIconHeight());
 
 		label.add(PlayerIcon);
 	}
@@ -34,7 +36,7 @@ public class InventoryGUI {
 		int bannerWidth = IconWidth;
 
 		int nameX = (bannerWidth - textWidth) / 2;
-		int nameY = 90;
+		int nameY = 93;
 		PlayerName.setBounds(nameX, nameY, textWidth, 30);
 		label.add(PlayerName);
 	}
@@ -44,19 +46,28 @@ public class InventoryGUI {
 	}
 
 	public static void displayPlayerStuff(GUI gui, Hero player, JLabel label) {
-		System.out.println(WeaponEnum.findAssetByName(player.getWeapon().getName()));
 		ImageIcon weapon = new ImageIcon(WeaponEnum.findAssetByName(player.getWeapon().getName()));
-		JLabel l = new JLabel(weapon);
-		l.setBounds(40, 600, 66, 110);
+		JLabel l1 = new JLabel(weapon);
+		l1.setBounds(70, 500, 66, 110);
 
-		label.add(l);
+		ImageIcon armor = new ImageIcon(ArmorEnum.findAssetByName(player.getArmor().getName()));
+		JLabel l2 = new JLabel(armor);
+		l2.setBounds(185, 500, 66, 110);
+
+		ImageIcon helm = new ImageIcon(HelmEnum.findAssetByName(player.getHelm().getName()));
+		JLabel l3 = new JLabel(helm);
+		l3.setBounds(295, 500, 66, 110);
+
+		label.add(l1);
+		label.add(l2);
+		label.add(l3);
 	}
 
 	public static void showPlayerInventory(GUI gui, Hero player) {
 		ImageIcon i = new ImageIcon(Assets.PLAYER_INV);
 		JLabel label = new JLabel(i);
 		int x = 100;
-		int y = 30;
+		int y = 20;
 		label.setBounds(x, y, i.getIconWidth(), i.getIconHeight());
 
 		displayPlayerName(gui, player, label, i.getIconWidth());

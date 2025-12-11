@@ -86,4 +86,14 @@ public enum ArmorAssets {
 	public String getPath() {
 		return path;
 	}
+
+	public static String getAsset(String target) {
+		ArmorAssets[] values = ArmorAssets.values();
+		for (ArmorAssets value : values) {
+			if (value.name().equals(target)) {
+				return value.getPath();
+			}
+		}
+		return null;
+	}
 }

@@ -98,4 +98,14 @@ public enum HelmEnum {
 		int index = new Random().nextInt(values.length);
 		return values[index].getLabel();
 	}
+
+	public static String findAssetByName(String name) {
+		HelmEnum[] values = HelmEnum.values();
+		for (HelmEnum value : values) {
+			if (value.getLabel().equals(name)) {
+				return HelmAssets.getAsset(value.name());
+			}
+		}
+		return null;
+	}
 }

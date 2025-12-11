@@ -209,7 +209,7 @@ public enum WeaponAssets {
 	public static String getAsset(String target) {
 		WeaponAssets[] values = WeaponAssets.values();
 		for (WeaponAssets value : values) {
-			if (value.name() == target) {
+			if (value.name().equals(target)) {
 				return value.getPath();
 			}
 		}
