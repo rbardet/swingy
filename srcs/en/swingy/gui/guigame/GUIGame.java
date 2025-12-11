@@ -82,10 +82,10 @@ public class GUIGame {
 
 				gui.removeKeyboardFocus();
 				switch (e.getKeyCode()) {
-					case KeyEvent.VK_W -> m.playerAction(Game.getPlayer(), Controller.NORTH_MOV);
-					case KeyEvent.VK_A -> m.playerAction(Game.getPlayer(), Controller.WEST_MOV);
-					case KeyEvent.VK_S -> m.playerAction(Game.getPlayer(), Controller.SOUTH_MOV);
-					case KeyEvent.VK_D -> m.playerAction(Game.getPlayer(), Controller.EAST_MOV);
+					case KeyEvent.VK_W, KeyEvent.VK_UP -> m.playerAction(Game.getPlayer(), Controller.NORTH_MOV);
+					case KeyEvent.VK_A, KeyEvent.VK_LEFT -> m.playerAction(Game.getPlayer(), Controller.WEST_MOV);
+					case KeyEvent.VK_S, KeyEvent.VK_DOWN -> m.playerAction(Game.getPlayer(), Controller.SOUTH_MOV);
+					case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> m.playerAction(Game.getPlayer(), Controller.EAST_MOV);
 				}
 
 				if (!FightGUI.isInMenu) {
