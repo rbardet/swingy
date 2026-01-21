@@ -107,7 +107,7 @@ public class DB {
 		}
 	}
 
-	public static int getUserId()  {
+	public static int getUserId() {
 		try {
 			PreparedStatement s = getConnection().prepareStatement(RQ_ENTRY_SIZE);
 			ResultSet rs = s.executeQuery();
@@ -120,6 +120,10 @@ public class DB {
 				}
 				exId++;
 			}
+
+			if (exId > 3) {
+				return -1;
+			}
 			return exId;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -127,12 +131,12 @@ public class DB {
 		return -1;
 	}
 
-
-	public static long createAccount(String name, EntityClass c)  {
+	public static int createAccount(String name, EntityClass c)  {
 		try {
 			initDb();
 			PreparedStatement s = getConnection().prepareStatement(RQ_INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS);
-			s.setInt(1, getUserId());
+			int id = getUserId();
+			s.setInt(1, id);
 			s.setString(2, name);
 			s.setString(3, c.getClass().getSimpleName());
 			s.setInt(4, 1);
@@ -149,23 +153,17 @@ public class DB {
 
 			s.executeUpdate();
 
-			long key = -1L;
-			ResultSet rs = s.getGeneratedKeys();
-			if (rs.next()) {
-				key = rs.getLong(1);
-			}
-
-			return key;
+			return id;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return -1;
 	}
 
-	
-	public static void updateAfterFight(Hero player)  {
+	public static void updateAfterFight(Hero player) {
 		try {
 			PreparedStatement s = getConnection().prepareStatement(RQ_UPDATE_FIGHT);
+
 			s.setInt(1, player.getXP());
 			s.setString(2, player.getWeapon().getName());
 			s.setFloat(3, player.getWeapon().getAttack());
@@ -175,13 +173,22 @@ public class DB {
 			s.setFloat(7, player.getHelm().getHP());
 			s.setInt(8, player.getId());
 
+			System.out.println("[UPDATE AFTER FIGHT]");
+			System.out.println("Hero ID: " + player.getId());
+			System.out.println("XP: " + player.getXP());
+			System.out.println("Weapon: " + player.getWeapon().getName() +
+					" (ATK=" + player.getWeapon().getAttack() + ")");
+			System.out.println("Armor: " + player.getArmor().getName() +
+					" (DEF=" + player.getArmor().getDefense() + ")");
+			System.out.println("Helm: " + player.getHelm().getName() +
+					" (HP=" + player.getHelm().getHP() + ")");
+
 			s.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
 	public static void updateAfterLevel(Hero player)  {
 		try {
 			PreparedStatement s = getConnection().prepareStatement(RQ_UPDATE_LEVEL_UP);

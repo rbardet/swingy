@@ -114,8 +114,8 @@ public class Game {
 		String name = askPlayerName();
 		int idx = askPlayerClass();
 		Hero player = new Hero(name, EntityClass.E_CLASS[idx - 1]);
-		long id = DB.createAccount(name, EntityClass.E_CLASS[idx - 1]);
-		player.setId(((int)id));
+		int id = DB.createAccount(name, EntityClass.E_CLASS[idx - 1]);
+		player.setId(id);
 		return player;
 	}
 	

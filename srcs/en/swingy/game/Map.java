@@ -112,7 +112,48 @@ public class Map {
 		this.map[this.controller.getPlayerY()][this.controller.getPlayerX()] = Map.PLAYER_CELL;
 	}
 
+	public static final String RESET = "\u001B[0m";
+	public static final String RED = "\u001B[31m";
+	public static final String GREEN = "\u001B[32m";
+	public static final String YELLOW = "\u001B[33m";
+	public static final String BLUE = "\u001B[34m";
+	public static final String PURPLE = "\u001B[35m";
+	public static final String CYAN = "\u001B[36m";
+	public static final String BOLD = "\u001B[1m";
+
 	public void playerAction(Hero player, String mov) {
+		System.out.println(
+			BOLD + CYAN + "[PLAYER ACTION] " + RESET +
+			BLUE + "id=" + player.getId() + RESET +
+			" | " + GREEN + "level=" + player.getLevel() + RESET +
+			" | " + GREEN + "xp=" + player.getXP() + RESET +
+
+			" | " + PURPLE + "class" + RESET +
+			"(atk=" + player.getEClass().getAttack() +
+			", def=" + player.getEClass().getDefense() +
+			", hp=" + player.getEClass().getHP() + ")" +
+
+			" | " + YELLOW + "weapon=" + RESET +
+			(player.getWeapon() != null
+				? player.getWeapon().getName() +
+				"(atk=" + player.getWeapon().getAttack() + ")"
+				: RED + "none" + RESET) +
+
+			" | " + YELLOW + "armor=" + RESET +
+			(player.getArmor() != null
+				? player.getArmor().getName() +
+				"(def=" + player.getArmor().getDefense() + ")"
+				: RED + "none" + RESET) +
+
+			" | " + YELLOW + "helm=" + RESET +
+			(player.getHelm() != null
+				? player.getHelm().getName() +
+				"(hp=" + player.getHelm().getHP() + ")"
+				: RED + "none" + RESET)
+		);
+		player.getEClass().getAttack();
+		player.getEClass().getDefense();
+		player.getEClass().getHP();
 		mov = this.controller.Movement(this.map, mov);
 		if (isOnEnnemy()) {
 			if (!Game.GUI_MODE) {

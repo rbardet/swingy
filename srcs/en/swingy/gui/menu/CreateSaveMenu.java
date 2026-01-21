@@ -165,8 +165,9 @@ public class CreateSaveMenu {
 			try {
 				if (gui.getPlayerClass() != -1 && !gui.getUsername().isEmpty()) {
 					Hero player = new Hero(gui.getUsername(), EntityClass.E_CLASS[gui.getPlayerClass()]);
-					DB.createAccount(player.getName(), player.getEClass());
+					int id = DB.createAccount(player.getName(), player.getEClass());
 					GUIGame gGame = new GUIGame();
+					player.setId(id);
 					Game.setPlayer(player);
 					gGame.setGameMainScene(gui);
 				}
